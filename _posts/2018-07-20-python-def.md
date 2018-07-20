@@ -563,4 +563,4 @@ UnboundLocalError: local variable 'a' referenced before assignment
 
 错误信息为局部作用域引用错误，因为 test 函数中的 a 使用的是局部，未定义，无法修改。
 
-载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/06/Develop_Tool/)
+载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-def/)

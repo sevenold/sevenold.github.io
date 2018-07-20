@@ -46,4 +46,4 @@ Python的解释器很多，但使用最广泛的还是CPython。如果要和Java
 
 本教程的所有代码只确保在CPython 3.x或2.x版本下运行。请务必在本地安装CPython（也就是从Python官方网站下载的安装程序）。
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/06/Develop_Tool/)
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-interpreter/)

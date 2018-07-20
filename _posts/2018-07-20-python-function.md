@@ -99,4 +99,4 @@ False
 1
 ```
 
-载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/06/Develop_Tool/)
+载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-function//)
