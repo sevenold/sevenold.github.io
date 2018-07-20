@@ -5,8 +5,8 @@ logo: /static/img/seven.png
 github: https://github.com/sevenold
 about: Freelance developer
 
-baseurl: "https://sevenold.github.io/hcz-jekyll-blog"
-url: "https://sevenold.github.io/hcz-jekyll-blog"
+baseurl: "https://sevenold.github.io"
+url: "https://sevenold.github.io"
 
 allowsearch: true
 
