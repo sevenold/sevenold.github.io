@@ -1,42 +1,41 @@
 # Basic
-title: 潘柏信
+title: 嘿！漆漆
 subtitle: 个人站
 description: 欢迎来到我的个人站~
 # 头像里面的标题
-avatarTitle: leopardpan
+avatarTitle: Seven
 # 头像里面的描述
-avatarDesc: iOS / 机器学习
-url: "http://baixin.io"
+avatarDesc: arithmetic/人工智能
+url: "http://seven.github.io"
 
 # Comment
 comment:
-    disqus: leopard
+    disqus: Seven
     # uyan: 2143225  # 有言id,登录有言官网申请
 
 # Social
 social:
-    weibo: 5366874726 
-    github: leopardpan
+    weibo: 1104042157 
+    github: Sevenold
     # twitter: 
-    mail: leopardpan@icloud.com
+    mail: constqoo@gmail.com
 
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 
-baidu:
-    id: 8ba1c6be0953b6f9c2ba38e57f615421  
+# baidu:
+#     id: 8ba1c6be0953b6f9c2ba38e57f615421  
 
-# Google Analytics
-# 使用博客模板请去掉或者更换 id
-ga:
-    id: UA-84134159-3   
-    host: auto  
+# # Google Analytics
+# # 使用博客模板请去掉或者更换 id
+# ga:
+#     id: UA-84134159-3   
+#     host: auto  
 
 
 # 《----------------- 上面的信息修改成你自己的 ---------------------------》
 #
 #
 #  _post/ 下的文章更换成你自己的文章
-#  帮忙star一下，感谢~😆 地址： https://github.com/leopardpan/leopardpan.github.io
 #
 #
 # 《--------------- 下面的信息可以自行选择是否修改 ------------------------》
