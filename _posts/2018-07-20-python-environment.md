@@ -10,7 +10,6 @@ tag: python
 
 ![img](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1512213234044&di=f62c5246289d1c0aafffcb7678628bb6&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D282855164%2C259270705%26fm%3D214%26gp%3D0.jpg)
 
-## 
 
 ## python环境配置及安装
 
