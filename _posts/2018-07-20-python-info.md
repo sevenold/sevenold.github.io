@@ -1,11 +1,11 @@
----------
-
+---
 layout: post
-title: "Python-简介"
-date: 2015-08-25 
-description: "介绍python相关发展历史，和具有的特点，为什么这么火"
+title: "Python简介"
+date: 2018-07-20
+description: "介绍python的相关发展历史，python的特点；为什么python这么火？"
+tag: python
+---   
 
-## tag: python
 
 ## **python简介**
 
