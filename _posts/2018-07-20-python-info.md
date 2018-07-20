@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Python简介"
-date: 2018-07-20
+date: 2018-07-20  22:00:57
 description: "介绍python的相关发展历史，python的特点；为什么python这么火？"
 tag: python
 ---
