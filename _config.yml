@@ -1,12 +1,12 @@
-title: John Smith
+title: Seven
 description: My Personal Blog
-author: John Smith
+author: 
 logo: /hcz-jekyll-blog/static/img/avatar.png
-github: https://github.com/codeasashu
+github: https://github.com/sevenold
 about: Freelance developer
 
-baseurl: "https://codeasashu.github.io/hcz-jekyll-blog"
-url: "https://codeasashu.github.io/hcz-jekyll-blog"
+baseurl: "https://sevenold.github.io"
+url: "https://sevenold.github.io"
 
 allowsearch: true
 
