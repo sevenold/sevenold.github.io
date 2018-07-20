@@ -1,26 +1,22 @@
-Fresh is a free blog template for Jekyll
-=============================
+## HCZ Material theme
 
-![](assets/img/fresh.jpg)
+This is a simple personal material theme, best suited for personal authors, programmars, bloggers. 
 
-# Demo
+### Demo
+* [https://codeasashu.github.io/hcz-jekyll-blog](https://codeasashu.github.io/hcz-jekyll-blog/)
 
-![GIF](assets/img/fresh.gif)
+#### Feature
 
-View this jekyll theme in action [here](http://artemsheludko.pw/fresh/)
+* Sitemap and XML Feed
+* Site Search 
+* Projects and tags
+* Paginations in homepage
+* Posts under category
+* Related Posts
+* Highlight pre
+* Next & Previous Post
+* Disqus comment
 
-Integrations
-  - [Google Fonts](https://fonts.google.com/)
-  - [Disqus](https://disqus.com/)
-  - [Font Awesome](http://fontawesome.io/)
-  - Social media links
+#### Screenshot
 
-# How to Use
-
-  For those unfamiliar with how Jekyll works, check out [jekyllrb.com](https://jekyllrb.com/) for all the details,
-  or read up on just the basics of [front matter](https://jekyllrb.com/docs/frontmatter/), [writing posts](https://jekyllrb.com/docs/posts/),
-  and [creating pages](https://jekyllrb.com/docs/pages/).
-
-## License
-
-GNU General Public License v3.0
+![Screenshot Home Page](https://raw.githubusercontent.com/ashutosh2k12/jekyllthemes/master/thumbnails/hcz-material.png  "Screenshot Home Page")
