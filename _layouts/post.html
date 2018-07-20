@@ -1,67 +1,24 @@
 ---
 layout: default
 ---
-<div class="post-content well">
-<article class="content">
-    <div class="post">{{ content }}</div>
-    <hr />
-    {% include share-page.html %}
-</article>
-<hr />
-{% assign hasSimilar = '' %}
-{% for post in site.posts  %}
-    {% assign postHasSimilar = false %}
-    {% for tag in post.categories %}
-        {% for thisTag in page.categories %}
-            {% if postHasSimilar == false and hasSimilar.size < 6 and post != page and tag == thisTag %}
-                {% if hasSimilar.size == 0 %}
-                <div class="panel-body">
-                <h4>Related Posts</h4>
-                <ul>
-                {% endif %}
-                <li class="relatedPost">
-                    <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
-                    {% if post.categories %}
-                        <small>(Categories: {% for category in post.categories %}<a href="/category/{{ category }}">{{ category }}</a>{% if forloop.last == false %}, {% endif %}{% endfor %})</small>
-                    {% endif %}
-                </li>
-                {% capture hasSimilar %}{{ hasSimilar }}*{% endcapture %}
-                {% assign postHasSimilar = true %}
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-{% endfor %}
-{% if hasSimilar.size > 0 %}
-    </ul>
+
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="{{page.date | date: date_to_xmlschema}}" itemprop="datePublished" class="post-meta__date date">{{page.date | date: "%F"}}</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
     </div>
-{% endif %}
+  </header>
 
-<div class="PageNavigation">
-  {% if page.previous.url %}
-    <a class="prev pull-left" href="{{ site.url }}{{ page.previous.url }}">&laquo; {{ page.previous.title }}</a>
-  {% endif %}
-  {% if page.next.url %}
-    <a class="next pull-right" href="{{ site.url }}{{ page.next.url }}">{{ page.next.title }} &raquo;</a>
-  {% endif %}
-</div>
+  <section class="post">
+    {{ content }}
 
+  </section>
+</article>
 
-<div class="disqus-comments">
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        /* <![CDATA[ */
-
-        var disqus_shortname = "{{ site.disqus_shortname }}";
-        var disqus_identifier = "{{ site.url }}_{{ page.title }}";
-        var disqus_title = "{{ page.title }}";
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    /* ]]> */
-    </script>
-</div>
-</div>
+{% include new-old.html %}
+{% include comments.html %}

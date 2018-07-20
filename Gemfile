@@ -1,10 +1,5 @@
 source 'https://rubygems.org'
-
-group :jekyll_plugins do
-  gem 'jekyll'
-  gem 'jekyll-paginate'
-  gem 'jekyll-gist'
-  gem 'jekyll-watch'
-  gem 'kramdown'
-  gem 'rouge'
-end
+gem 'jekyll'
+gem 'redcarpet'
+gem 'jekyll-paginate'
+gem 'jekyll-sitemap'

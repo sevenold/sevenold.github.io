@@ -1,5 +1,6 @@
-Gemfile.lock
 _site/
-_posts/
-category/
-*~
+.sass-cache/
+*.DS_Store
+.idea
+*.swp
+.Trashes
