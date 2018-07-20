@@ -4,8 +4,7 @@ title: "Python简介"
 date: 2018-07-20
 description: "介绍python的相关发展历史，python的特点；为什么python这么火？"
 tag: python
----   
-
+---
 
 ## **python简介**
 
@@ -62,3 +61,4 @@ Python 本身也是由诸多其他语言发展而来的,这包括 ABC、Modula-3
 如果你喜欢python，就请print（“hello Word”）
 
 转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/06/Develop_Tool/)
+
