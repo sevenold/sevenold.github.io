@@ -198,7 +198,7 @@ X和Y都是已知的，那么得到了最终的参数值。
  
 
  
-
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-linearRegression/)
  
 
  
