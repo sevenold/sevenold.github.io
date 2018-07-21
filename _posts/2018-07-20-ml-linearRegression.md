@@ -45,7 +45,7 @@ tag: 机器学习
 
 ### 把上述线性函数写成矩阵相乘的形式
 
-## $\theta^TX=\begin{bmatrix}\theta_1 \\ \theta_2 \\\cdot \\ \cdot\\\cdot \\\theta_i\end{bmatrix} \cdot [x_1,x_2,\cdot \cdot \cdot x_i] = \sum_{i=1}^{n}\theta_{i}x_{i} $
+## $\theta^TX=\begin{bmatrix}\theta_1 \\ \theta_2 \\ \cdot \\   \cdot\\ \cdot \\ \theta_i\end{bmatrix} \cdot [x_1,x_2,\cdot \cdot \cdot x_i] = \sum_{i=1}^{n}\theta_{i}x_{i} $
 
 我们把权重参数和特征参数，都看成是1行n列的矩阵(或者是行向量)。那么就可以根据矩阵乘法的相关知识，把上述多项求和的式子，转换成矩阵的乘法的表达式。  由此我们就把多项求和化简称了 。
 
@@ -155,7 +155,7 @@ $l(\theta) = \sum_{i=1}^{N}(y_i-\theta^Tx_i)^2$
 
 ##### 其中X：
 
-$X=\begin{bmatrix}1&&x_1^T  \\ 1&&x_2^T  \\\cdot \\ \cdot\\\cdot \\1&&x_N^T \end{bmatrix} =\begin{bmatrix}1&&x_{11}&&x_{12} &&\cdot\cdot\cdot x_{1n}  \\1&&x_{21}&&x_{22} &&\cdot\cdot\cdot x_{2n}   \\\cdot \\ \cdot\\\cdot \\1&&x_{m1}&&x_{m2} &&\cdot\cdot\cdot x_{mn}  \end{bmatrix} $
+$X=\begin{bmatrix}1&&x_1^T  \\ 1 &&x_2^T  \\\cdot \\ \cdot\\\cdot \\1&&x_N^T \end{bmatrix} =\begin{bmatrix}1&&x_{11}&&x_{12} &&\cdot\cdot\cdot x_{1n}  \\1&&x_{21}&&x_{22} &&\cdot\cdot\cdot x_{2n}   \\\cdot \\ \cdot\\\cdot \\1&&x_{m1}&&x_{m2} &&\cdot\cdot\cdot x_{mn}  \end{bmatrix} $
 
 
  对$\theta$求导
