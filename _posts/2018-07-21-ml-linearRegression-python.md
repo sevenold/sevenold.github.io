@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "线性回归算法python实现"
+title: "机器学习-线性回归算法python实现"
 date: 2018-07-21 
 description: "python实现算法推导所对应的数学公式"
 tag: 机器学习
@@ -192,4 +192,4 @@ if __name__ == '__main__':
 
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/06/Develop_Tool/)
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-linearRegression-python/)
