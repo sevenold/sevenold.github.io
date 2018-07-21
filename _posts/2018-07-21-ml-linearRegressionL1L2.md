@@ -147,4 +147,4 @@ L1正则化和L2正则化可以看做是损失函数的惩罚项，所谓『惩�
 
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/math/)
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-linearRegressionL1L2/)
