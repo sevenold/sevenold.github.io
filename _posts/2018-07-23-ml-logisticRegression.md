@@ -135,7 +135,7 @@ Sigmoid 函数在有个很漂亮的“S”形，如下图所示
 
 #### 因为乘了一个负的系数-1/m，所以取 $J(\theta)$最小值时的θ为要求的最佳参数。 
 
-## $\frac{\partial l(\theta)}{\partial \theta_j}=\sum_{i=1}^n(h_\theta(x_i)-y_i)x_i^j$
+## $\frac{\partial l(\theta)}{\partial \theta_j}=\frac 1 m \sum_{i=1}^n(h_\theta(x_i)-y_i)x_i^j$
 
 #### 相应的$\theta$:
 
