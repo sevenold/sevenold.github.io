@@ -174,7 +174,7 @@ boosting的算法过程如下：
 
 
 
-## 随机森林（Random Forests）
+### 随机森林（Random Forests）
 
 随机森林是一种重要的基于Bagging的集成学习方法，可以用来做分类、回归等问题。
 
