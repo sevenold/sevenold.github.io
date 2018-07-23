@@ -113,13 +113,13 @@ Sigmoid 函数在有个很漂亮的“S”形，如下图所示
 
 #### θ更新过程：
 
-## ***$\theta_j :=\theta_j-a(\frac{\part l(\theta)}{\part\theta_j})$***
+## ***$\theta_j :=\theta_j-a(\frac{\partial l(\theta)}{\partial \theta_j})$***
 
 #### 对$\theta$求偏导
 
 ## $\frac{\partial l(\theta)}{\partial \theta_j}=\frac{\partial g(\theta^Tx)}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$
 
-##           $=g(\theta^Tx)(1-g(\theta^Tx)) \frac{\partial\theta^Tx}{\part \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$
+##           $=g(\theta^Tx)(1-g(\theta^Tx)) \frac{\partial\theta^Tx}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$
 
 ##           $=(y(1-g(\theta^Tx))-(1-y)g(\theta^Tx))x_j$ 
 
@@ -258,4 +258,4 @@ Vectorization是使用矩阵计算来代替for循环，以简化计算过程，�
 
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/math/)
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-logisticRegression/)
