@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "机器学习-决策树和随机森林"
+title: "机器学习-决策树"
 date: 2018-07-23
-description: "决策树和随机森林的推导总结"
+description: "决策树的推导总结"
 tag: 机器学习
 ---   
 
