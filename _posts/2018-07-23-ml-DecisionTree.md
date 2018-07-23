@@ -59,11 +59,9 @@ tag: 机器学习
 
 ### 信息增益---$g(D,A)$
 
-定义: 特征A对训练数据集D的信息增益 g(D,A), 定义为集合D的经验熵H(D)与特征A给定条件下D的经验条件熵$H(D|A)$之差,即: $$g(D,A)=H(D)–H(D|A) $$
 
 
 
 
 
-
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/math/)
+转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-DecisionTree/)
