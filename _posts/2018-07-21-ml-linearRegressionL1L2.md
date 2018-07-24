@@ -89,7 +89,7 @@ tag: 机器学习
 
 #### $arg max_w \ L(w)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})}$
 
-通过对数似然进行变换后，因为$-nlog\sigma\sqrt{2\pi}$是定值，所以最终解释解：
+通过对数似然进行变换后，因为$-nlog\sigma\sqrt{2\pi}$是定值，所以最终解析解：
 
 #### $arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 =||y-w^TX||_2^2$
 
