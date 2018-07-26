@@ -3,9 +3,8 @@ layout: post
 title: "机器学习-SVM-核函数"
 date: 2018-07-26
 description: "关于支持向量机SVM核函数的推导与总结"
-tag: 机器学习​
+tag: 机器学习
 ---
-
 
 
 ### SVM回顾
