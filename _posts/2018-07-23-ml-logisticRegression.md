@@ -91,13 +91,13 @@ Sigmoid 函数在有个很漂亮的“S”形，如下图所示
 
 所以：
 
-## $P(y|x;\theta) = {h_\theta(x) }^y{1-h_\theta(x) }^y$
+## $P(y|x;\theta) = {h_\theta(x) }^y{(1-h_\theta(x)) }^y$
 
 
 
 ### 构建似然函数
 
-## $L(\theta)=\prod_{i=1}^n P(y_i|x_i;\theta) =\prod_{i=1}^n {h_\theta(x_i) }^{y_i}{1-h_\theta(x_i) }^{y_i}$
+## $L(\theta)=\prod_{i=1}^n P(y_i|x_i;\theta) =\prod_{i=1}^n {h_\theta(x_i) }^{y_i}{(1-h_\theta(x_i)) }^{y_i}$
 
 
 
