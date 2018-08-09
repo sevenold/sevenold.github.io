@@ -21,13 +21,13 @@ pip install --upgrade tensorflow
 pip3 install --upgrade tensorflow
 ```
 
-
+![image](/images/dl/26.png)
 
 安装出错，或者下载速度慢，可以采用离线安装的方式
 
 离线安装包下载地址：https://pypi.org/project/tensorflow/
 
-然后进入安装路径：
+然后进入安装包路径：
 
 ```
 # Python 2.7
@@ -37,7 +37,11 @@ pip3 install tensorflow-1.10.0-cp35-cp35m-manylinux1_x86_64.whl
 
 ```
 
+![image](/images/dl/27.png)
+
 然后等待，安装成功。
+
+![image](/images/dl/28.png)
 
 
 
@@ -59,6 +63,8 @@ print(sess.run(hello))
 ```
 Hello, TensorFlow!
 ```
+
+![image](/images/dl/29.png)
 
 
 
