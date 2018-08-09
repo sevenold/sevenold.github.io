@@ -88,7 +88,7 @@ Hello, TensorFlow!
 由上图可以看出，我这台演示电脑的
 
 - 版本驱动号：391.24
-- CUDA：9.0
+- 对应版本：CUDA：9.0
 
 所以我们对应的CUDA的下载版本就是9.0，下载网站：https://developer.nvidia.com/cuda-toolkit-archive
 
@@ -140,4 +140,42 @@ Hello, TensorFlow!
 ```
 pip install --upgrade tensorflow-gpu
 ```
+
+然后等待，直至安装成功。
+
+> > > 
+
+如果你网速很慢的话，你可以选择离线安装。
+
+下载所需的离线包：https://pypi.org/project/tensorflow-gpu/#files
+
+打开**window cmd**，进入你保存文件的目录，使用命令
+
+```
+pip3 install tensorflow_gpu-1.10.0-cp36-cp36m-win_amd64.whl
+```
+
+然后等待，直至安装成功。
+
+![image](/images/dl/22.png)
+
+
+
+### 验证安装
+
+```
+import tensorflow as tf
+
+hello = tf.constant('Hello, TensorFlow!')
+
+sess = tf.Session()
+
+print(sess.run(hello))
+```
+
+看到如下的输出，表示安装正确。 
+
+![image](/images/dl/23.png)
+
+
 
