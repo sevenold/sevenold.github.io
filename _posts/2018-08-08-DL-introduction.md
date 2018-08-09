@@ -93,4 +93,9 @@ tag: 深度学习
   - 具有顺序及前后相关性的数据
 
 
+### 演示
+图像生成
+[用AI生成二次元角色](https://make.girls.moe/#/)
 
+神经网络演示
+[卷积神经网络的三维可视化](http://scs.ryerson.ca/~aharley/vis/conv/)
