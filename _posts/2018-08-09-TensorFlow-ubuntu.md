@@ -1,7 +1,7 @@
 ---
- layout: post
+layout: post
 title: "TensorFlow-CPU/GPU安装ubuntu16.04版"
-date: 2018-08-09
+date: 2018-08-10
 description: "TensorFlow安装，TensorFlow"
 tag: TensorFlow
 ---
@@ -235,7 +235,7 @@ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
 
 ### 安装 TensorFlow-GPU
 
-备注：我用的是cuda 8.0和cudnn6.0 所以TensorFlow的版本应该是1.4
+备注：我用的是cuda 8.0和cudnn6.0 所以TensorFlow的版本应该是1.4。
 
 最简单的方式是使用pip安装：
 
