@@ -1,5 +1,5 @@
 ---
-layout: post
+ layout: post
 title: "TensorFlow-CPU/GPU安装ubuntu16.04版"
 date: 2018-08-09
 description: "TensorFlow安装，TensorFlow"
@@ -149,17 +149,9 @@ nvidia-smi
 
 安装完成后可能会有警告，提示samplees缺少必要的包： 
 
-```
-Missing recommended library: libGLU.so
+![image](/images/dl/43.png)
 
-Missing recommended library: libX11.so
 
-Missing recommended library: libXi.so
-
-Missing recommended library: libXmu.so
-
-Missing recommended library: libGL.so
-```
 
 原因是缺少相关的依赖库,安装相应库就解决了： 
 
@@ -189,10 +181,10 @@ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
 - 查看CUDA版本:` nvcc -V`
 
 - ```
-  seven@seven:~$  nvcc -V
+  seven@seven:~$ nvcc -V
   nvcc: NVIDIA (R) Cuda compiler driver
-  Copyright (c) 2005-2017 NVIDIA Corporation
-  Built on Fri_Nov__3_21:07:56_CDT_2017
+  Copyright (c) 2005-2016 NVIDIA Corporation
+  Built on Tue_Jan_10_13:22:03_CST_2017
   Cuda compilation tools, release 8.0, V8.0.61
   ```
 
