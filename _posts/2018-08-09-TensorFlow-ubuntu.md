@@ -6,7 +6,7 @@ description: "TensorFlow安装，TensorFlow"
 tag: TensorFlow
 ---
 
-
+`系统：Ubuntu 16.04。显卡：GTX 1050，独显无集成显卡。 `
 
 ### Ubuntu TensorFlow-CPU安装
 
@@ -88,79 +88,11 @@ lspci | grep -i nvidia
 
 ### 安装NVIDIA驱动
 
-下载地址：https://www.geforce.cn/drivers
+- `System Setting `-->`software&Updates`-->`Additional Drives`，然后选择`NVIDIA`驱动
 
-![image](/images/dl/25.png)
+  ![image](/images/dl/41.png)
 
-#### **准备工作**
-
-在待安装驱动的主机上打开一个终端(Ctrl+Alt+T)，或者直接切换到终端界面(Ctrl+Alt+F1),进行如下操作 
-
-- 卸载可能存在的旧版本 nvidia 驱动（对没有安装过 nvidia 驱动的主机，这步可以省略，但推荐执行，以防万一） 
-
-- ```
-  sudo apt-get remove --purge nvidia*
-  ```
-
-  安装驱动可能需要的依赖(可选) 
-
-  ```
-    sudo apt-get update
   
-    sudo apt-get install dkms build-essential linux-headers-generic
-  ```
-
-- 把 nouveau 驱动加入黑名单 
-
-- ```
-  sudo nano /etc/modprobe.d/blacklist-nouveau.conf
-  
-  在文件 blacklist-nouveau.conf 中加入如下内容：
-    blacklist nouveau
-    blacklist lbm-nouveau
-    options nouveau modeset=0
-    alias nouveau off
-    alias lbm-nouveau off
-  
-  ```
-
-  禁用 nouveau 内核模块 
-
-  ```
-  echo options nouveau modeset=0 | sudo tee -a /etc/modprobe.d/nouveau-kms.conf
-  
-  sudo update-initramfs -u
-  ```
-
-- 重启电脑，然后终端输入
-
-- ```
-  lsmod | grep nouveau
-  ```
-
-  如果没有内容输出，那就禁用成功了。
-
-#### **开始安装**
-
-- 禁用X server
-
-- ```
-  Ctrl + Alt + F1   ===> 进入命令行模式
-  
-  sudo service lightdm stop   ===> 禁用X server
-  ```
-
-  安装驱动
-
-  ```
-  sudo chmod u+x NVIDIA-Linux-x86_64-361.45.11.run
-  
-  sudo ./NVIDIA-Linux-x86_64-361.45.11.run
-  ```
-
-- 如果出现`The distribution-provided pre-install script failed! `不必理会，继续安装
-
-- 最重要的：第一个选`NO`，在选择`would you like to run the nvidia-xconfig ...............when you restart X?`--选择`YES`;否则在启动X-windows的时候不会使用NVIDIA驱动。
 
 - 安装成功--重启电脑
 
@@ -194,10 +126,10 @@ nvidia-smi
 
 由上图可以看出，我这台演示电脑的
 
-- 版本驱动号：`391.24`
-- 对应版本：`CUDA：9.1`
+- 版本驱动号：`384.130`
+- 对应版本：`CUDA：8.0`
 
-所以我们对应的CUDA的下载版本就是9.1，下载网站：https://developer.nvidia.com/cuda-toolkit-archive 
+所以我们对应的CUDA的下载版本就是8.0，注意我下载的是`runfile`，下载网站：https://developer.nvidia.com/cuda-toolkit-archive 
 
 ![image](/images/dl/32.png)
 
@@ -205,102 +137,131 @@ nvidia-smi
 
 进入安装包的路径执行以下命令（注意版本号）
 
-- `sudo dpkg -i cuda-repo-ubuntu1604-9-1-local_9.1.85-1_amd64.deb`
-- `sudo apt-key add /var/cuda-repo-9-1-local/7fa2af80.pub`
-- `sudo apt-get update`
-- `sudo apt-get install cuda`
+- ```
+  sudo sh cuda_8.0.61_375.26_linux.run
+  ```
+
+按照命令行提示 在安装过程中会询问是否安装显卡驱动，由于我们在第一步中已经安装，所以我们选择否（不安装） 
+
+![image](/images/dl/38.png)
 
 然后等待，安装完成。
 
-![image](/images/dl/33.png)
+安装完成后可能会有警告，提示samplees缺少必要的包： 
+
+```
+Missing recommended library: libGLU.so
+
+Missing recommended library: libX11.so
+
+Missing recommended library: libXi.so
+
+Missing recommended library: libXmu.so
+
+Missing recommended library: libGL.so
+```
+
+原因是缺少相关的依赖库,安装相应库就解决了： 
+
+```
+sudo apt-get install freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev 
+```
+
+![image](/images/dl/39.png)
+
+
+
+### 配置环境变量
+
+打开shell运行： `gedit ~/.bashrc `
+
+加入如下内容： 
+
+```
+export PATH=/usr/local/cuda-8.0/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH
+```
+
+立即生效，运行`source ~/.bashrc` 
+
+### 测试是否安装成功
+
+- 查看CUDA版本:` nvcc -V`
+
+- ```
+  seven@seven:~$  nvcc -V
+  nvcc: NVIDIA (R) Cuda compiler driver
+  Copyright (c) 2005-2017 NVIDIA Corporation
+  Built on Fri_Nov__3_21:07:56_CDT_2017
+  Cuda compilation tools, release 8.0, V8.0.61
+  ```
+
+  1. 编译 CUDA Samples
+     进入samples的安装目录
+     我们选择其中一个进行编译验证下如：
+
+![image](/images/dl/40.png)
+
+如果没有报错，则安装完成 
+
+
 
 ### 安装cuDNN
 
 同样，根据我们的驱动程序版本号：我们下载的对应版本： 
 
-- 版本驱动号：`391.24`
-- 对应版本：`CUDA：9.1`
-- 对应版本：`cuDNN: v7.13`
+- 版本驱动号：`384.130`
+- 对应版本：`CUDA：8.0`
+- 对应版本：`cuDNN: v6.0`
 
 下载网址：https://developer.nvidia.com/rdp/cudnn-archive 
 
 ![image](/images/dl/34.png)
 
-![image](/images/dl/35.png)
+
 
 ### 安装说明
 
 - 解压下载好的安装包以后会出现cuda的目录，进入该目录 执行以下命令
 
 - ```
-  cd cuda/include/   
-  sudo cp cudnn.h /usr/local/cuda-9.1/include/   
-  cd ../lib64   
-  sudo cp lib* /usr/local/cuda-9.1/lib64/   
-  sudo chmod a+r /usr/local/cuda-9.1/include/cudnn.h/ usr/local/cuda-9.1/lib64/libcudnn*
+  cd ~
+  tar -zxf cudnn-8.0-linux-x64-v5.1.tgz
+  cd cuda
+  sudo cp lib64/* /usr/local/cuda/lib64/
+  sudo cp include/* /usr/local/cuda/include/
   ```
 
-  接下来执行以下命令： 
 
-  ```
-  cd /usr/local/cuda-9.1/lib64/   
-  sudo rm -rf libcudnn.so libcudnn.so.5   
-  sudo ln -s libcudnn.so.5.1.5 libcudnn.so.5   
-  sudo ln -s libcudnn.so.5 libcudnn.so
-  ```
 
-- 在终端中输入以下命令进行环境变量的配置： 
 
-- ```
-  sudo gedit /etc/profile
-  ```
+### 安装完成
 
-  在末尾加上： 
+至此，CUDA与cuDNN已经安装完成
 
-  ```
-  PATH=/usr/local/cuda-9.1/bin:$PATH   
-  export PATH
-  ```
 
-- 创建链接文件 
-
-- ```
-  sudo gedit /etc/ld.so.conf.d/cuda.conf
-  ```
-
-  在该文件末尾加入 
-
-  ```
-  /usr/local/cuda/lib64
-  ```
-
-- 然后使用ldconfig使之生效 
-
-- ```
-  sudo ldconfig
-  ```
-
-  
 
 ### 安装 TensorFlow-GPU
+
+备注：我用的是cuda 8.0和cudnn6.0 所以TensorFlow的版本应该是1.4
 
 最简单的方式是使用pip安装：
 
 ```
 # Python 2.7
-pip install --upgrade tensorflow-gpu
+pip install --upgrade tensorflow-gpu==1.4
 # Python 3.x
-pip3 install --upgrade tensorflow-gpu
+pip3 install --upgrade tensorflow-gpu==1.4
 ```
 
 如果你网速很慢的话，你可以选择离线安装。
 
-下载所需的离线包：https://pypi.org/project/tensorflow-gpu/#files
+下载所需的离线包：https://github.com/tensorflow/tensorflow/tags
 
 打开终端，进入你保存文件的目录，使用命令
 
 ```
-pip3 install tensorflow_gpu-1.10.0-cp36-cp36m-win_amd64.whl
+pip3 install tensorflow_gpu-1.4.0-cp35-cp35m-manylinux1_x86_64.whl 
 ```
 
 然后等待，直至安装成功。 
@@ -322,7 +283,13 @@ print(sess.run(hello))
 
 看到如下的输出，表示安装正确。 
 
+![image](/images/dl/42.png)
+
 ```
 Hello, TensorFlow!
 ```
+
+
+
+
 
