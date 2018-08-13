@@ -476,7 +476,7 @@ with tf.Session() as sess:
 
 ### 启动 TensorBoard
 
-在命令端运行：tensorboard --logdir="./graphs" -port 7007
+在命令端运行：tensorboard --logdir="./graphs" --port 7007
 
 然后打开Google浏览器访问：http://localhost:7007/
 
@@ -508,7 +508,7 @@ plt.scatter(xs, ys)
 plt.show()
 ```
 
-![images](/images/dl/46.png)
+![images](/images/dl/45.png)
 
 ### 准备好placeholder
 
