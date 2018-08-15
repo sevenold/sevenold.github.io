@@ -108,9 +108,9 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 #### 综合上式：
 
-#### $\frac{\partial E_{total}}{\partial w_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) \cdot w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) \cdot x_1$
+#### $\frac{\partial E_{total}}{\partial w_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) + w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) \cdot x_1$
 
-#### $\frac{\partial E_{total}}{\partial b_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) \cdot w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) $
+#### $\frac{\partial E_{total}}{\partial b_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) +w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) $
 
 #### 更新：
 
@@ -125,6 +125,16 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 #### 至此，我们所有的参数都更新完毕了，然后我们可以再次用新的参数进行前向传播，得到的误差就会是最小的
 
 
+
+### 推广总结
+
+![images](/images/dl/62.png)
+
+#### 我们定义第`L`层的第`i`个神经元更新权重参数时(上标表示层数，下标表示神经元)：
+
+- #### $\frac{\partial E_{total}}{\partial net_i^{(L)}} = \delta_i^{(L)} =\bigtriangledown _{out}E_{total}\times  \sigma^`(net_i^{(L)})$
+
+- ####  
 
 ### 举个栗子
 
