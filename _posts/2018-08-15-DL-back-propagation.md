@@ -148,7 +148,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
 #### $\sigma(x)=sigmod(x) $
 
-### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$ 
+#### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$ 
 
 #### $\delta_i^{(L)}=\frac{\partial E_{total}}{\partial net_i^{(L)}} = \frac{\partial E_{total}}{\partial outh_i} \cdot \frac{\partial outh_i}{\partial net_i^{(L)}}  =\bigtriangledown _{out}E_{total}\times  \sigma^{\prime}(net_i^{(L)})$
 
