@@ -154,7 +154,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
 #### $= \frac{\partial E_{total}}{\partial outh_i} \cdot \frac{\partial outh_i}{\partial net_i^{(L)}}$
 
-#### $=\bigtriangledown _{out}E_{total}\times   \sigma^{\prime}(net_i^{(L)})$
+#### $= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)})$
 
 ### 举个栗子
 
