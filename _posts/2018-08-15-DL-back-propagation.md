@@ -134,7 +134,13 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 - #### $\frac{\partial E_{total}}{\partial net_i^{(L)}} = \delta_i^{(L)} =\bigtriangledown _{out}E_{total}\times  \sigma^`(net_i^{(L)})$
 
-- ####  
+- #### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=h_j^{(l-1)}\delta_i^{(l)}$ ，$w_{ij}^{(l)}$：表示第$l$层的第$j$个神经元连接第$l+1$层的第$i$的神经元的`w`。如下图所示：
+
+  ![images](/images/dl/63.png)
+
+  
+
+
 
 ### 举个栗子
 
