@@ -142,7 +142,7 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 ### 推广总结：
 
-根据前面我们所定义的：
+#### 根据前面我们所定义的：
 
 $E_{total}=\frac12 (y-outo)^2$ 
 
@@ -156,6 +156,114 @@ $E_{total}=\frac12 (y-outo)^2$
 
 #### $= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)})$
 
+#### 对于第$l$层：
+
+#### $\delta_i^{(l)}=\frac{\partial E_{total}}{\partial net^{(l)}} $
+
+#### $= \frac{\partial E_{total}}{\partial net^{(l+1)}} \cdot \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$
+
+#### $= \delta^{(l+1)} \times  \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$
+
+#### $= \delta^{(l+1)} \times  \frac{\partial (w^{(l+1)}net^{(l)})}{\partial net^{(l)}}$
+
+#### $= \delta^{(l+1)} w^{(l+1)}  \sigma^{\prime}(net_i^{(L)})$
+
+#### 对于偏置项`bias`：
+
+#### $\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$
+
+### 反向传播的四项基本原则：
+
+#### 基本形式:
+
+- #### $\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $
+
+- #### $\delta_i^{(l)} = \sum_j \delta_j^{(l+1)} w_{ji}^{(l+1)}  \sigma^{\prime}(net_i^{(l)})$
+
+- #### $\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$
+
+- #### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$
+
+#### 矩阵形式：
+
+- #### $\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \bigodot   \sigma^{\prime}(net_i^{(L)}) $ ， $\bigodot$是Hadamard乘积（对应位置相乘）
+
+- #### $\delta^{(l)} = (w^{(l+1)})^T \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$
+
+- #### $\frac{\partial E_{total}}{\partial bias^{(l)}}=\delta^{(l)}$
+
+- #### $\frac{\partial E_{total}}{\partial w^{(l)}}=\delta^{(l)}(outh^{(l-1)})^T$
+
+
+
+当然如果你对具体推导不是很明白，你把这四项基本原则搞清楚，就可以直接使用了。
+
+
+
 ### 举个栗子
 
 ![images](/images/dl/61.png)
+
+- #### 因为：$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \bigodot   \sigma^{\prime}(net_i^{(L)}) $
+
+  #### 所以：
+
+  #### $\delta^{(2)}= (out-y)\bigodot out(1-out)$
+
+  #### $=(\begin{bmatrix} 0.88134 \\\ 0.89551 \end{bmatrix} -\begin{bmatrix} 1 \\\ 0 \end{bmatrix}) \bigodot (\begin{bmatrix} 0.88134 \\\ 0.89551 \end{bmatrix} \bigodot (\begin{bmatrix} 1 \\\ 1 \end{bmatrix}-\begin{bmatrix} 0.88134 \\\ 0.89551 \end{bmatrix})) $
+
+  #### $=\begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix}$
+
+- #### 因为：$\delta^{(l)} = (w^{(l+1)})^T \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$
+
+  #### 所以：
+
+  #### $\delta^{(1)} = (w^{(2)})^T \delta^{(2)} \bigodot  \sigma^{\prime}(net^{(1)})$
+
+  #### $=(\begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix} \cdot \begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix}) \bigodot \begin{bmatrix} 0.20977282 \\\ 0.19661193\end{bmatrix}$
+
+  #### $=\begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix}$
+
+- #### 因为：$\frac{\partial E_{total}}{\partial w^{(l)}}=\delta^{(l)}(outh^{(l-1)})^T$
+
+  #### 所以：
+
+  #### $\Delta w^{(2)} = \delta^{(2)}(outh^{(1)})^T$
+
+  #### $=\begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix} \cdot \begin{bmatrix} 0.70056714\\\ 0.73105858 \end{bmatrix}^T$
+
+  #### $= \begin{bmatrix} -0.00869356 & -0.00907194 \\\ 0.5870176 & 0.612567 \end{bmatrix}$
+
+  #### $\Delta w^{(1)} = \delta^{(1)}x^T$
+
+  #### $=\begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix} \cdot \begin{bmatrix} 0.5\\\ 1\end{bmatrix}$
+
+  #### $= \begin{bmatrix} 0.00537109& 0.01074218\\\ 0.00643758 & 0.01287516 \end{bmatrix}$
+
+- #### 权重更新
+
+  #### $w_{new}^2 = w_{old}^2-\Delta w^{(2)}$
+
+  #### $= \begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix}-\begin{bmatrix} -0.00869356 & 0.00907194 \\\ 0.5870176 & 0.612567 \end{bmatrix}$
+
+  #### $= \begin{bmatrix} 0.60869356 & 0.80907194 \\\ 0.64129824& 0.8387433 \end{bmatrix}$
+
+  #### $b_{new}^2=b_{old}^2-\Delta b^2$
+
+  #### $= \begin{bmatrix} 1 \\\ 1  \end{bmatrix}-\begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix}$
+
+  #### $=\begin{bmatrix} 1.01240932\\\ 0.91620823\end{bmatrix}$
+
+  #### $w_{new}^1= w_{old}^1-\Delta w^{(1)}$
+
+  #### $=\begin{bmatrix} 0.1 & 0.3 \\\ 0.2 & 0.4\end{bmatrix} -  \begin{bmatrix} 0.00537109& 0.01074218\\\ 0.00643758 & 0.01287516 \end{bmatrix}$
+
+  #### $= \begin{bmatrix} 0.09462891& 0.28925782\\\ 0.19356242& 0.38712484\end{bmatrix}$
+
+  #### $b_{new}^1=b_{old}^1-\Delta b^1$
+
+  #### $=\begin{bmatrix} 0.5 \\\ 0.5  \end{bmatrix} - \begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix}$
+
+  #### $=\begin{bmatrix} 0.48925782\\\ 0.48712484\end{bmatrix}$
+
+#### 就这样，我们就完成了一个简单神经网络的误差反向传播进行权重参数更新
