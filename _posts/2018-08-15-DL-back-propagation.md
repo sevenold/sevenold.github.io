@@ -132,7 +132,7 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 #### 我们定义第`L`层的第`i`个神经元更新权重参数时(上标表示层数，下标表示神经元)：
 
-- #### $\frac{\partial E_{total}}{\partial net_i^{(L)}} = \delta_i^{(L)} =\bigtriangledown _{out}E_{total}\times  \sigma^`(net_i^{(L)})$
+- #### $\frac{\partial E_{total}}{\partial net_i^{(L)}} = \delta_i^{(L)}$
 
 - #### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=h_j^{(l-1)}\delta_i^{(l)}$ ，其中$w_{ij}^{(l)}$表示第$l$层的第$j$个神经元连接第$l+1$层的第$i$的神经元的相连的权重参数`w`。如下图所示：
 
@@ -141,6 +141,8 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
   
 
 
+
+$ =\bigtriangledown _{out}E_{total}\times  \sigma^`(net_i^{(L)})$
 
 ### 举个栗子
 
