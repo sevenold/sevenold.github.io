@@ -220,7 +220,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
   #### $\delta^{(1)} = (w^{(2)})^T \delta^{(2)} \bigodot  \sigma^{\prime}(net^{(1)})$
 
-  #### $=(\begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix} \cdot \begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix}) \bigodot \begin{bmatrix} 0.20977282 \\\ 0.19661193\end{bmatrix}$
+  #### $=(\begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix}^T \cdot \begin{bmatrix} -0.01240932\\\ 0.08379177\end{bmatrix}) \bigodot \begin{bmatrix} 0.20977282 \\\ 0.19661193\end{bmatrix}$
 
   #### $=\begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix}$
 
@@ -236,7 +236,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
   #### $\Delta w^{(1)} = \delta^{(1)}x^T$
 
-  #### $=\begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix} \cdot \begin{bmatrix} 0.5\\\ 1\end{bmatrix}$
+  #### $=\begin{bmatrix} 0.01074218\\\ 0.01287516\end{bmatrix} \cdot \begin{bmatrix} 0.5\\\ 1\end{bmatrix}^T$
 
   #### $= \begin{bmatrix} 0.00537109& 0.01074218\\\ 0.00643758 & 0.01287516 \end{bmatrix}$
 
@@ -244,7 +244,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
   #### $w_{new}^2 = w_{old}^2-\Delta w^{(2)}$
 
-  #### $= \begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix}-\begin{bmatrix} -0.00869356 & 0.00907194 \\\ 0.5870176 & 0.612567 \end{bmatrix}$
+  #### $= {\begin{bmatrix} 0.6 & 0.8 \\\ 0.7 & 0.9\end{bmatrix}}-\begin{bmatrix} -0.00869356 & 0.00907194 \\\ 0.5870176 & 0.612567 \end{bmatrix}$
 
   #### $= \begin{bmatrix} 0.60869356 & 0.80907194 \\\ 0.64129824& 0.8387433 \end{bmatrix}$
 
