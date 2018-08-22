@@ -74,7 +74,7 @@ tag: 深度学习
 
 假如我们要处理如下的卷积操作：
 
-#### $\left( \begin{array}{ccc} a_{11}&a_{12}&a_{13} \\ a_{21}&a_{22}&a_{23}\\ a_{31}&a_{32}&a_{33} \end{array} \right)    *  \left( \begin{array}{ccc} w_{11}&w_{12}\\ w_{21}&w_{22} \end{array} \right) = \left( \begin{array}{ccc} z_{11}&z_{12}\\ z_{21}&z_{22} \end{array} \right)$
+#### $\left( \begin{array}{ccc} a_{11}&a_{12}&a_{13} \\\ a_{21}&a_{22}&a_{23} \\\ a_{31}&a_{32}&a_{33} \end{array} \right)    *  \left( \begin{array}{ccc} w_{11}&w_{12} \\\ w_{21}&w_{22} \end{array} \right) = \left( \begin{array}{ccc} z_{11}&z_{12} \\\ z_{21}&z_{22} \end{array} \right)$
 
 从这步操作来看，套用DNN反向传播的思想是行不通的，所以我们需要把卷积操作表示成如下等式。
 
@@ -173,3 +173,8 @@ tag: 深度学习
 假设前向传播时记录的最大值位置分别是左上、右下、右上、左下，则误差项为：  
 
 #### $\delta^{l-1}=\left( \begin{array}{ccc} 2&0&0&0 \\\ 0&0& 0&8 \\\ 0&4&0&0 \\\ 0&0&6&0 \end{array} \right) \odot \sigma'(z^{l-1})  $
+
+
+
+总结：在遇到池化层的时间就执行upsampling的反向操作。就这样实现了池化层的反向传播。
+
