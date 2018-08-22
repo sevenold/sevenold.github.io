@@ -158,7 +158,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
 #### 对于第$l$层：
 
-#### $\delta_i^{(l)}=\frac{\partial E_{total}}{\partial net^{(l)}} $
+#### $\delta^{(l)}=\frac{\partial E_{total}}{\partial net^{(l)}} $
 
 #### $= \frac{\partial E_{total}}{\partial net^{(l+1)}} \cdot \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$
 
@@ -178,7 +178,7 @@ $E_{total}=\frac12 (y-outo)^2$
 
 - #### $\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $
 
-- #### $\delta_i^{(l)} = \sum_j \delta_j^{(l+1)} w_{ji}^{(l+1)}  \sigma^{\prime}(net_i^{(l)})$
+- #### $\delta^{(l)} = \sum_j \delta_j^{(l+1)} w_{ji}^{(l+1)}  \sigma^{\prime}(net_i^{(l)})$
 
 - #### $\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$
 
