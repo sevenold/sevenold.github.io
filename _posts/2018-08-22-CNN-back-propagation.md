@@ -88,11 +88,11 @@ tag: 深度学习
 
 同理可得其他的$\nabla a_{ij}$，当你求出全部的结果后，你会发现我们可以用一个卷积运算来解决(实际就是把原来的卷积核做了180°的转换)：
 
-#### $\left( \begin{array}{ccc} 0&0&0&0 \\\ 0&\ 1& 1&0 \\\ 0&1 &1&0 \\\ 0&0&0&0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&w_{21}\\ w_{12}&w_{11} \end{array} \right)  = \left( \begin{array}{ccc} \nabla a_{11}&\nabla a_{12}&\nabla a_{13} \\ \nabla a_{21}&\nabla a_{22}&\nabla a_{23}\\ \nabla a_{31}&\nabla a_{32}&\nabla a_{33} \end{array} \right)$
+#### $\left( \begin{array}{ccc} 0&0&0&0 \\\ 0&\ 1& 1&0 \\\ 0&1 &1&0 \\\ 0&0&0&0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&w_{21}\\\ w_{12}&w_{11} \end{array} \right)  = \left( \begin{array}{ccc} \nabla a_{11}&\nabla a_{12}&\nabla a_{13} \\\ \nabla a_{21}&\nabla a_{22}&\nabla a_{23}\\\ \nabla a_{31}&\nabla a_{32}&\nabla a_{33} \end{array} \right)$
 
 #### 最终我们就可以得到：
 
-#### $\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} =\left( \begin{array}{ccc} 0&0&0&0 \\\ 0&\ 1& 1&0 \\\ 0&1 &1&0 \\\ 0&0&0&0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&w_{21}\\ w_{12}&w_{11} \end{array} \right)  $
+#### $\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} =\left( \begin{array}{ccc} 0&0&0&0 \\\ 0&\ 1& 1&0 \\\ 0&1 &1&0 \\\ 0&0&0&0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&w_{21}\\\ w_{12}&w_{11} \end{array} \right)  $
 
 
 
@@ -150,11 +150,11 @@ tag: 深度学习
 
 假设 pooling 层的区域大小为 2×22×2，pooling 这一层的误差项为： 
 
-#### $\delta^l= \left( \begin{array}{ccc} 2 & 8 \\ 4 & 6 \end{array} \right)$
+#### $\delta^l= \left( \begin{array}{ccc} 2 & 8 \\\ 4 & 6 \end{array} \right)$
 
 首先，我们先把维度还原到上一层的维度： 
 
-#### $\left( \begin{array}{ccc} 0 & 0 & 0 & 0 \\ 0 & 2 & 8 & 0  \\ 0 & 4 & 6 & 0 \\ 0 & 0 & 0 & 0  \end{array} \right)$
+#### $\left( \begin{array}{ccc} 0 & 0 & 0 & 0 \\\ 0 & 2 & 8 & 0  \\\ 0 & 4 & 6 & 0 \\\ 0 & 0 & 0 & 0  \end{array} \right)$
 
 在 average pooling 中，我们是把一个范围内的响应值取平均后，作为一个 pooling unit 的结果。可以认为是经过一个 **average()** 函数，即 $average(x)=\frac{1}{m}\sum_{k=1}^m x_k$ 在本例中，$m=4$。则对每个 $x_k$ 的导数均为：
 
