@@ -162,7 +162,7 @@ tag: 深度学习
 
 因此，对 average pooling 来说，其误差项为： 
 
-#### $\begin{align} \delta^{l-1}=&\delta^l \frac{\partial average}{\partial x} \odot \sigma'(z^{l-1}) \notag \\\ =&upsample(\delta^l) \odot \sigma'(z^{l-1})  \\\  =&\left( \begin{array}{ccc} 0.5&0.5&2&2 \\\ 0.5&0.5&2&2 \\\ 1&1&1.5&1.5 \\\ 1&1&1.5&1.5 \end{array} \right)\odot \sigma'(z^{l-1}) \notag  \end{align}$
+#### $\begin{align} \delta^{l-1}=&\delta^l \frac{\partial average}{\partial x} \odot \sigma'(z^{l-1}) \notag \\\ =&upsample(\delta^l) \odot \sigma'(z^{l-1})  \\\  =&\left( \begin{array}{ccc} 0.5&0.5&2&2 \\\ 0.5&0.5&2&2 \\\ 1&1&1.5&1.5 \\\ 1&1&1.5&1.5 \end{array} \right)\odot \sigma'(z^{l-1})   \end{align}$
 
 
 
