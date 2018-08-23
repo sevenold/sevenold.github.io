@@ -40,7 +40,7 @@ learnRate = tf.placeholder(tf.float32)
 ### 构建网络计算图结构
 
 ```
-# 把输入数据reshape--28x28=794, 单通道， -1表示None
+# 把输入数据reshape--28x28=784, 单通道， -1表示None
 with tf.name_scope('reshape'):
     x_image = tf.reshape(x, [-1, 28, 28, 1])
 
