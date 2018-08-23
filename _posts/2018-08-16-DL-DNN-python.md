@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "python实现简单的神经网络DNN"
+title: "TensorFlow实现简单的神经网络-DNN"
 date: 2018-08-16
 description: "python实现简单的神经网络BNN"
-tag: 深度学习
+tag: TensorFlow
 ---
 
 

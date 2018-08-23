@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "python实现简单的卷积神经网络"
+title: "TensorFlow实现简单的卷积神经网络-CNN"
 date: 2018-08-23
 description: "python实现简单的卷积神经网络"
-tag: 深度学习
+tag: TensorFlow
 ---
 
 
