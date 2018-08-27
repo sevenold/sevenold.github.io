@@ -60,5 +60,5 @@ Python 本身也是由诸多其他语言发展而来的,这包括 ABC、Modula-3
 
 如果你喜欢python，就请print（“hello Word”）
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/python-info/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/python-info/)
 
