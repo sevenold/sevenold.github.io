@@ -6,7 +6,7 @@ description: "TensorFlow，keras，实现卷积神经网络"
 tag: TensorFlow
 ---
 
-### TensorFlow四种写法之二：keras
+### TensorFlow四种写法之四：keras
 
 #### 代码：
 

@@ -6,7 +6,7 @@ description: "TensorFlow，slim，实现卷积神经网络"
 tag: TensorFlow
 ---
 
-### TensorFlow四种写法之二：Slim
+### TensorFlow四种写法之三：Slim
 
 #### 代码：
 
