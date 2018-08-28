@@ -231,4 +231,4 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 3: invalid 
 现在去试试，用格式化打印出你的个人信息吧。。。。
 ```
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文]https://sevenold.github.io/2015/08/python-string/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文]https://sevenold.github.io/2015/08/python-string/)

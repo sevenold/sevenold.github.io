@@ -180,4 +180,4 @@ MBGD 是为解决 BGD 与 SGD 各自缺点而发明的折中算法, 或者说它
 
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/arithmetic-gradientDescent/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/arithmetic-gradientDescent/)

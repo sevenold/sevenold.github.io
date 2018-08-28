@@ -127,7 +127,7 @@ smtp_server是smtp的服务，如果你的from_addr是gamil.com，那么就要�
 
 <br>
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2016/08/PythonTestAutomationiOS/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2016/08/PythonTestAutomationiOS/)
 
  
 

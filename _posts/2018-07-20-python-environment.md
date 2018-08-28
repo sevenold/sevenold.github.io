@@ -89,4 +89,4 @@ Python2.7.X
 
 [![img](https://2.bp.blogspot.com/-zW2eHPFBP6g/WiS0BAa3sfI/AAAAAAAAADA/Yw0V3X0A7dYpnEQMPXI4Aq_BqKusY0vBQCLcBGAs/s1600/2.png)](https://2.bp.blogspot.com/-zW2eHPFBP6g/WiS0BAa3sfI/AAAAAAAAADA/Yw0V3X0A7dYpnEQMPXI4Aq_BqKusY0vBQCLcBGAs/s1600/2.png)
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-environment/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-environment/)

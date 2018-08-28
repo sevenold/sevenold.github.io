@@ -258,4 +258,4 @@ Vectorization是使用矩阵计算来代替for循环，以简化计算过程，�
 
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-logisticRegression/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/ml-logisticRegression/)

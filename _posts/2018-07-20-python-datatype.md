@@ -273,4 +273,4 @@ print(b)
 
 无论整数做//除法还是取余数，结果永远是整数，所以，整数运算结果永远是精确的。
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-datatype/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/python-datatype/)

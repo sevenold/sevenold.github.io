@@ -51,4 +51,4 @@ pi@raspberrypi:~ $ cat /proc/asound/cards
 
 此时USB声卡的编号应该和系统声卡成功调换顺序。
 
-载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/raspberry-usb/)
+载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2015/08/raspberry-usb/)

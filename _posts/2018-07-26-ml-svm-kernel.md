@@ -107,4 +107,4 @@ ${\Phi(x_i)}^T\Phi(x_j$,是我们把样本$x_i和 x_j$映射到特征空间之�
 - #### 若$k_1$为核函数，则对于任意函数$g(x)$ :$k(x,z)=g(x)k_1(x,z)g(z)$
 
 
-转载请注明：[Seven的博客](http://seven.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/2018-07-25-ml-svm-kernel/)
+转载请注明：[Seven的博客](http://sevenold.github.io) » [点击阅读原文](https://sevenold.github.io/2018/07/2018-07-25-ml-svm-kernel/)
