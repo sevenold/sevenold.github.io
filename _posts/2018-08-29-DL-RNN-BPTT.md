@@ -120,7 +120,7 @@ $E_t(y_t,\widehat y_t) = -y_t \cdot log\widehat y_t$
 
 - #### $W_{new}=W_{old}-\eta \bigtriangleup W$
 
-$\eta$：学习率
+$\eta​$：学习率
 
 ### 梯度消失和梯度爆炸
 
