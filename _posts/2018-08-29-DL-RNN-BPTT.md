@@ -114,13 +114,13 @@ $E_t(y_t,\widehat y_t) = -y_t \cdot log\widehat y_t$
 
 ### 参数更新
 
-- #### $U_{new}=U_{old}-\bigtriangleup U$
+- #### $U_{new}=U_{old}-\eta \bigtriangleup U$
 
-- #### $V_{new}=V_{old}-\bigtriangleup V$
+- #### $V_{new}=V_{old}-\eta \bigtriangleup V$
 
-- #### $W_{new}=W_{old}-\bigtriangleup W$
+- #### $W_{new}=W_{old}-\eta \bigtriangleup W$
 
-
+$\eta$：学习率
 
 ### 梯度消失和梯度爆炸
 
