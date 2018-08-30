@@ -74,31 +74,37 @@ $E_t(y_t,\widehat y_t) = -y_t \cdot log\widehat y_t$
 
 接下来，我们就需要使用链式法则进行反向梯度的参数更新：
 
-- $\bigtriangleup U=\frac{ \partial E}{\partial U} = \sum_t \frac{\partial E_t}{\partial U}$
-- $\bigtriangleup W=\frac{ \partial E}{\partial W} = \sum_t \frac{\partial E_t}{\partial W}$
-- $\bigtriangleup V=\frac{ \partial E}{\partial V} = \sum_t \frac{\partial E_t}{\partial V}$
+- #### $\bigtriangleup U=\frac{ \partial E}{\partial U} = \sum_t \frac{\partial E_t}{\partial U}$
+
+- #### $\bigtriangleup W=\frac{ \partial E}{\partial W} = \sum_t \frac{\partial E_t}{\partial W}$
+
+- #### $\bigtriangleup V=\frac{ \partial E}{\partial V} = \sum_t \frac{\partial E_t}{\partial V}$
 
 
 
 我们令$t=3$为栗子：
 
-$\bigtriangleup V=\frac{ \partial E_3}{\partial V} = \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial net_3} \cdot \frac{\partial net_3}{\partial V} = (\widehat y_3 - y_3) \otimes S_3$
+#### $\bigtriangleup V=\frac{ \partial E_3}{\partial V} = \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial net_3} \cdot \frac{\partial net_3}{\partial V} = (\widehat y_3 - y_3) \otimes S_3$
 
 `注意`：$net_3=V \cdot S_3$，$\otimes$是外积，V只和当前的时间有关，所以计算非常简单。
 
 
 
-$\bigtriangleup W=\frac{ \partial E_3}{\partial W} = \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial W} $
+#### $\bigtriangleup W=\frac{ \partial E_3}{\partial W} = \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial W} $
 
 `因为`：
 
-$S_3 = tanh(U \cdot X_t+W \cdot S_2)$，取决于$S_2$，而$S_2$又依赖于$W、S_1$。
+#### $S_3 = tanh(U \cdot X_t+W \cdot S_2)$，取决于$S_2$，而$S_2$又依赖于$W、S_1$。
 
 `所以`:
 
-$\bigtriangleup W=\frac{ \partial E_3}{\partial W} =\sum_{k=0}^3 \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial S_k} \cdot \frac{\partial S_k}{\partial W} $
+#### $\bigtriangleup W=\frac{ \partial E_3}{\partial W} =\sum_{k=0}^3 \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial S_k} \cdot \frac{\partial S_k}{\partial net_k} \cdot \frac{\partial net_k}{\partial W} $
 
 `总结`：W 在每一步中都有使用，所以我们需要$t=3$通过网络反向传播到$t=0$：
 
 ![images](/images/dl/96.png)
+
+`注意`：这种方式是和我们前面所推导的[深度神经网络的反向传播算法](https://sevenold.github.io/2018/08/DL-back-propagation/)和[卷积神经网络的反向传播算法](https://sevenold.github.io/2018/08/CNN-back-propagation/)是完全相同的。关键的区别就是我们总结了W的每个时刻的渐变，在传统的神经网络中，我们不跨层共享参数，因此我们不需要总结任何东西。
+
+
 
