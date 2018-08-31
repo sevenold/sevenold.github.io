@@ -139,3 +139,27 @@ print("Optimization Finished.")
 
 ```
 
+#### `执行结果`
+
+```
+NETWORK READY!!
+Start optimization
+Epoch: 001/050 cost: 2.033586812
+ Training accuracy: 0.422
+ Test accuracy: 0.511
+Epoch: 011/050 cost: 0.101458139
+ Training accuracy: 0.961
+ Test accuracy: 0.961
+Epoch: 021/050 cost: 0.096797398
+ Training accuracy: 0.977
+ Test accuracy: 0.956
+Epoch: 031/050 cost: 0.105833270
+ Training accuracy: 0.992
+ Test accuracy: 0.958
+Epoch: 041/050 cost: 0.117593214
+ Training accuracy: 0.977
+ Test accuracy: 0.959
+Optimization Finished.
+
+```
+
