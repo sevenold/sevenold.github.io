@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "TensorFlow实现简单的对抗生成网络-GAN"
+title: "TensorFlow实现简单的生成对抗网络-GAN"
 date: 2018-09-3
 description: "对抗生成网络、GAN,tensorflow"
 tag: TensorFlow
