@@ -16,5 +16,5 @@
 #### 感谢   
 
 本博客在[Vno Jekyll](https://github.com/onevcat/vno-jekyll)和
-Jekyll搭建个人博客(http://baixin.io/2016/10/jekyll_tutorials1/)
+[Jekyll搭建个人博客](http://baixin.io/2016/10/jekyll_tutorials1/)
 基础上修改的。  
