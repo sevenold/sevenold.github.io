@@ -447,5 +447,3 @@ def VGG19(inputs):
     return fc_3_out
 
 ```
-
-### 
