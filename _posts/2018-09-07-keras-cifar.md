@@ -8,7 +8,7 @@ tag: Keras
 
 ### **预处理数据**：
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/9/6 15:31
@@ -91,7 +91,7 @@ def cifar10_data():
 
 ### **配置文件**：
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/9/7 14:10
@@ -119,7 +119,7 @@ class_name = {
 
 ### **类VGG16Net网络**：
 
-```
+```python
 def KerasVGG():
     """
     模型采用类似于 VGG16 的结构：
@@ -181,7 +181,7 @@ def KerasVGG():
 
 ### **添加BN层**:
 
-```
+```python
 def KerasBN():
     """
     添加batch norm 层
@@ -254,7 +254,7 @@ def KerasBN():
 
 ### **训练文件**:
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/9/7 14:07
@@ -343,7 +343,7 @@ def run(network, X_train, y_train, X_test, y_test, augmentation=False):
 
 ### **可视化数据**：
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/9/7 15:00
@@ -402,7 +402,7 @@ def plot_image(x_test, y_test, class_name, model):
 
 ### **验证本地图片**：
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time    : 2018/9/7 19:18
@@ -453,7 +453,7 @@ if __name__ == '__main__':
 
 ### **输出：**
 
-```
+```python
 [[0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]]
 the out put is : dog
 ```
