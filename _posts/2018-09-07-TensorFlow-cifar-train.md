@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keras-cifar10-图像分类之训练模型及可视化数据"
+title: "TensorFlow-cifar10-图像分类之训练模型及可视化数据"
 date: 2018-09-7
 description: "TensorFlow, cifar10"
 tag: TensorFlow

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Keras-cifar10-图像分类之网络结构"
+title: "TensorFlow-cifar10-图像分类之网络结构"
 date: 2018-09-7
 description: "TensorFlow, cifar10"
 tag: TensorFlow
