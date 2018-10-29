@@ -189,3 +189,45 @@ aaa535c38975
 c964215eb3c2
 ```
 
+### 容器安装软件
+
+就比如安装vim软件， 在使用docker容器时，有时候里边没有安装vim，敲vim命令时提示说：vim: command not found，这个时候就需要安装vim：
+
+```bash
+$ apt-get install vim
+ Reading package lists... Done
+ Building dependency tree       
+ Reading state information... Done
+ E: Unable to locate package vim
+```
+
+解决这个问题的方法：执行更新命令
+
+```bash
+$ apt-get update
+```
+
+这个命令的作用是：**同步 /etc/apt/sources.list 和 /etc/apt/sources.list.d 中列出的源的索引**，这样才能获取到最新的软件包。
+
+等更新完毕以后再敲命令：
+
+```bash
+root@4c7345f38eab:~/.pip# apt-get install vim
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  libgpm2 vim-common vim-runtime xxd
+Suggested packages:
+  gpm ctags vim-doc vim-scripts
+The following NEW packages will be installed:
+  libgpm2 vim vim-common vim-runtime xxd
+0 upgraded, 5 newly installed, 0 to remove and 1 not upgraded.
+Need to get 6766 kB of archives.
+After this operation, 31.2 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+...
+```
+
+接下来你就可以在docker容器里面，安装你所需要的软件了。
+
