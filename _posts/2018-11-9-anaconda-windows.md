@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Anaconda python3.6及pycharm安装和简单使用"
+title: "Anaconda python3.6及pycharm安装和简单使用--Windows"
 date: 2018-11-9
 description: "Anaconda python3.6安装、pycharm安装和简单使用"
 tag: 工具
