@@ -137,7 +137,7 @@ PyCharm是一种Python IDE，其带有一整套可以帮助用户在使用Python
   seven@ubuntu:/opt/pycharm-community-2018.2.4/bin$ ./pycharm.sh 
   ```
 
-#### 
+
 
 ### 简单使用
 
