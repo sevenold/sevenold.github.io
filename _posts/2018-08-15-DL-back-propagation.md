@@ -273,3 +273,5 @@ $E_{total}=\frac12 (y-outo)^2$
 ### 权重初始化
 
 ![images](/images/dl/64.png)
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

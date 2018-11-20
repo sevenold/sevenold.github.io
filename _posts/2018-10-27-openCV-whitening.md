@@ -422,3 +422,5 @@ cv2.imshow('dst',dst)
 ```
 
 ![4](/images/cv/46.png)
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

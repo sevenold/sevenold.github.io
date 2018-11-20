@@ -441,3 +441,5 @@ cv2.imshow('src',img)
 ```
 
 ![4](/images/cv/32.png)
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

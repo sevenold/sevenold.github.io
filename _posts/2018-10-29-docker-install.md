@@ -169,3 +169,4 @@ For more examples and ideas, visit:
 ```
 
 若能正常输出以上信息，则说明安装成功。
+转载请注明：[Seven的博客](http://sevenold.github.io)

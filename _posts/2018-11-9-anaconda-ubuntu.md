@@ -218,3 +218,5 @@ PyCharm是一种Python IDE，其带有一整套可以帮助用户在使用Python
 上述方法是采用**Anaconda** 配置 的**python**的开发环境
 
 如果你不用，自己配置，只需要把**pycharm**的解释器路径设置为你自己的**python路径**。
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

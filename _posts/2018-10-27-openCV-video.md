@@ -50,3 +50,4 @@ for i in range(1,11):
 print('end!')
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

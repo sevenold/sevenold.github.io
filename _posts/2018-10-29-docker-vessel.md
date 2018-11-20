@@ -231,3 +231,4 @@ Do you want to continue? [Y/n] y
 
 接下来你就可以在docker容器里面，安装你所需要的软件了。
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

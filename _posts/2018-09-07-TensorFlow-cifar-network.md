@@ -447,3 +447,5 @@ def VGG19(inputs):
     return fc_3_out
 
 ```
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

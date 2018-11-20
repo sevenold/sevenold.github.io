@@ -109,3 +109,4 @@ tag: 深度学习
 
 神经网络演示
 [卷积神经网络的三维可视化](http://scs.ryerson.ca/~aharley/vis/conv/)
+转载请注明：[Seven的博客](http://sevenold.github.io)

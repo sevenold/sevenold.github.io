@@ -181,3 +181,5 @@ tag: 深度学习
 
 
 #### 这就是卷积神经网络的反向传播算法
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

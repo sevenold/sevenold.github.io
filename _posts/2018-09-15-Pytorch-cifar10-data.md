@@ -68,3 +68,4 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

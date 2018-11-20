@@ -173,3 +173,4 @@ Optimization Finished
 ```
 
 #### 结论：简单写了个神经网络，没有进行参数调试。
+转载请注明：[Seven的博客](http://sevenold.github.io)

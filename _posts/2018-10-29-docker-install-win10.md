@@ -51,3 +51,5 @@ Docker CE 启动之后会在 Windows 任务栏出现鲸鱼图标。
 等待片刻，点击 Got it 开始使用 Docker CE。
 
 ![1](/images/docker/6.png)
+
+转载请注明：[Seven的博客](http://sevenold.github.io)

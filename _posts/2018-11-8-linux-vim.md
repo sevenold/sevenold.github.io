@@ -286,3 +286,4 @@ $ source envname/bin/activate
 $ sudo rm -rf envname # 只需删除建立的文件夹就行
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

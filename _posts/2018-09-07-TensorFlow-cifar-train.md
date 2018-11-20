@@ -212,3 +212,4 @@ if __name__ == '__main__':
 the out put is : dog
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

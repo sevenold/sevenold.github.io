@@ -82,3 +82,4 @@ cv2.imshow('image',img)
 
 ![4](/images/cv/4.png)
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

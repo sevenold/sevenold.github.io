@@ -116,3 +116,4 @@ TensorBoard 0.4.0 at http://seven:6006 (Press CTRL+C to quit)
 
 ![image](/images/dl/126.png)
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

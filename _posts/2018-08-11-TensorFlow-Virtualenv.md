@@ -124,3 +124,4 @@ tag: TensorFlow
 $ rm -r targetDirectory  # 在这里 targetDirectory改为你创建的环境名字
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

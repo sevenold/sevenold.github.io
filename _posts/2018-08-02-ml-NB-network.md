@@ -170,3 +170,4 @@ tag: 机器学习
 
     深色的结点集合，就是“马尔科夫毯”（**`Markov Blanket` **）
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

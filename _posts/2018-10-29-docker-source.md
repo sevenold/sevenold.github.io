@@ -249,3 +249,4 @@ docker load [OPTIONS]
 >   -i: 从tar存档文件读取的输入字符串，而不是STDIN
 >   -q:  Suppress the load output
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

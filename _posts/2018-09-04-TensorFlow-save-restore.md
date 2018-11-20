@@ -95,3 +95,4 @@ Weights:  [[1. 2. 3.]
 biases:   [[1. 2. 3.]]
 ```
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

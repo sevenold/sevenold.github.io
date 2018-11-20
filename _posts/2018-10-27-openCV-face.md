@@ -38,3 +38,4 @@ cv2.imshow('dst',img)
 ![1](/images/cv/47.png)
 
 ps: 需要xml文件的，可留言邮箱
+转载请注明：[Seven的博客](http://sevenold.github.io)

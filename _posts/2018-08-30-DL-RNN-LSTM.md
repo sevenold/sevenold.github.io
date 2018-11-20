@@ -181,3 +181,4 @@ LSTM在在每个序列索引位置t的门一般包括**遗忘门**，**输入门
 
 
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

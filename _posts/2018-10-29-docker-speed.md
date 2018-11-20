@@ -78,3 +78,5 @@ $  docker info
 Registry Mirrors:
  https://registry.docker-cn.com/
 ```
+
+转载请注明：[Seven的博客](http://sevenold.github.io)
