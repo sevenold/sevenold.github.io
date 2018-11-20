@@ -252,6 +252,8 @@ seven@seven:~$ python hello.py
 hello word
 ```
 
+![1542693813625](images/py/67.png)
+
 ### python**虚拟环境的使用**
 
 #### **安装虚拟环境**
