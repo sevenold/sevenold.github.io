@@ -116,7 +116,7 @@ HTTP响应同样也是由状态行、响应报头、报文主体三部分组成�
 
 状态行由HTTP协议版本号， 状态码， 状态消息三部分组成。如下所示：
 
-![HTTP协议-状态行]/images/reptile/4.png)
+![HTTP协议-状态行](/images/reptile/4.png)
 
 ### 响应报头
 
