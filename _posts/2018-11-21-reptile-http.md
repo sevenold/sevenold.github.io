@@ -48,7 +48,7 @@ HTTP协议是无状态的，也就是说每一次HTTP请求之间都是相互独
 
 请求行一般由**请求方法**、**url路径**、**协议版本**组成，如下所示：
 
-![HTTP协议-请求行](C:/Users/seven/Desktop/1.Spider-%E7%88%AC%E8%99%AB/assets/HTTP%E5%8D%8F%E8%AE%AE-%E8%AF%B7%E6%B1%82%E8%A1%8C.png)
+![HTTP协议-请求行](/images/reptile/3.png)
 
 ### 请求报头
 
@@ -116,7 +116,7 @@ HTTP响应同样也是由状态行、响应报头、报文主体三部分组成�
 
 状态行由HTTP协议版本号， 状态码， 状态消息三部分组成。如下所示：
 
-![HTTP协议-状态行](C:/Users/seven/Desktop/1.Spider-%E7%88%AC%E8%99%AB/assets/HTTP%E5%8D%8F%E8%AE%AE-%E7%8A%B6%E6%80%81%E8%A1%8C.png)
+![HTTP协议-状态行]/images/reptile/4.png)
 
 ### 响应报头
 
