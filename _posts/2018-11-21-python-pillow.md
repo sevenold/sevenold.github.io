@@ -12,7 +12,7 @@ tag: python
 
 ------
 
-## 简介
+### 简介
 
 Python传统的图像处理库`PIL`(Python Imaging Library )，可以说基本上是Python处理图像的标准库，功能强大，使用简单。
 
@@ -20,7 +20,7 @@ Python传统的图像处理库`PIL`(Python Imaging Library )，可以说基本�
 
 ------
 
-## 安装
+### 安装
 
 `Pillow`的安装比较的简单，直接pip安装即可：
 
@@ -40,7 +40,7 @@ from PIL import Image
 
 ------
 
-## 使用手册
+### 使用手册
 
 ### Image
 

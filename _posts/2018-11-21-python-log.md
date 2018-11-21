@@ -10,7 +10,7 @@ tag: python
 
 本文地址：https://www.jianshu.com/p/3be28b5d2ff8
 
-## 简介
+### 简介
 
 在应用的开发过程中，我们常常需要去记录应用的状态，事件，结果。而Python最基础的Print很难满足我们的需求，这种情况下我们就需要使用python的另一个标准库：`logging`。
 
@@ -28,7 +28,7 @@ tag: python
 
 ------
 
-## 基础用法
+### 基础用法
 
 以下是一些`logging`最基础的使用方法，如果不需要深入的去定制log的话，那么只需要使用最基础的部分即可。
 
@@ -122,7 +122,7 @@ INFO:root:hello world
 
 ------
 
-## 深度定制logging日志信息
+### 深度定制logging日志信息
 
 在深度使用`logging`来定制日志信息之前，我们需要先来了解一下`logging`的结构。`logging`的主要逻辑结构主要由以下几个组件构成：
 
@@ -203,7 +203,7 @@ In [9]: child_logger.warning('hello')
 nanbei.child - hello
 ```
 
-#### 方法
+### 方法
 
 在`Logger`对象中，主要提供了以下方法：
 

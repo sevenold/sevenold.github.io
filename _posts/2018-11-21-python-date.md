@@ -8,7 +8,7 @@ tag: python
 
 转载自：简书-[王南北](https://www.jianshu.com/u/948da055a416)
 
-## 简介
+### 简介
 
 在Python的时间处理模块中，`time`这个模块主要侧重于时间戳格式的处理，而`datetime`则相当于`time`模块的高级封装，提供了更多关于日期处理的方法。
 
@@ -16,7 +16,7 @@ tag: python
 
 ------
 
-## 结构
+### 结构
 
 `datetime`主要由五个模块组成：
 
@@ -32,7 +32,7 @@ tag: python
 
 ------
 
-## datetime.datetime
+### datetime.datetime
 
 ```python
 class datetime.datetime(year, month, day, hour=0, minute=0, second=0, microsecond=0, tzinfo=None, *, fold=0)
@@ -141,7 +141,7 @@ Out[2]: datetime.datetime(2000, 1, 1, 12, 0)
 
 ------
 
-## datetime.timedelta
+### datetime.timedelta
 
 在实际的使用中，我们常常会遇到这样的需求：需要给某个时间增加或减少一天，甚至是增加或减少一天三小时二十分钟。
 
@@ -171,7 +171,7 @@ Out[5]: datetime.datetime(2018, 7, 1, 15, 26, 45, 116239)
 
 ------
 
-## strftime() 和 strptime()
+### strftime() 和 strptime()
 
 `datetime`中提供了两个方法，可以方便的把`datetime`对象转换成格式化的字符串或者把字符串转换成`datetime`对象。
 
