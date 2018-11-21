@@ -223,7 +223,7 @@ page = etree.HTML(html_doc)
 
 ### 选取多个路径
 
-通过在路径表达式中使用“|”运算符，您可以选取若干个路径。
+通过在路径表达式中使用“\|”运算符，您可以选取若干个路径。
 
 ```python
 In [1]: page.xpath('//book[1]/title/text() | //book[1]/author/text()')
