@@ -59,7 +59,7 @@ nav:
     - {title: 所有文章, description: archive, url: '/archive'}   
     - {title: 标签, description: tags, url: '/tags'}      
     - {title: 关于我, description: about, url: '/about'}      
-    
+    - {title: ES, description: seven, url: "http://eve-seven.github.io"}
 
 # Pagination
 gems: [jekyll-paginate,jekyll-sitemap]
