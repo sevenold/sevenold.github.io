@@ -134,11 +134,10 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 - #### $\frac{\partial E_{total}}{\partial net_i^{(L)}} = \delta_i^{(L)}$
 
-- #### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$ ，其中$w_{ij}^{(l)}$表示第$l$层的第$j$个神经元连接第$l+1$层的第$i$的神经元的相连的权重参数`w`。如下图所示：
+- #### $\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$ ，其中$w_{ij}^{(l)}$表示第$l$层的第$j$个神经元连接第$l-1$层的第$i$的神经元的相连的权重参数`w`。如下图所示：
 
   ![images](/images/dl/63.png)
 
-  
 
 ### 推广总结：
 
@@ -164,9 +163,9 @@ $E_{total}=\frac12 (y-outo)^2$
 
 #### $= \delta^{(l+1)} \times  \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$
 
-#### $= \delta^{(l+1)} \times  \frac{\partial (w^{(l+1)}net^{(l)})}{\partial net^{(l)}}$
+#### $= \delta^{(l+1)} \times  \frac{\partial (w^{(l+1)}\sigma (net^{(l)}))}{\partial net^{(l)}}$
 
-#### $= \delta^{(l+1)} w^{(l+1)}  \sigma^{\prime}(net_i^{(L)})$
+#### $= \delta^{(l+1)} w^{(l+1)}  \sigma^{\prime}(net^{(L)})$
 
 #### 对于偏置项`bias`：
 
