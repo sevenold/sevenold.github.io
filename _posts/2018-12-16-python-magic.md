@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "python第九话之多继承和魔法方法"
-date: 2018-12-13
+date: 2018-12-14
 description: "python多继承和魔法方法"
 tag: python
 ---
