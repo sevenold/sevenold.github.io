@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "python第六话之函数作用域和匿名函数"
-date: 2018-12-13
+title: "python第七话之函数作用域和匿名函数"
+date: 2018-12-14
 description: "python函数作用域和匿名函数"
 tag: python
 ---
