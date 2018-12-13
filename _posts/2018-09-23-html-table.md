@@ -23,9 +23,9 @@ tag: HTML
 
 3、cellspacing 定义单元格与单元格之间的距离
 
-4、align 设置单元格中内容的水平对齐方式,设置值有：left | center | right
+4、align 设置单元格中内容的水平对齐方式,设置值有：left \| center \| right
 
-5、valign 设置单元格中内容的垂直对齐方式 top | middle | bottom
+5、valign 设置单元格中内容的垂直对齐方式 top \| middle \| bottom
 
 6、colspan 设置单元格水平合并
 
