@@ -108,9 +108,9 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
 #### 综合上式：
 
-#### $\frac{\partial E_{total}}{\partial w_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) + w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) \cdot x_1$
+#### $\frac{\partial E_{total}}{\partial w_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) + w_5(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) \cdot x_1$
 
-#### $\frac{\partial E_{total}}{\partial b_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) +w_4(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) $
+#### $\frac{\partial E_{total}}{\partial b_1}= [w_3 (outo_1-y_1)\cdot outo_1(1-outo_1) +w_5(outo_2-y_2)\cdot outo_2(1-outo_2)] \cdot outh_1(1-outh_1) $
 
 #### 更新：
 
