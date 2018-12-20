@@ -104,7 +104,7 @@ $w_{3new}=w_{3old}-\eta \frac{\partial E_{total}}{\partial w_3}$， $\eta$是学
 
   - #### $ \frac{\partial Eo_2}{\partial neto_2} = \frac{\partial E_{o_2}}{\partial outo_2} \cdot \frac{\partial outo_2}{\partial neto_2} = (outo_2-y_2)\cdot outo_2(1-outo_2)$
 
-  - #### $ \frac{\partial neto_2}{\partial outh_1} = w_4$
+  - #### $ \frac{\partial neto_2}{\partial outh_1} = w_5$ (outh1连接outo1的权重，暂定为w5,大家注意理解)
 
 #### 综合上式：
 
