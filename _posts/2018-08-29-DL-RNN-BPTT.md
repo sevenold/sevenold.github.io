@@ -106,7 +106,7 @@ $E_t(y_t,\widehat y_t) = -y_t \cdot log\widehat y_t$
 
 `注意`：这种方式是和我们前面所推导的[深度神经网络的反向传播算法](https://sevenold.github.io/2018/08/DL-back-propagation/)和[卷积神经网络的反向传播算法](https://sevenold.github.io/2018/08/CNN-back-propagation/)是完全相同的。关键的区别就是我们总结了W的每个时刻的渐变，在传统的神经网络中，我们不跨层共享参数，因此我们不需要总结任何东西。
 
-#### $\bigtriangleup U=\frac{ \partial E_3}{\partial W} =\sum_{k=0}^3 \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial S_k} \cdot \frac{\partial S_k}{\partial net_k} \cdot \frac{\partial net_k}{\partial U} $
+#### $\bigtriangleup U=\frac{ \partial E_3}{\partial U} =\sum_{k=0}^3 \frac{\partial E_3}{\partial \widehat y_3} \cdot \frac{\partial \widehat y_3}{\partial S_3} \cdot \frac{\partial S_3}{\partial S_k} \cdot \frac{\partial S_k}{\partial net_k} \cdot \frac{\partial net_k}{\partial U} $
 
 `总结`：U参数W参数的传递过程基本一致。
 
