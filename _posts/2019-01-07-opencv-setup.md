@@ -120,11 +120,11 @@ Microsoft Visio Studio：2017
 
 >  此处键入的文件**随版本号不同而不同**，若非OpenCV 3.4.1版本可自行进入**【XXXX\opencv\build\x64\vc14\lib】**目录查看文件名并键入。
 
-#### 【**Release**\|x64设置】
+#### 【**Release\|x64设置**】
 
-重复执行**【Debug X64设置】**--> 不同的就是【**依赖项**】的选择。
+重复执行**【Debug\|X64设置】**--> 不同的就是【**依赖项**】的选择。
 
->  文件夹下会看到几个几乎同名的文件，区别仅仅为文件名**末尾有无字母d**，其中d代表debug版本，其他为release版本，以3.4.1版本为例，配置**【Debug|x64】**时使用**opencv_world341d.lib**，配置**【Release|x64】**时使用**opencv_world341.lib**.
+>  文件夹下会看到几个几乎同名的文件，区别仅仅为文件名**末尾有无字母d**，其中d代表debug版本，其他为release版本，以3.4.1版本为例，配置**【Debug\|x64】**时使用**opencv_world341d.lib**，配置**【Release\|x64】**时使用**opencv_world341.lib**.
 
 #### 【**环境搭建完成**】
 
