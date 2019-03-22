@@ -32,7 +32,7 @@ tag: 机器视觉
 
 #### 【要素案例】
 
-![1552133497584](C:\Users\seven\AppData\Roaming\Typora\typora-user-images\1552133497584.png)
+![](https://eveseven.oss-cn-shanghai.aliyuncs.com/20190322201130.png)
 
 > - 光源：室内光线或专用照明
 > - 相机：放在机械臂前端，单相机
