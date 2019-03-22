@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "计算机视觉引论【一】"
+title: "【一】计算机视觉引论"
 date: 2018-03-22
 description: "计算机视觉引论"
 tag: 机器视觉
