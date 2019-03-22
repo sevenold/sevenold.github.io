@@ -125,7 +125,7 @@ $Nlog\frac{1}{\sqrt{2\pi}\sigma}$ 是一个定值
 
 所以：
 
-## $-\frac{1}{2\sigma^2}(y_i-\theta^Tx_i)^2$越小越好
+## $-\frac{1}{2\sigma^2}(y_i-\theta^Tx_i)^2$越大越好
 
 再因为：
 
