@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【六】图像特征描述"
+title: "【七】图像特征描述"
 date: 2019-03-22
 description: "视觉处理算-图像特征描述"
 tag: 机器视觉

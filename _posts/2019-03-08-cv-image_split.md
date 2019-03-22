@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【七】图像分割"
+title: "【八】图像分割"
 date: 2019-03-22
 description: "视觉处理算-图像分割"
 tag: 机器视觉
