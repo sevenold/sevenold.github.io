@@ -23,9 +23,9 @@ tag: Pytorch
 
 #### 【代码演示】
 
-- [pytorch基本数据类型及常用计算API的使用]()
-- [pytorch自动求导、numpy的转换、模型的存取]()
-- [pytorch实现线性回归]()
-- [pytorch实现逻辑回归]()
+- [pytorch基本数据类型及常用计算API的使用](https://sevenold.github.io/2019/03/pytorch-basic_function_1/)
+- [pytorch自动求导、numpy的转换、模型的存取](https://sevenold.github.io/2019/03/pytorch-basic_function_2/)
+- [pytorch实现线性回归](https://sevenold.github.io/2019/03/pytorch-basic_function_lineregression/)
+- [pytorch实现逻辑回归](https://sevenold.github.io/2019/03/pytorch-basic_function_logistics_regression/)
 
   转载请注明：[Seven的博客](http://sevenold.github.io)
