@@ -395,3 +395,4 @@ cv2.waitKey(0)
 > - laplace 对边缘敏感，可能有些是噪声的边缘，也被算进来了
 > - canny 产生的边缘很细，可能就一个像素那么细，没有强弱之分。
 
+转载请注明：[Seven的博客](http://sevenold.github.io)

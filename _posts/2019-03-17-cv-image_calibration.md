@@ -159,3 +159,5 @@ print("平移向量:", tvecs)  # 外参数
 运行结果：
 
 ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/20190228215354.png)
+
+转载请注明：[Seven的博客](http://sevenold.github.io)
