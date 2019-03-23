@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "全景拼接"
+title: "图片拼接"
 date: 2019-03-23
-description: "全景拼接"
+description: "图片拼接"
 tag: 机器视觉
 ---
 
