@@ -37,7 +37,7 @@ tag: 机器视觉
 
   - 相机坐标系与图像坐标系
 
-  ![1551444580057](F:\CSDN-CV\10-week-cv\source\assets\1551444580057.png)
+  ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/1551444580057.png)
 
 - 两相机坐标系某点与对应图像坐标系的关系：
 
@@ -51,9 +51,9 @@ tag: 机器视觉
 
   ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/20190301205438.png)
 
-- 再与$p_r^\sim$点积：
+- 再与$p_r^\sim​$点积：
 
-  ![1551445425466](F:\CSDN-CV\10-week-cv\source\assets\1551445425466.png)
+  ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/1551445425466.png)
 
 #### 【本质矩阵求解】
 
@@ -79,7 +79,7 @@ tag: 机器视觉
 
   > 可以证明，本质矩阵有2个相同的非零特征值
 
-  ![1551446959523](F:\CSDN-CV\10-week-cv\source\assets\1551446959523.png)
+  ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/1551446959523.png)
 
   ![](https://eveseven.oss-cn-shanghai.aliyuncs.com/20190301212931.png)
 
