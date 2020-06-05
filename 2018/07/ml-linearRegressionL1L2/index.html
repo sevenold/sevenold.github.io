@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习-线性回归推导总结 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-21 10:00">
+      2018年7月21日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="线性回归中的最小二乘法和L1、L2推导"><a href="#线性回归中的最小二乘法和L1、L2推导" class="headerlink" title="线性回归中的最小二乘法和L1、L2推导"></a>线性回归中的最小二乘法和L1、L2推导</h2><p>上一节<a href="https://sevenold.github.io/2018/07/ml-linearRegression/" target="_blank" rel="noopener">线性回归-算法推导</a> , 我们已经大致的知道了，线性回归的算法推导过程，但是往往我们在使用线性回归算法的过程中模型会出现<strong>过拟合的现象</strong>， 我们现从例子来看看什么是<strong>过拟合</strong>。</p>
+<p>还是以房价预测为例，来看几张张图片：</p>
+<h3 id="1-欠拟合（Underfitting）"><a href="#1-欠拟合（Underfitting）" class="headerlink" title="1.欠拟合（Underfitting）"></a><strong>1.欠拟合（Underfitting）</strong></h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530231824.png" srcset="/img/loading.gif" alt="image"></p>
+<p>上图中，我们用$h_\theta(x)=\theta_0+\theta_1x $来拟合训练集中的数据，但是我们可以很明显的从图中看出，房价是不会随着面积成比例的增长的，这种情况，我们就称之为<strong>欠拟合</strong>。</p>
+<h3 id="2-过拟合（Overfitting）"><a href="#2-过拟合（Overfitting）" class="headerlink" title="2.过拟合（Overfitting）"></a><strong>2.过拟合（Overfitting）</strong></h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230043.png" srcset="/img/loading.gif" alt="image"></p>
+<p>如上图所示，我们用一条高次的曲线 $h_θ(x)=θ_0+θ_1x+θ_2x^2+θ_3x^3+θ_4x^4$ 来拟合训练集中的数据，因为参数过多，对训练集的匹配度太高、太准确，以至于在后面的预测过程中可能会导致预测值非常偏离合适的值，预测非常不准确，也就是说能力太强了，导致震荡的非常强烈。这就是<strong>过拟合</strong>。 </p>
+<h3 id="3-合适的拟合（Properfitting）"><a href="#3-合适的拟合（Properfitting）" class="headerlink" title="3.合适的拟合（Properfitting）"></a><strong>3.合适的拟合（Properfitting）</strong></h3><p>​                                    <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230044.png" srcset="/img/loading.gif" alt="image"></p>
+<p>如上图，如何参数选择的恰当，选用一个合适的曲线，比如说是$h_θ(x)=θ_0+θ_1x+θ_2x^2$来拟合上面的数据集就非常适合，这样这就是一个比较恰当的假设参数（hypothesis function）.</p>
+<h3 id="简单总结一下"><a href="#简单总结一下" class="headerlink" title="简单总结一下"></a><strong>简单总结一下</strong></h3><p>一般在实际的应用中是不会遇到<strong>欠拟合</strong>的情况的，但是<strong>过拟合</strong>是经常出现的，一般情况下，<strong>过拟合</strong>（Overfitting）就是：如果我在训练一个数据集的时候，用了太多的特征（features）来训练一个假设函数，就会造成匹配度非常高（误差几乎就为0， 也就是我上一节得出的损失函数：$ J(θ)=∑_N^{i=1}(y_i−θ^Tx_i)^2$),但是不能推广到其他的未知数据上，也就是对于其他的训练集是没有任何用的，不能做出正确的预测。</p>
+<p>所以为了避免这种<strong>过拟合现象</strong>的发生，我们也有对应得惩罚，让他的能力不要那么强，所以就有L1(LASSO)、岭回归L2(Ridge)。我们来直观的了解下这两种正则。</p>
+<ol>
+<li><p>最小均方函数导数不为0时，L2导数加上最小均方函数导数肯定不为0。但是L1的正则项是绝对值函数，导数为0只要在x从左边趋向于0和从右边趋向于0时导数异号就行，所以更容易得到稀疏解。</p>
+</li>
+<li><p>目标函数最小均方差解空间为同心圆，L2解空间也为同心圆，L1解空间为菱形，两个解空间相交处为最优值。如图所示。</p>
+<p>​                                 <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230045.png" srcset="/img/loading.gif" alt="image"></p>
+</li>
+</ol>
+<h3 id="数学推导"><a href="#数学推导" class="headerlink" title="数学推导"></a>数学推导</h3><p>总结上节的知识点，我们就有三种方式解出线性回归算法的表达式或解析解：</p>
+<ol>
+<li>最小二乘法的解析解可以用高斯分布（Gaussian）以及最大似然估计法求得</li>
+<li>岭回归Ridge（L2正则）的解析解可以用高斯分布（Gaussian）以及最大后验概率解释</li>
+<li>LASSO（L1正则）的解释解可以用拉普拉斯（Laplace）分布以及最大后验概率解释</li>
+</ol>
+<h4 id="在推导之前："><a href="#在推导之前：" class="headerlink" title="在推导之前："></a>在推导之前：</h4><ol>
+<li>假设你已经懂得：高斯分布，拉普拉斯分布，最大似然估计，最大后验估计</li>
+<li>机器学习的三要素：<strong>模型、策略、算法</strong>（李航《统计学习方法》）。就是说，一种模型可以有多种求解策略，每一种求解策略可能又有多种计算方法。所以先把模型策略搞懂，然后算法。</li>
+</ol>
+<h3 id="线性回归模型总结"><a href="#线性回归模型总结" class="headerlink" title="线性回归模型总结"></a>线性回归模型总结</h3><p>首先我们先假设线性回归模型：</p>
+<h4 id="f-x-sum-i-1-nx-iw-i-b-w-TX-b"><a href="#f-x-sum-i-1-nx-iw-i-b-w-TX-b" class="headerlink" title="$f(x)= \sum_{i=1}^nx_iw_i+b=w^TX+b$"></a>$f(x)= \sum_{i=1}^nx_iw_i+b=w^TX+b$</h4><h4 id="其中-x-in-R-1-times-n-w-in-R-1-times-n-当前已知：X-x-1-cdot-cdot-cdot-x-m-in-R-m-times-n-y-in-R-n-times-1-b-in-R-求出-w"><a href="#其中-x-in-R-1-times-n-w-in-R-1-times-n-当前已知：X-x-1-cdot-cdot-cdot-x-m-in-R-m-times-n-y-in-R-n-times-1-b-in-R-求出-w" class="headerlink" title="其中$x \in R^{1\times n}, w\in R^{1\times n},当前已知：X=(x_1 \cdot \cdot \cdot x_m) \in R^{m\times n}, y \in R^{n\times 1}, b \in R$,求出$w$"></a>其中$x \in R^{1\times n}, w\in R^{1\times n},当前已知：X=(x_1 \cdot \cdot \cdot x_m) \in R^{m\times n}, y \in R^{n\times 1}, b \in R$,求出$w$</h4><h3 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h3><p>如果$b \sim N(u, \sigma^2)$, 其中$u=0$, 也就是说$y_i \sim N(w^TX,\sigma^2)$</p>
+<h4 id="采用最大似然估计法："><a href="#采用最大似然估计法：" class="headerlink" title="采用最大似然估计法："></a>采用最大似然估计法：</h4><h4 id="L-w-prod-i-1-N-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2"><a href="#L-w-prod-i-1-N-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2" class="headerlink" title="$L(w)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})}$"></a>$L(w)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})}$</h4><h4 id="对数似然函数："><a href="#对数似然函数：" class="headerlink" title="对数似然函数："></a>对数似然函数：</h4><h4 id="l-w-nlog-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2"><a href="#l-w-nlog-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2" class="headerlink" title="$l(w)=-nlog\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 $"></a>$l(w)=-nlog\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 $</h4><p>因为我们要求的是似然函数的最大值：</p>
+<h4 id="arg-max-w-L-w-prod-i-1-N-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2"><a href="#arg-max-w-L-w-prod-i-1-N-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2" class="headerlink" title="$arg max_w \ L(w)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})}$"></a>$arg max_w \ L(w)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})}$</h4><p>通过对数似然进行变换后，因为$-nlog\sigma\sqrt{2\pi}$是定值，所以最终解析解：</p>
+<h4 id="arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-y-w-TX-2-2"><a href="#arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-y-w-TX-2-2" class="headerlink" title="$arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 =||y-w^TX||_2^2$"></a>$arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 =||y-w^TX||_2^2$</h4><h3 id="岭回归Redge-L2正则"><a href="#岭回归Redge-L2正则" class="headerlink" title="岭回归Redge(L2正则)"></a>岭回归Redge(L2正则)</h3><p>如果$b \sim N(u, \sigma^2), w_i \sim N(u, \tau^2)$,其中$u=0$;</p>
+<p>所以使用最大后验估计推导：</p>
+<p>构建似然函数：</p>
+<h4 id="L-w-prod-i-1-n-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2-cdot-prod-j-1-d-frac-1-sqrt-2-pi-tau-e-frac-w-j-2-2-tau-2"><a href="#L-w-prod-i-1-n-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2-cdot-prod-j-1-d-frac-1-sqrt-2-pi-tau-e-frac-w-j-2-2-tau-2" class="headerlink" title="$L(w)=\prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})} \cdot \prod_{j=1}^{d}\frac{1}{\sqrt{2\pi}\tau}e^{-(\frac{(w_j)^2}{2\tau^2})}$"></a>$L(w)=\prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})} \cdot \prod_{j=1}^{d}\frac{1}{\sqrt{2\pi}\tau}e^{-(\frac{(w_j)^2}{2\tau^2})}$</h4><p>对数似然函数</p>
+<h4 id="l-w-nln-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-dln-tau-sqrt-2-pi-frac-1-2-tau-2-sum-j-1-d-w-j-2"><a href="#l-w-nln-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-dln-tau-sqrt-2-pi-frac-1-2-tau-2-sum-j-1-d-w-j-2" class="headerlink" title="$l(w)=-nln\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 -dln \tau \sqrt{2\pi}-\frac{1}{2\tau^2}\sum_{j=1}^{d}(w_j)^2 $"></a>$l(w)=-nln\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 -dln \tau \sqrt{2\pi}-\frac{1}{2\tau^2}\sum_{j=1}^{d}(w_j)^2 $</h4><p>因为$-nln\sigma\sqrt{2\pi}-dln \tau \sqrt{2\pi}$是定值，最后的解析解：</p>
+<h4 id="arg-max-w-L-w-arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-lambda-sum-j-1-d-w-j-2-y-w-TX-2-2-lambda-w-2-2"><a href="#arg-max-w-L-w-arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-lambda-sum-j-1-d-w-j-2-y-w-TX-2-2-lambda-w-2-2" class="headerlink" title="$arg max_w \ L(w) = arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2+ \lambda\sum_{j=1}^{d}(w_j)^2 \\  =||y-w^TX||_2^2+\lambda||w||_2^2 $"></a>$arg max_w \ L(w) = arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2+ \lambda\sum_{j=1}^{d}(w_j)^2 \\  =||y-w^TX||_2^2+\lambda||w||_2^2 $</h4><h3 id="LASSO-L1正则"><a href="#LASSO-L1正则" class="headerlink" title="LASSO(L1正则)"></a>LASSO(L1正则)</h3><p>如果$b \sim N(u, \sigma^2), w_i \sim Laplace(u,b)$,其中$u=0$;</p>
+<p>所以使用最大后验估计推导：</p>
+<p>构建似然函数：</p>
+<h4 id="L-w-prod-i-1-n-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2-cdot-prod-j-1-d-frac-1-2b-e-frac-w-i-b"><a href="#L-w-prod-i-1-n-frac-1-sqrt-2-pi-sigma-e-frac-y-i-w-Tx-i-2-2-sigma-2-cdot-prod-j-1-d-frac-1-2b-e-frac-w-i-b" class="headerlink" title="$L(w)=\prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})} \cdot \prod_{j=1}^{d}\frac{1}{2b}e^{-(\frac{|w_i|}{b})}$"></a>$L(w)=\prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-w^Tx_i)^2}{2\sigma^2})} \cdot \prod_{j=1}^{d}\frac{1}{2b}e^{-(\frac{|w_i|}{b})}$</h4><p>对数似然：</p>
+<h4 id="l-w-nln-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-dln-2b-frac-1-b-sum-j-1-d-w-j"><a href="#l-w-nln-sigma-sqrt-2-pi-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-dln-2b-frac-1-b-sum-j-1-d-w-j" class="headerlink" title="$l(w)=-nln\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 -dln 2b -\frac{1}{b}\sum_{j=1}^{d}|w_j| $"></a>$l(w)=-nln\sigma\sqrt{2\pi}-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2 -dln 2b -\frac{1}{b}\sum_{j=1}^{d}|w_j| $</h4><p>因为$-nln\sigma\sqrt{2\pi}-dln2b$是定值，最后的解析解：</p>
+<h4 id="arg-max-w-L-w-arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-lambda-sum-j-1-d-w-j-y-w-TX-2-2-lambda-w-1"><a href="#arg-max-w-L-w-arg-min-w-f-w-frac-1-2-sigma-2-sum-i-1-n-y-i-w-Tx-i-2-lambda-sum-j-1-d-w-j-y-w-TX-2-2-lambda-w-1" class="headerlink" title="$arg max_w \ L(w) = arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2+ \lambda\sum_{j=1}^{d}|w_j| \\  =||y-w^TX||_2^2+\lambda||w||_1$"></a>$arg max_w \ L(w) = arg min_w f(w)=\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-w^Tx_i)^2+ \lambda\sum_{j=1}^{d}|w_j| \\  =||y-w^TX||_2^2+\lambda||w||_1$</h4><h3 id="线性回归正则化总结"><a href="#线性回归正则化总结" class="headerlink" title="线性回归正则化总结"></a>线性回归正则化总结</h3><p>L1正则化和L2正则化可以看做是损失函数的惩罚项，所谓『惩罚』是指对损失函数中的某些参数做一些限制 ，都能防止过拟合，一般L2的效果更好一些，L1能够产生稀疏模型，能够帮助我们去除某些特征，因此可以用于特征选择。</p>
+<hr>
+<ul>
+<li>L2正则化可以防止模型过拟合（overfitting）；一定程度上，L1也可以防止过拟合</li>
+<li>L1正则化可以产生稀疏权值矩阵，即产生一个稀疏模型，可以用于特征选择</li>
+</ul>
+<hr>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">线性回归</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/ml-linearRegression-python/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习之线性回归python实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/ml-linearRegression/">
+                        <span class="hidden-mobile">机器学习之线性回归</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习-线性回归推导总结&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

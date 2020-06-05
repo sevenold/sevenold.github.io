@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【五】图像边缘检测 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-03-05 10:00">
+      2019年3月5日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      37
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><blockquote>
+<p>边缘检测的基本思想是通过检测每个像素和其邻域的状态，以决定该像素是否位于一个物体的边界上。如果一个像素位于一个物体的边界上，则其邻域像素的灰度值的变化就比较大。假如可以应用某种算法检测出这种变化并进行量化表示，那么就可以确定物体的边界。</p>
+<ul>
+<li>边缘检测的实质是微分。</li>
+<li>实际中常用差分， X方向、Y方向。</li>
+</ul>
+</blockquote>
+<h3 id="基本算子"><a href="#基本算子" class="headerlink" title="基本算子"></a>基本算子</h3><h4 id="【Robert算子：一阶微分算子】"><a href="#【Robert算子：一阶微分算子】" class="headerlink" title="【Robert算子：一阶微分算子】"></a>【<strong>Robert算子：一阶微分算子</strong>】</h4><p>对于图像来说，是一个二维的离散型数集，通过推广二维连续型求函数偏导的方法，来求得图像的偏导数，即在(x,y)处的最大变化率，也就是这里的梯度：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114161922.png" srcset="/img/loading.gif" alt="robert算子梯度公式"></p>
+<p>梯度是一个矢量，则(x,y)处的梯度表示为：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162158.png" srcset="/img/loading.gif" alt="梯度公式"></p>
+<p>其大小为：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162250.png" srcset="/img/loading.gif" alt="梯度公式"></p>
+<p>因为平方和平方根需要大量的计算开销，所以使用绝对值来近似梯度幅值：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162454.png" srcset="/img/loading.gif" alt="梯度简化计算"></p>
+<p>方向与α(x,y)正交：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162526.png" srcset="/img/loading.gif" alt="正交"></p>
+<p>其对应的模板为：</p>
+<blockquote>
+<p>图像的垂直和水平梯度</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162619.png" srcset="/img/loading.gif" alt=""></p>
+<p>我们有时候也需要对角线方向的梯度，定义如下：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162732.png" srcset="/img/loading.gif" alt="梯度"></p>
+<p>对应模板为：</p>
+<blockquote>
+<p>Roberts 交叉梯度算子。</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114162815.png" srcset="/img/loading.gif" alt="Robert算子"></p>
+<p>模板推导</p>
+<p><code>垂直或水平算子模板</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114165059.png" srcset="/img/loading.gif" alt="垂直或水平模板"></p>
+<p><code>交叉算子模板</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114164252.png" srcset="/img/loading.gif" alt="算子模板推导"></p>
+<blockquote>
+<p>2*2 大小的模板在概念上很简单，但是他们对于用关于中心点对称的模板来计算边缘方向不是很有用，其最小模板大小为3*3。3*3 模板考虑了中心点对段数据的性质，并携带有关于边缘方向的更多信息。</p>
+</blockquote>
+<h4 id="【Prewitt算子：一阶微分算子】"><a href="#【Prewitt算子：一阶微分算子】" class="headerlink" title="【Prewitt算子：一阶微分算子】"></a>【<strong>Prewitt算子：一阶微分算子</strong>】</h4><blockquote>
+<p>prewitt算子一般使用的是3*3的模板</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114165808.png" srcset="/img/loading.gif" alt="prewitt"></p>
+<p>我如下定义水平、垂直和两对角线方向的梯度:</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114165914.png" srcset="/img/loading.gif" alt="prewitt梯度"></p>
+<p>Prewitt算子：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114170149.png" srcset="/img/loading.gif" alt="Prewitt算子"></p>
+<p>数学推导：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114170225.png" srcset="/img/loading.gif" alt="数学推导prewitt"></p>
+<blockquote>
+<p>Prewitt 算子是由两部分组成，检测水平边缘的模板和检测垂直边缘的模板， Prewitt 算子一个方向求微分，一个方向求平均，所以对噪声相对不敏感。</p>
+</blockquote>
+<h4 id="【Sobel算子：一阶微分算子】"><a href="#【Sobel算子：一阶微分算子】" class="headerlink" title="【Sobel算子：一阶微分算子】"></a>【<strong>Sobel算子：一阶微分算子</strong>】</h4><blockquote>
+<p>Sobel 算子是在Prewitt算子的基础上改进的， 在中心系数上使用一个权值2， 相比较Prewitt算子，Sobel模板能够较好的抑制(平滑)噪声。</p>
+</blockquote>
+<p>计算公式：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114175731.png" srcset="/img/loading.gif" alt="sobel 算子"></p>
+<p>sobel算子：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114175830.png" srcset="/img/loading.gif" alt="sobel算子"></p>
+<p>数学推导：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114180216.png" srcset="/img/loading.gif" alt="sobel数学推"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190122203820.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<ul>
+<li>sobel算子也有两个，一个是检测水平边缘的模板基于sobel算子的边缘检测，另一个是检测垂直边缘的模板基于sobel算子的边缘检测。</li>
+<li>与Prewitt算子相比，sobel算子对于像素位置的影响做了加权，因此效果更好。</li>
+<li>sobel算子的另外一种形式是各向同性Sobel算子， 也有两个模板组成，一个是检测水平边缘的基于sobel算子的边缘检测，另一个是检测垂直边缘的基于sobel算子的边缘检测。</li>
+<li>各向同性Sobel算子和普通sobel算子相比，位置加权系数更为准确，在检测不同方向的边缘是梯度的幅度是一致的。</li>
+</ul>
+</blockquote>
+<h4 id="【Laplace算子：二阶微分算子】"><a href="#【Laplace算子：二阶微分算子】" class="headerlink" title="【Laplace算子：二阶微分算子】"></a>【<strong>Laplace算子：二阶微分算子</strong>】</h4><blockquote>
+<p>Laplace 算子是一种各向同性算子，在只关心边缘的位置而不考虑其周围的像素灰度差值时比较合适。Laplace算子对孤立像素的响应要比对边缘或线的响应要更强烈， 因此只适合用于<code>无噪声图像</code>。存在噪声情况下， 使用Laplace算子检测边缘之前需要先进行<code>低通滤波</code>。</p>
+</blockquote>
+<p>一阶导数：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114181441.png" srcset="/img/loading.gif" alt="一阶导数"></p>
+<p>二阶导数：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114181509.png" srcset="/img/loading.gif" alt="二阶导数"></p>
+<p>我们需要注意的是关于点x的二阶导数，故将上式中的变量减去1后，得到：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114181750.png" srcset="/img/loading.gif" alt="二阶导"></p>
+<p>在图像处理中通过拉普拉斯模板求二阶导数， 其定义如下：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114181852.png" srcset="/img/loading.gif" alt="laplace"></p>
+<p>写成差分形式为</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182154.png" srcset="/img/loading.gif" alt="差分"></p>
+<p>laplace卷积核：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182254.png" srcset="/img/loading.gif" alt="卷积核"></p>
+<p>在用lapacian 算子图像进行卷积运算时，当响应的绝对值超过指定阈值时，那么该点就是被检测出来的孤立点，具体输出如下：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182512.png" srcset="/img/loading.gif" alt="孤立点"></p>
+<h4 id="【LoG算子：二阶微分算子】"><a href="#【LoG算子：二阶微分算子】" class="headerlink" title="【LoG算子：二阶微分算子】"></a>【<strong>LoG算子：二阶微分算子</strong>】</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182657.png" srcset="/img/loading.gif" alt="log算子"></p>
+<blockquote>
+<p>Log 边缘检测则是先进行高斯滤波再进行拉普拉斯算子检测, 然后找过零点来确定边缘位置，很多时候我们只是知道Log 5*5 模板如上图所示。</p>
+</blockquote>
+<p>二维高斯公式：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182751.png" srcset="/img/loading.gif" alt="二维高斯公式"></p>
+<p>按拉普拉斯算子公式求X，Y方向的二阶偏导后：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114182855.png" srcset="/img/loading.gif" alt="二阶偏导"></p>
+<p>这里x，y 不能看成模板位置，应看成是模板其他位置到中心位置的距离。那么写成：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114183026.png" srcset="/img/loading.gif" alt="1"></p>
+<p>这里x0，y0 就是模板中心位置，x，y 是模板其他位置，对于5*5 模板， 则$x_0,=2 , y_0=2$，那对于模板中（0,0）位置的权值，即把x= 0，y= 0，x0= 2，y0 = 2 带入上式， 令σ= 1，得到约等于0.0175，这样得到</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114183327.png" srcset="/img/loading.gif" alt="2"></p>
+<p>通过取整变符号，且模板总和为0，得到下图所示的模板。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114183403.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>通常高斯分布中，在（-3σ，3σ）的范围内就覆盖了绝大部分区域，所以模板大小一般取dim = 1 + 6σ（在SIFT 特征中，其中的高斯模糊也是这样取），dim 如果为小数，则取不小于dim 的最小整数，当然实际使用时没有这么严格，如上面我们取σ=1 时，模板大小取5*5。那同一个尺寸的模板中的权值调整就是σ的变化得到的，变化到一定程度，模板尺寸大小改变。</p>
+</blockquote>
+<h3 id="Canny算子：非微分算子"><a href="#Canny算子：非微分算子" class="headerlink" title="Canny算子：非微分算子"></a>Canny算子：非微分算子</h3><h4 id="【基本原理】"><a href="#【基本原理】" class="headerlink" title="【基本原理】"></a>【<strong>基本原理</strong>】</h4><blockquote>
+<ul>
+<li>图象边缘检测必须满足两个条件:<ul>
+<li>能有效的抑制噪声。</li>
+<li>必须尽量精确确定边缘的位置。</li>
+</ul>
+</li>
+<li>根据对信噪比与定位乘积进行测度，，得到最优化逼近算子。这就是Canny边缘检测算子。</li>
+<li>类似与LoG边缘检测方法，也属于先平滑后求导数的方法。</li>
+</ul>
+</blockquote>
+<h4 id="【算法步骤】"><a href="#【算法步骤】" class="headerlink" title="【算法步骤】"></a>【<strong>算法步骤</strong>】</h4><blockquote>
+<ol>
+<li>使用高斯滤波器，以平滑图像，滤除噪声。</li>
+<li>计算图像中每个像素点的梯度强度和方向。</li>
+<li>应用非极大值（Non-Maximum Suppression）抑制， 以消除边缘检测带着的杂散响应。</li>
+<li>应用双阈值（Double-Threshold）检测来确定真实的和潜在的边缘。</li>
+<li>通过抑制孤立的弱边缘最终完成边缘检测。</li>
+</ol>
+</blockquote>
+<h5 id="第一步：同时平滑与微分"><a href="#第一步：同时平滑与微分" class="headerlink" title="第一步：同时平滑与微分"></a>第一步：同时平滑与微分</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114184750.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>使用高斯函数的一阶导数同时完成平滑和微分。</p>
+</blockquote>
+<h5 id="第二步：计算梯度和方向"><a href="#第二步：计算梯度和方向" class="headerlink" title="第二步：计算梯度和方向"></a>第二步：计算梯度和方向</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185109.png" srcset="/img/loading.gif" alt="2"></p>
+<ul>
+<li>梯度幅值和方向</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185153.png" srcset="/img/loading.gif" alt="2"></p>
+<ul>
+<li>方向离散化：离散化为上下左右和斜45°共4个方向</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185232.png" srcset="/img/loading.gif" alt=""></p>
+<h5 id="第三步：梯度幅值非极大值抑制"><a href="#第三步：梯度幅值非极大值抑制" class="headerlink" title="第三步：梯度幅值非极大值抑制"></a>第三步：梯度幅值非极大值抑制</h5><p>细化梯度幅值图像中的屋脊带，只保留幅值局部变化最大的点</p>
+<blockquote>
+<p>使用一个3*3邻域作用于幅值阵列的所有点。在每一点上, 邻域的中心像素与沿梯度方向的两个梯度幅值的插值结果进行较，仅保留极大值点</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185542.png" srcset="/img/loading.gif" alt="3"></p>
+<h5 id="第四步：边缘连接"><a href="#第四步：边缘连接" class="headerlink" title="第四步：边缘连接"></a>第四步：边缘连接</h5><p>对上一步得到的图像使用低、高阈值t1, t2 阈值化，得到三幅图像</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185713.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<ul>
+<li>T1对应假边缘，去除</li>
+<li>T3对应真边缘，全部保留</li>
+<li>T2连接：临接像素中是否有属于T3的像素</li>
+</ul>
+</blockquote>
+<h5 id="第五步：抑制孤立低阈值点"><a href="#第五步：抑制孤立低阈值点" class="headerlink" title="第五步：抑制孤立低阈值点"></a>第五步：抑制孤立低阈值点</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190114185951.png" srcset="/img/loading.gif" alt="5"></p>
+<h3 id="边缘检测总结"><a href="#边缘检测总结" class="headerlink" title="边缘检测总结"></a>边缘检测总结</h3><blockquote>
+<ol>
+<li>边缘检测即图像差分</li>
+<li>常见边缘检测算子包括Robert算子，Sobel算子，LoG算子等，其中Sobel算子最为常用</li>
+<li>Canny算子的基本优点在于检测准确、对噪声稳健，在实际中广泛应用.</li>
+</ol>
+</blockquote>
+<h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-comment"># 加载图片</span>
+image = cv2.imread(<span class="hljs-string">'lena.jpg'</span>)
+img = cv2.pyrDown(image)
+cv2.imshow(<span class="hljs-string">"source image"</span>, img)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RobertImage</span><span class="hljs-params">(img, name)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    robert算子的实现</span>
+<span class="hljs-string">    :param img:</span>
+<span class="hljs-string">    :param name:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    """</span>
+    r_sunnzi = np.array([[<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">-1</span>]], np.float32)
+    robertImage = cv2.filter2D(img, <span class="hljs-number">-1</span>, r_sunnzi)
+    cv2.imshow(<span class="hljs-string">"Robert-%s"</span> % name, robertImage)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sobelImage</span><span class="hljs-params">(img, name)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    Sobel算子</span>
+<span class="hljs-string">    Sobel(src, ddepth, dx, dy, dst=None, ksize=None, scale=None, delta=None, borderType=None)</span>
+<span class="hljs-string">    前四个是必须的参数：</span>
+<span class="hljs-string">    第一个参数是需要处理的图像；</span>
+<span class="hljs-string">    第二个参数是图像的深度，-1表示采用的是与原图像相同的深度。目标图像的深度必须大于等于原图像的深度；</span>
+<span class="hljs-string">    dx和dy表示的是求导的阶数，0表示这个方向上没有求导，一般为0、1、2。</span>
+<span class="hljs-string">    其后是可选的参数：</span>
+<span class="hljs-string">    dst不用解释了；</span>
+<span class="hljs-string">    ksize是Sobel算子的大小，必须为1、3、5、7。</span>
+<span class="hljs-string">    scale是缩放导数的比例常数，默认情况下没有伸缩系数；</span>
+<span class="hljs-string">    delta是一个可选的增量，将会加到最终的dst中，同样，默认情况下没有额外的值加到dst中；</span>
+<span class="hljs-string">    borderType是判断图像边界的模式。这个参数默认值为cv2.BORDER_DEFAULT。</span>
+<span class="hljs-string">    :param img: 图片数据</span>
+<span class="hljs-string">    :param name: 命名标志</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    """</span>
+    <span class="hljs-comment"># 先检测xy方向上的边缘</span>
+    Sobel_Ex = cv2.Sobel(src=img, ddepth=cv2.CV_16S, dx=<span class="hljs-number">1</span>, dy=<span class="hljs-number">0</span>, ksize=<span class="hljs-number">3</span>)
+    Sobel_Ey = cv2.Sobel(src=img, ddepth=cv2.CV_16S, dx=<span class="hljs-number">0</span>, dy=<span class="hljs-number">1</span>, ksize=<span class="hljs-number">3</span>)
+    <span class="hljs-comment"># 即Sobel函数求完导数后会有负值，还有会大于255的值。而原图像是uint8，即8位无符号数，</span>
+    <span class="hljs-comment"># 所以Sobel建立的图像位数不够，会有截断。因此要使用16位有符号的数据类型，即cv2.CV_16S。</span>
+    <span class="hljs-comment"># cv2.imshow("Sobel_Ex-%s" % name, Sobel_Ex)</span>
+    <span class="hljs-comment"># 图像的每一个像素的横向及纵向梯度近似值结合</span>
+    <span class="hljs-comment"># 用convertScaleAbs()函数将其转回原来的uint8形式。否则将无法显示图像，而只是一副灰色的窗口。</span>
+    absX = cv2.convertScaleAbs(Sobel_Ex)
+    absY = cv2.convertScaleAbs(Sobel_Ey)
+    <span class="hljs-comment"># cv2.imshow("absX-%s" % name, absX)</span>
+    <span class="hljs-comment"># cv2.imshow("absY-%s" % name, absY)</span>
+
+    SobelImage = cv2.addWeighted(absX, <span class="hljs-number">0.5</span>, absY, <span class="hljs-number">0.5</span>, <span class="hljs-number">0</span>)
+    cv2.imshow(<span class="hljs-string">"sobel-%s"</span> % name, SobelImage)
+    <span class="hljs-comment"># ddepth=-1表示图像深度和原图深度一致</span>
+    <span class="hljs-comment"># Ex = cv2.Sobel(img, -1, 1, 0, ksize=3)</span>
+    <span class="hljs-comment"># Ey = cv2.Sobel(img, -1, 0, 1, ksize=3)</span>
+    <span class="hljs-comment"># # cv2.imshow("Ex-%s" % name, Ex)</span>
+    <span class="hljs-comment"># SobelImg = cv2.addWeighted(Ex, 0.5, Ey, 0.5, 0)</span>
+    <span class="hljs-comment"># cv2.imshow("soImg-%s" % name, SobelImg)</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">LaplaceImage</span><span class="hljs-params">(img, name)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    Laplace算子</span>
+<span class="hljs-string">    Laplacian(src, ddepth, dst=None, ksize=None, scale=None, delta=None, borderType=None)</span>
+<span class="hljs-string">    前两个是必须的参数：</span>
+<span class="hljs-string">    第一个参数是需要处理的图像；</span>
+<span class="hljs-string">    第二个参数是图像的深度，-1表示采用的是与原图像相同的深度。目标图像的深度必须大于等于原图像的深度；</span>
+<span class="hljs-string">    其后是可选的参数：</span>
+<span class="hljs-string">    dst不用解释了；</span>
+<span class="hljs-string">    ksize是算子的大小，必须为1、3、5、7。默认为1。</span>
+<span class="hljs-string">    scale是缩放导数的比例常数，默认情况下没有伸缩系数；</span>
+<span class="hljs-string">    delta是一个可选的增量，将会加到最终的dst中，同样，默认情况下没有额外的值加到dst中；</span>
+<span class="hljs-string">    borderType是判断图像边界的模式。这个参数默认值为cv2.BORDER_DEFAULT。</span>
+<span class="hljs-string">    :param img: 图片数据</span>
+<span class="hljs-string">    :param name: 命名标志</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    """</span>
+    <span class="hljs-comment"># ddepth=-1表示图像深度和原图深度一致</span>
+    <span class="hljs-comment"># laplaceImage = cv2.Laplacian(img, ddepth=-1, ksize=3)</span>
+    <span class="hljs-comment"># cv2.imshow("laplace-%s" % name, laplaceImage)</span>
+    <span class="hljs-comment"># ddepth=cv2.CV_16S表示图像深度</span>
+    laplaceImg = cv2.Laplacian(img, ddepth=cv2.CV_16S, ksize=<span class="hljs-number">3</span>)
+    lapimg = cv2.convertScaleAbs(laplaceImg)
+    cv2.imshow(<span class="hljs-string">"laplace-%s"</span> % name, lapimg)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">LoG</span><span class="hljs-params">(img, name)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    LoG算子的实现</span>
+<span class="hljs-string">    :param img:</span>
+<span class="hljs-string">    :param name:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    """</span>
+    gaussImage = cv2.GaussianBlur(img, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), <span class="hljs-number">0.01</span>)
+    laplaceImg = cv2.Laplacian(gaussImage, ddepth=cv2.CV_16S, ksize=<span class="hljs-number">3</span>)
+    logImg = cv2.convertScaleAbs(laplaceImg)
+    cv2.imshow(<span class="hljs-string">"LoG-%s"</span> % name, logImg)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">CannyImage</span><span class="hljs-params">(img, name)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    必要参数：</span>
+<span class="hljs-string">    第一个参数是需要处理的原图像，该图像必须为单通道的灰度图；</span>
+<span class="hljs-string">    第二个参数是阈值1；</span>
+<span class="hljs-string">    第三个参数是阈值2。</span>
+<span class="hljs-string">    其中较大的阈值2用于检测图像中明显的边缘，但一般情况下检测的效果不会那么完美，</span>
+<span class="hljs-string">    边缘检测出来是断断续续的。所以这时候用较小的第一个阈值用于将这些间断的边缘连接起来。</span>
+<span class="hljs-string">    :param img: 图片数据</span>
+<span class="hljs-string">    :param name: 命名标志</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    """</span>
+    <span class="hljs-comment"># 先进行高斯平滑</span>
+    gaussImage = cv2.GaussianBlur(img, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), <span class="hljs-number">0</span>)
+    <span class="hljs-comment"># 边缘检测，最大阈值为150，最小阈值为50</span>
+    <span class="hljs-comment"># Canny 推荐的 高:低 阈值比在 2:1 到3:1之间。</span>
+    cannyImage = cv2.Canny(gaussImage, <span class="hljs-number">50</span>, <span class="hljs-number">150</span>)
+    cv2.imshow(<span class="hljs-string">"canny-%s"</span> % name, cannyImage)
+
+
+<span class="hljs-comment"># 彩色图像进行Robert边缘检测</span>
+RobertImage(img, <span class="hljs-string">'rgb'</span>)
+<span class="hljs-comment"># 灰度图像进行robert边缘检测</span>
+grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+RobertImage(grayImage, <span class="hljs-string">'gray'</span>)
+
+<span class="hljs-comment"># 彩色图像进行sobel边缘检测</span>
+sobelImage(img, <span class="hljs-string">'rgb'</span>)
+<span class="hljs-comment"># 灰度图像进行sobel边缘检测</span>
+grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+sobelImage(grayImage, <span class="hljs-string">'gray'</span>)
+
+<span class="hljs-comment"># 彩色图像进行laplace边缘检测</span>
+LaplaceImage(img, <span class="hljs-string">'rgb'</span>)
+<span class="hljs-comment"># 灰度图像进行laplace边缘检测</span>
+grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+LaplaceImage(grayImage, <span class="hljs-string">'gray'</span>)
+
+<span class="hljs-comment"># 彩色图像进行LoG边缘检测</span>
+LoG(img, <span class="hljs-string">'rgb'</span>)
+<span class="hljs-comment"># 灰度图像进行LoG边缘检测</span>
+grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+LoG(grayImage, <span class="hljs-string">'gray'</span>)
+
+<span class="hljs-comment"># 彩色图像进行canny边缘检测</span>
+CannyImage(img, <span class="hljs-string">'rgb'</span>)
+<span class="hljs-comment"># 灰度图像进行canny边缘检测</span>
+grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+CannyImage(grayImage, <span class="hljs-string">'gray'</span>)
+
+cv2.waitKey(<span class="hljs-number">0</span>)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190115192824.png" srcset="/img/loading.gif" alt="代码演示"></p>
+<blockquote>
+<ul>
+<li>sobel 产生的边缘有强弱，抗噪性好</li>
+<li>laplace 对边缘敏感，可能有些是噪声的边缘，也被算进来了</li>
+<li>canny 产生的边缘很细，可能就一个像素那么细，没有强弱之分。</li>
+</ul>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%83%8F%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/">图像边缘检测</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_hist/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【六】直方图</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_filter/">
+                        <span class="hidden-mobile">【四】图像滤波</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【五】图像边缘检测&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>神经网络之生成对抗网络 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-09-01 10:00">
+      2018年9月1日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="生成对抗网络"><a href="#生成对抗网络" class="headerlink" title="生成对抗网络"></a>生成对抗网络</h3><p>生成式对抗网络（GAN, Generative Adversarial Networks ）是一种<strong>深度学习</strong>模型，是近年来复杂分布上无监督学习最具前景的方法之一。</p>
+<p>模型通过框架中（至少）两个模块：<strong>生成模型（Generative Model）和判别模型（Discriminative Model）</strong>的互相<strong>博弈</strong>学习产生相当好的输出。</p>
+<p>原始 GAN 理论中，并不要求 G 和 D 都是神经网络，只需要是能拟合相应生成和判别的函数即可。</p>
+<p>但实用中一般均使用深度神经网络作为 G 和 D 。一个优秀的GAN应用需要有良好的训练方法，否则可能由于神经网络模型的自由性而导致输出不理想。</p>
+<h3 id="GAN的基本框架"><a href="#GAN的基本框架" class="headerlink" title="GAN的基本框架"></a>GAN的基本框架</h3><p>GAN所建立的一个学习框架，实际上我们可以看成<strong>生成模型和判别模型</strong>之间的一个模拟对抗游戏。我们可以把<strong>生成模型</strong>看作一个<strong>伪装者</strong>，而把<strong>判别模型</strong>看成一个<strong>警察</strong>。<strong>生成模型</strong>通过不断地学习来提高自己的<strong>伪装能力</strong>，从而使得生成出来的数据能够更好地“欺骗”<strong>判别模型</strong>。而<strong>判别模型</strong>则通过不断的训练来提高自己的判别能力，能够更准确地判断出数据的来源。GAN就是这样一个不断对抗的网络。GAN的架构如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182514.png" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>生成模型</strong>以<strong>随机变量</strong>作为输入，其输出是对真实数据分布的一个估计。</p>
+<p>生成数据和真实数据的采样都由<strong>判别模型</strong>进行判别，并给出真假性的判断和当前的损失。</p>
+<p>利用<strong>反向传播</strong>，GAN对生成模型和判别模型进行交替优化。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182515.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="GAN的优化目标"><a href="#GAN的优化目标" class="headerlink" title="GAN的优化目标"></a>GAN的优化目标</h3><p>在对抗生成网络中，有两个博弈的角色分别为<strong>生成式模型(generative model)和判别式模型(discriminative model)</strong>。具体方式为：</p>
+<ul>
+<li>生成模型G捕捉样本数据的分布，判别模型D时一个二分类器，估计一个样本来自于训练数据（而非生成数据）的概率。</li>
+</ul>
+<p>在博弈的过程中我们需要提高两个模型的能力，所以通过不断调整<strong>生成模型G</strong>和<strong>判别模型D</strong>，直到<strong>判别模型D</strong>不能把数据的真假判别出来为止。在调整优化的过程中，我们需要：</p>
+<ul>
+<li>优化<strong>生成模型G</strong>，使得<strong>判别模型D</strong>无法判别出来事件的真假。</li>
+<li>优化<strong>判别模型D</strong>，使得它尽可能的判别出事件的真假。</li>
+</ul>
+<h3 id="举个栗子："><a href="#举个栗子：" class="headerlink" title="举个栗子："></a>举个栗子：</h3><p>假设数据的概率分布为M，但是我们不知道具体的分布和构造是什么样的，就好像是一个黑盒子。为了了解这个黑盒子，我们就可以构建一个对抗生成网络：</p>
+<ul>
+<li><strong>生成模型G</strong>：使用一种我们完全知道的概率分布N来不断学习成为我们不知道的概率分布M.</li>
+<li><strong>判别模型D</strong>：用来判别这个不断学习的概率是我们知道的概率分布N还是我们不知道的概率分布M。</li>
+</ul>
+<p>我们用图像来体现：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182516.png" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182517.png" srcset="/img/loading.gif" alt="images"></p>
+<p>由上图所示：</p>
+<ul>
+<li>黑点所组成的数据分布是我们所不知道的概率分布M所形成的</li>
+<li>绿色的线表示<strong>生成模型G</strong>使用已知的数据和判别模型不断对抗生成的数据分布。</li>
+<li>蓝色的线表示<strong>判断模型D</strong></li>
+<li>a图：初始状态</li>
+<li>b图：生成模型不变，优化判别模型，直到判别的准确率最高</li>
+<li>c图：判别模型不变。优化生成模型。直到生成的数据的真实性越高</li>
+<li>d图：多次迭代后，生成模型产生的数据和概率部分M的数据基本一致，从而判别模型认为生成模型生成的数据就是概率分布M的数据分布。</li>
+</ul>
+<h3 id="GAN的数学推导"><a href="#GAN的数学推导" class="headerlink" title="GAN的数学推导"></a>GAN的数学推导</h3><p>符号定义:</p>
+<ul>
+<li><h4 id="P-data-x-：真实数据的分布"><a href="#P-data-x-：真实数据的分布" class="headerlink" title="$P_{data}(x)$：真实数据的分布"></a>$P_{data}(x)$：真实数据的分布</h4></li>
+<li><h4 id="P-z-Z-：噪声数据"><a href="#P-z-Z-：噪声数据" class="headerlink" title="$P_z(Z)$：噪声数据"></a>$P_z(Z)$：噪声数据</h4></li>
+<li><h4 id="P-g-x-：生成模型生成的数据分布"><a href="#P-g-x-：生成模型生成的数据分布" class="headerlink" title="$P_g(x)$：生成模型生成的数据分布"></a>$P_g(x)$：生成模型生成的数据分布</h4></li>
+<li><h4 id="D-X-：判别器"><a href="#D-X-：判别器" class="headerlink" title="$D(X)$：判别器"></a>$D(X)$：判别器</h4></li>
+<li><h4 id="G-x-：生成器"><a href="#G-x-：生成器" class="headerlink" title="$G(x)$：生成器"></a>$G(x)$：生成器</h4></li>
+</ul>
+<h3 id="定义判别模型和生成模型："><a href="#定义判别模型和生成模型：" class="headerlink" title="定义判别模型和生成模型："></a><strong>定义判别模型和生成模型</strong>：</h3><h4 id="E-x-sim-P-data-x-cdot-logD-x"><a href="#E-x-sim-P-data-x-cdot-logD-x" class="headerlink" title="$E_{x \sim P_{data}}(x) \cdot logD(x)$"></a>$E_{x \sim P_{data}}(x) \cdot logD(x)$</h4><p>由上式可知：当$x \sim P_{data}(x) , D(x)=1 $的时，$E_{x \sim P_{data}}(x)$取得最大值。</p>
+<h4 id="E-x-sim-P-z-z-cdot-log-1-D-G-z"><a href="#E-x-sim-P-z-z-cdot-log-1-D-G-z" class="headerlink" title="$E_{x \sim P_{z}}(z) \cdot log(1-D(G(z)))$"></a>$E_{x \sim P_{z}}(z) \cdot log(1-D(G(z)))$</h4><p>由上式可知：当$x \sim P_{z}(z) , D(G(z))=0 $的时，$E_{x \sim P_{z}}(z)$取得最大值。</p>
+<p>所以为了我们的<strong>判别模型</strong>越来越好，能力越来越强大，定义目标函数为：</p>
+<h4 id="V-G-D-logD-x-log-1-D-G-z"><a href="#V-G-D-logD-x-log-1-D-G-z" class="headerlink" title="$V(G,D)=  logD(x) +  log(1-D(G(z)))$"></a>$V(G,D)=  logD(x) +  log(1-D(G(z)))$</h4><p>要使<strong>判别模型</strong>取得最好，所以需要使$V(G,D)$取得最大，即：</p>
+<h4 id="D-agrmax-DV-G-D"><a href="#D-agrmax-DV-G-D" class="headerlink" title="$D = agrmax_DV(G,D)$"></a>$D = agrmax_DV(G,D)$</h4><p>当<strong>判别模型</strong>最好的时候，最好的<strong>生成模型</strong>就是<strong>目标函数取得最小</strong>的时候：</p>
+<h4 id="G-argmin-G-aggmax-D-V-G-D"><a href="#G-argmin-G-aggmax-D-V-G-D" class="headerlink" title="$G=argmin_G(aggmax_D(V(G, D)))$"></a>$G=argmin_G(aggmax_D(V(G, D)))$</h4><p>所以经过这一系列的讨论，这个问题就变成了最大最小的问题，即：</p>
+<h4 id="min-Gmax-DV-G-D-E-x-sim-P-data-x-cdot-logD-x-E-x-sim-P-z-z-cdot-log-1-D-G-z"><a href="#min-Gmax-DV-G-D-E-x-sim-P-data-x-cdot-logD-x-E-x-sim-P-z-z-cdot-log-1-D-G-z" class="headerlink" title="$min_Gmax_DV(G, D)=E_{x \sim P_{data}}(x) \cdot logD(x)+ E_{x \sim P_{z}}(z) \cdot log(1-D(G(z)))$"></a>$min_Gmax_DV(G, D)=E_{x \sim P_{data}}(x) \cdot logD(x)+ E_{x \sim P_{z}}(z) \cdot log(1-D(G(z)))$</h4><h3 id="最优判别模型："><a href="#最优判别模型：" class="headerlink" title="最优判别模型："></a><strong>最优判别模型</strong>：</h3><p>最终的目标函数：</p>
+<p>$V(G,D)=  \int_x P_{data}(x) \cdot logD(x) +  P_g(x)log(1-D(G(z))) d(x)$</p>
+<p>令：$V(G,D)=f(y), P_{data}(x)=a, P_g(x)=b$</p>
+<p>所以：$f(y)=alogy+blog(1-y)$</p>
+<p>因为:$a+b \ne 0$</p>
+<p>所以最大值：$\frac{a}{a+b}$</p>
+<p>最后，我们得到的<strong>最优判别模型</strong>就是：</p>
+<h4 id="D-x-frac-P-data-X-P-data-X-P-g-x"><a href="#D-x-frac-P-data-X-P-data-X-P-g-x" class="headerlink" title="$D(x)=\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}$"></a>$D(x)=\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}$</h4><p>由于<strong>生成对抗网络</strong>的目的是：得到<strong>生成模型</strong>可以生成非常逼真的数据，也就是说是和真实数据的分布是一样的。因此最优的判别模型的输出为：</p>
+<h4 id="D-x-frac-P-data-P-data-P-g-frac12"><a href="#D-x-frac-P-data-P-data-P-g-frac12" class="headerlink" title="$D(x)=\frac{P_{data}}{P_{data}+P_g}=\frac12$"></a>$D(x)=\frac{P_{data}}{P_{data}+P_g}=\frac12$</h4><p>其中：$P_g和P_{data}$的数据分布是一样的。</p>
+<p>也就是说当D输出为0.5时，说明鉴别模型已经完全分不清真实数据和GAN生成的数据了，此时就是得到了最优生成模型了。</p>
+<h3 id="证明生成模型："><a href="#证明生成模型：" class="headerlink" title="证明生成模型："></a><strong>证明生成模型</strong>：</h3><h4 id="充分性："><a href="#充分性：" class="headerlink" title="充分性："></a>充分性：</h4><p>前面我们已经得到了<strong>最优的判别模型</strong>，我们直接把数据带进目标函数：</p>
+<h4 id="V-G-int-x-P-data-x-cdot-log-frac-12-P-g-x-log-frac-12-d-x-log4"><a href="#V-G-int-x-P-data-x-cdot-log-frac-12-P-g-x-log-frac-12-d-x-log4" class="headerlink" title="$V(G)=\int_x [P_{data}(x) \cdot log(\frac 12) +  P_g(x)log(\frac 12) ]d(x) =-log4$"></a>$V(G)=\int_x [P_{data}(x) \cdot log(\frac 12) +  P_g(x)log(\frac 12) ]d(x) =-log4$</h4><h4 id="必要性："><a href="#必要性：" class="headerlink" title="必要性："></a>必要性：</h4><h4 id="V-G-int-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-P-g-x-P-g-x-log-1-frac-P-data-X-P-data-X-P-g-x-d-x"><a href="#V-G-int-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-P-g-x-P-g-x-log-1-frac-P-data-X-P-data-X-P-g-x-d-x" class="headerlink" title="$V(G)=\int_x [P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) +  P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) ] d(x) $"></a>$V(G)=\int_x [P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) +  P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) ] d(x) $</h4><h4 id="V-G-int-x-log2-log2-cdot-P-data-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-P-g-x-log2-log2-cdot-P-g-x-P-g-x-log-1-frac-P-data-X-P-data-X-P-g-x-d-x"><a href="#V-G-int-x-log2-log2-cdot-P-data-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-P-g-x-log2-log2-cdot-P-g-x-P-g-x-log-1-frac-P-data-X-P-data-X-P-g-x-d-x" class="headerlink" title="$$V(G)=\int_x [(log2-log2)\cdot P_{data}(x)+P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) + (log2-log2)\cdot P_g(x) + P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) ]d(x) $$"></a>$$V(G)=\int_x [(log2-log2)\cdot P_{data}(x)+P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) + (log2-log2)\cdot P_g(x) + P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) ]d(x) $$</h4><h4 id="V-G-log2-int-x-P-g-x-P-data-x-d-x-int-x-P-data-x-cdot-log2-log-frac-P-data-X-P-data-X-P-g-x-P-g-x-cdot-log2-log-1-frac-P-data-X-P-data-X-P-g-x-d-x"><a href="#V-G-log2-int-x-P-g-x-P-data-x-d-x-int-x-P-data-x-cdot-log2-log-frac-P-data-X-P-data-X-P-g-x-P-g-x-cdot-log2-log-1-frac-P-data-X-P-data-X-P-g-x-d-x" class="headerlink" title="$V(G)=-log2 \int_x [P_g(x) +P_{data}(x)]d(x)+\int_x [P_{data}(x) \cdot(log2+ log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}))+  P_g(x) \cdot (log2+log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) )] d(x)$"></a>$V(G)=-log2 \int_x [P_g(x) +P_{data}(x)]d(x)+\int_x [P_{data}(x) \cdot(log2+ log(\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}))+  P_g(x) \cdot (log2+log(1-\frac{P_{data}(X)}{P_{data}(X)+P_g(x)}) )] d(x)$</h4><h4 id="V-G-log4-int-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-frac-P-g-x-2-P-g-x-log-1-frac-P-data-X-P-data-X-frac-P-g-x-2-d-x"><a href="#V-G-log4-int-x-P-data-x-cdot-log-frac-P-data-X-P-data-X-frac-P-g-x-2-P-g-x-log-1-frac-P-data-X-P-data-X-frac-P-g-x-2-d-x" class="headerlink" title="$V(G)=-log4+\int_x [P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+\frac{P_g(x)}{2}}) +  P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+\frac{P_g(x)}{2}}) ] d(x) $"></a>$V(G)=-log4+\int_x [P_{data}(x) \cdot log(\frac{P_{data}(X)}{P_{data}(X)+\frac{P_g(x)}{2}}) +  P_g(x)log(1-\frac{P_{data}(X)}{P_{data}(X)+\frac{P_g(x)}{2}}) ] d(x) $</h4><h4 id="我们把最终结果转换为KL散度："><a href="#我们把最终结果转换为KL散度：" class="headerlink" title="我们把最终结果转换为KL散度："></a>我们把最终结果转换为<strong>KL散度</strong>：</h4><h4 id="V-G-log4-KL-P-data-mid-frac-P-data-P-g-2-KL-P-g-mid-frac-P-data-P-g-2"><a href="#V-G-log4-KL-P-data-mid-frac-P-data-P-g-2-KL-P-g-mid-frac-P-data-P-g-2" class="headerlink" title="$V(G)=-log4+KL(P_{data} \mid \frac{P_{data}+P_g}{2})+KL(P_g \mid  \frac{P_{data}+P_g}{2} )$"></a>$V(G)=-log4+KL(P_{data} \mid \frac{P_{data}+P_g}{2})+KL(P_g \mid  \frac{P_{data}+P_g}{2} )$</h4><p>因为：KL散度永远大于等于0，所以可以知道目标函数最终最优值为-log4。</p>
+<h3 id="GAN的特性"><a href="#GAN的特性" class="headerlink" title="GAN的特性"></a>GAN的特性</h3><p>优点：</p>
+<ul>
+<li>模型优化只用到了反向传播，而不需要马尔科夫链。</li>
+<li>训练时不需要对隐变量做推断。</li>
+<li>理论上，只要是可微分函数都能用于构建生成模型G和判别模型D，因而能够与深度神经网络结合–&gt;深度产生式模型。</li>
+<li>生成模型G的参数更新不是直接来自于数据样本，而是使用来自判别模型D的反向传播梯度。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>可解释性差，生成模型的分布没有显示的表达。它只是一个黑盒子一样的映射函数：输入是一个随机变量，输出是我们想要的一个数据分布。</li>
+<li>比较难训练，生成模型D和判别模型G之间需要很好的同步。例如，在实际中我们常常需要 D 更新 K次， G 才能更新 1 次，如果没有很好地平衡这两个部件的优化，那么G最后就极大可能会坍缩到一个鞍点。</li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AF%B9%E6%8A%97%E7%94%9F%E6%88%90%E7%BD%91%E7%BB%9C/">对抗生成网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/GAN/">GAN</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/09/TensorFlow-GAN/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorFlow实现简单的生成对抗网络-GAN</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/TensorFlow-RNN/">
+                        <span class="hidden-mobile">TensorFlow实现简单的递归神经网络-RNN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络之生成对抗网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

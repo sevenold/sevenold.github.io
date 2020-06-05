@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>TensorFlow安装问题检测 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-10-09 10:00">
+      2018年10月9日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      675 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      13
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h4 id="当你安装TensorFlow后，import时需要未知的错误，以下代码会为你检测出来并提供正确的解决方式"><a href="#当你安装TensorFlow后，import时需要未知的错误，以下代码会为你检测出来并提供正确的解决方式" class="headerlink" title="当你安装TensorFlow后，import时需要未知的错误，以下代码会为你检测出来并提供正确的解决方式"></a>当你安装TensorFlow后，import时需要未知的错误，以下代码会为你检测出来并提供正确的解决方式</h4><pre><code class="hljs python"><span class="hljs-keyword">import</span> ctypes
+<span class="hljs-keyword">import</span> imp
+<span class="hljs-keyword">import</span> sys
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+  <span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+    print(<span class="hljs-string">"TensorFlow successfully installed."</span>)
+    <span class="hljs-keyword">if</span> tf.test.is_built_with_cuda():
+      print(<span class="hljs-string">"The installed version of TensorFlow includes GPU support."</span>)
+    <span class="hljs-keyword">else</span>:
+      print(<span class="hljs-string">"The installed version of TensorFlow does not include GPU support."</span>)
+    sys.exit(<span class="hljs-number">0</span>)
+  <span class="hljs-keyword">except</span> ImportError:
+    print(<span class="hljs-string">"ERROR: Failed to import the TensorFlow module."</span>)
+
+  print(<span class="hljs-string">"""</span>
+<span class="hljs-string">WARNING! This script is no longer maintained! </span>
+<span class="hljs-string">=============================================</span>
+<span class="hljs-string">Since TensorFlow 1.4, the self-check has been integrated with TensorFlow itself,</span>
+<span class="hljs-string">and any missing DLLs will be reported when you execute the `import tensorflow`</span>
+<span class="hljs-string">statement. The error messages printed below refer to TensorFlow 1.3 and earlier,</span>
+<span class="hljs-string">and are inaccurate for later versions of TensorFlow."""</span>)
+    
+  candidate_explanation = <span class="hljs-literal">False</span>
+
+  python_version = sys.version_info.major, sys.version_info.minor
+  print(<span class="hljs-string">"\n- Python version is %d.%d."</span> % python_version)
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (python_version == (<span class="hljs-number">3</span>, <span class="hljs-number">5</span>) <span class="hljs-keyword">or</span> python_version == (<span class="hljs-number">3</span>, <span class="hljs-number">6</span>)):
+    candidate_explanation = <span class="hljs-literal">True</span>
+    print(<span class="hljs-string">"- The official distribution of TensorFlow for Windows requires "</span>
+          <span class="hljs-string">"Python version 3.5 or 3.6."</span>)
+  
+  <span class="hljs-keyword">try</span>:
+    _, pathname, _ = imp.find_module(<span class="hljs-string">"tensorflow"</span>)
+    print(<span class="hljs-string">"\n- TensorFlow is installed at: %s"</span> % pathname)
+  <span class="hljs-keyword">except</span> ImportError:
+    candidate_explanation = <span class="hljs-literal">False</span>
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- No module named TensorFlow is installed in this Python environment. You may</span>
+<span class="hljs-string">  install it using the command `pip install tensorflow`."""</span>)
+
+  <span class="hljs-keyword">try</span>:
+    msvcp140 = ctypes.WinDLL(<span class="hljs-string">"msvcp140.dll"</span>)
+  <span class="hljs-keyword">except</span> OSError:
+    candidate_explanation = <span class="hljs-literal">True</span>
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- Could not load 'msvcp140.dll'. TensorFlow requires that this DLL be</span>
+<span class="hljs-string">  installed in a directory that is named in your %PATH% environment</span>
+<span class="hljs-string">  variable. You may install this DLL by downloading Microsoft Visual</span>
+<span class="hljs-string">  C++ 2015 Redistributable Update 3 from this URL:</span>
+<span class="hljs-string">  https://www.microsoft.com/en-us/download/details.aspx?id=53587"""</span>)
+
+  <span class="hljs-keyword">try</span>:
+    cudart64_80 = ctypes.WinDLL(<span class="hljs-string">"cudart64_80.dll"</span>)
+  <span class="hljs-keyword">except</span> OSError:
+    candidate_explanation = <span class="hljs-literal">True</span>
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- Could not load 'cudart64_80.dll'. The GPU version of TensorFlow</span>
+<span class="hljs-string">  requires that this DLL be installed in a directory that is named in</span>
+<span class="hljs-string">  your %PATH% environment variable. Download and install CUDA 8.0 from</span>
+<span class="hljs-string">  this URL: https://developer.nvidia.com/cuda-toolkit"""</span>)
+
+  <span class="hljs-keyword">try</span>:
+    nvcuda = ctypes.WinDLL(<span class="hljs-string">"nvcuda.dll"</span>)
+  <span class="hljs-keyword">except</span> OSError:
+    candidate_explanation = <span class="hljs-literal">True</span>
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- Could not load 'nvcuda.dll'. The GPU version of TensorFlow requires that</span>
+<span class="hljs-string">  this DLL be installed in a directory that is named in your %PATH%</span>
+<span class="hljs-string">  environment variable. Typically it is installed in 'C:\Windows\System32'.</span>
+<span class="hljs-string">  If it is not present, ensure that you have a CUDA-capable GPU with the</span>
+<span class="hljs-string">  correct driver installed."""</span>)
+
+  cudnn5_found = <span class="hljs-literal">False</span>
+  <span class="hljs-keyword">try</span>:
+    cudnn5 = ctypes.WinDLL(<span class="hljs-string">"cudnn64_5.dll"</span>)
+    cudnn5_found = <span class="hljs-literal">True</span>
+  <span class="hljs-keyword">except</span> OSError:
+    candidate_explanation = <span class="hljs-literal">True</span>
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- Could not load 'cudnn64_5.dll'. The GPU version of TensorFlow</span>
+<span class="hljs-string">  requires that this DLL be installed in a directory that is named in</span>
+<span class="hljs-string">  your %PATH% environment variable. Note that installing cuDNN is a</span>
+<span class="hljs-string">  separate step from installing CUDA, and it is often found in a</span>
+<span class="hljs-string">  different directory from the CUDA DLLs. You may install the</span>
+<span class="hljs-string">  necessary DLL by downloading cuDNN 5.1 from this URL:</span>
+<span class="hljs-string">  https://developer.nvidia.com/cudnn"""</span>)
+
+  cudnn6_found = <span class="hljs-literal">False</span>
+  <span class="hljs-keyword">try</span>:
+    cudnn = ctypes.WinDLL(<span class="hljs-string">"cudnn64_6.dll"</span>)
+    cudnn6_found = <span class="hljs-literal">True</span>
+  <span class="hljs-keyword">except</span> OSError:
+    candidate_explanation = <span class="hljs-literal">True</span>
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cudnn5_found <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> cudnn6_found:
+    print()
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cudnn5_found <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> cudnn6_found:
+      print(<span class="hljs-string">"- Could not find cuDNN."</span>)
+    <span class="hljs-keyword">elif</span> <span class="hljs-keyword">not</span> cudnn5_found:
+      print(<span class="hljs-string">"- Could not find cuDNN 5.1."</span>)
+    <span class="hljs-keyword">else</span>:
+      print(<span class="hljs-string">"- Could not find cuDNN 6."</span>)
+      print(<span class="hljs-string">"""</span>
+<span class="hljs-string">  The GPU version of TensorFlow requires that the correct cuDNN DLL be installed</span>
+<span class="hljs-string">  in a directory that is named in your %PATH% environment variable. Note that</span>
+<span class="hljs-string">  installing cuDNN is a separate step from installing CUDA, and it is often</span>
+<span class="hljs-string">  found in a different directory from the CUDA DLLs. The correct version of</span>
+<span class="hljs-string">  cuDNN depends on your version of TensorFlow:</span>
+<span class="hljs-string">  </span>
+<span class="hljs-string">  * TensorFlow 1.2.1 or earlier requires cuDNN 5.1. ('cudnn64_5.dll')</span>
+<span class="hljs-string">  * TensorFlow 1.3 or later requires cuDNN 6. ('cudnn64_6.dll')</span>
+<span class="hljs-string">    </span>
+<span class="hljs-string">  You may install the necessary DLL by downloading cuDNN from this URL:</span>
+<span class="hljs-string">  https://developer.nvidia.com/cudnn"""</span>)
+    
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> candidate_explanation:
+    print(<span class="hljs-string">"""</span>
+<span class="hljs-string">- All required DLLs appear to be present. Please open an issue on the</span>
+<span class="hljs-string">  TensorFlow GitHub page: https://github.com/tensorflow/tensorflow/issues"""</span>)
+
+  sys.exit(<span class="hljs-number">-1</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+  main()</code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/TensorFlow/">TensorFlow</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/pip/">pip</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/10/source/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ubuntu换源</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/09/Pytorch-AlexNet/">
+                        <span class="hidden-mobile">Pytorch实现AlexNet</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TensorFlow安装问题检测&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

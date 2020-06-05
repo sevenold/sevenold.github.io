@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第七话之函数作用域和匿名函数 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-14 10:00">
+      2018年12月14日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="函数作用域和匿名函数"><a href="#函数作用域和匿名函数" class="headerlink" title="函数作用域和匿名函数"></a>函数作用域和匿名函数</h3><p>本节知识点：<code>匿名函数</code>、<code>闭包</code>、<code>函数作用域</code>、<code>递归函数</code>。</p>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><p>上节我们讲过的filter函数，可以过滤出列表中大于10的数据，但是使用都需要提前定义一个函数，有没有更加简便的方式呢？</p>
+<p>我们先来复习下<code>filter</code>函数：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">1</span>]: s = [<span class="hljs-number">3</span>, <span class="hljs-number">20</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>]
+
+In [<span class="hljs-number">2</span>]: s
+Out[<span class="hljs-number">2</span>]: [<span class="hljs-number">3</span>, <span class="hljs-number">20</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>]
+
+In [<span class="hljs-number">3</span>]: <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun1</span><span class="hljs-params">(x)</span>:</span>
+   ...:     <span class="hljs-keyword">return</span> x&gt;<span class="hljs-number">5</span>
+
+In [<span class="hljs-number">4</span>]: filter(fun1, s)
+Out[<span class="hljs-number">4</span>]: &lt;filter at <span class="hljs-number">0x7f4a2038f080</span>&gt;
+
+In [<span class="hljs-number">5</span>]: list(filter(fun1, s))
+Out[<span class="hljs-number">5</span>]: [<span class="hljs-number">20</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>]</code></pre>
+
+<blockquote>
+<p>那如果有大量的操作是不是很麻烦，那有没有更简单的方法呢？</p>
+</blockquote>
+<h4 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h4><pre><code class="hljs python">In [<span class="hljs-number">6</span>]: s
+Out[<span class="hljs-number">6</span>]: [<span class="hljs-number">3</span>, <span class="hljs-number">20</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>]
+
+In [<span class="hljs-number">7</span>]: list(filter(<span class="hljs-keyword">lambda</span> x: x&gt;<span class="hljs-number">5</span>, s))
+Out[<span class="hljs-number">7</span>]: [<span class="hljs-number">20</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>]</code></pre>
+
+<blockquote>
+<p>Python中，lambda函数也叫匿名函数，及即没有具体名称的函数，它允许快速定义单行函数，类似于C语言的宏，可以用在任何需要函数的地方。这区别于def定义的函数。 </p>
+</blockquote>
+<h4 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h4><blockquote>
+<p>lambda  参数： 表达式</p>
+</blockquote>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><blockquote>
+<p>简单函数： 简单的函数，可以不用使用def定义一个函数，使用匿名函数。</p>
+<p>函数调用：类似于<code>filter</code>、<code>map</code>等函数里面，可以使用匿名函数来处理</p>
+<p>提高开发效率：匿名函数的合理使用能够代码更加简洁。</p>
+</blockquote>
+<pre><code class="hljs python">li = [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">98</span>, <span class="hljs-string">'a'</span>, <span class="hljs-number">5.2</span>]
+print(sorted(li, key=<span class="hljs-keyword">lambda</span> x: x <span class="hljs-keyword">if</span> isinstance(x, (int, float)) <span class="hljs-keyword">else</span> ord(str(x))))</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">[<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5.2</span>, <span class="hljs-number">6</span>, <span class="hljs-string">'a'</span>, <span class="hljs-number">98</span>]</code></pre>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>lambda与def的区别：<br>1）def创建的方法是有名称的，而lambda没有。<br>2）lambda会返回一个函数对象，但这个对象不会赋给一个标识符，而def则会把函数对象赋值给一个变量（函数名）。<br>3）lambda只是一个表达式，而def则是一个语句。<br>4）lambda表达式” : “后面，只能有一个表达式，def则可以有多个。<br>5）像if（三元运算符可以）或for（列表推导式可以）或print等语句不能用于lambda中，def可以。<br>6）lambda一般用来定义简单的函数，而def可以定义复杂的函数。<br>6）lambda函数不能共享给别的程序调用，def可以。 </p>
+</blockquote>
+<h3 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h3><p>在函数里面也有可以定义变量，那函数里面的变量名如果和函数外面的变量名重名，会相互影响吗？</p>
+<h4 id="外部不能访问函数内部变量"><a href="#外部不能访问函数内部变量" class="headerlink" title="外部不能访问函数内部变量"></a>外部不能访问函数内部变量</h4><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun1</span><span class="hljs-params">()</span>:</span>
+	x = <span class="hljs-number">1</span>
+	<span class="hljs-keyword">return</span> x
+print(x) <span class="hljs-comment">#不能访问函数里面</span></code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">NameError: name <span class="hljs-string">'x'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined</code></pre>
+
+
+
+<h4 id="函数内部能够访问函数外部变量"><a href="#函数内部能够访问函数外部变量" class="headerlink" title="函数内部能够访问函数外部变量"></a>函数内部能够访问函数外部变量</h4><pre><code class="hljs python">x = <span class="hljs-number">123</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun2</span><span class="hljs-params">()</span>:</span>
+	print(x)
+	<span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+print(fun2())    <span class="hljs-comment">#函数里面可以使用全局变量</span></code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">123</span>
+<span class="hljs-number">124</span></code></pre>
+
+
+
+<h4 id="函数里面不能修改函数外部变量"><a href="#函数里面不能修改函数外部变量" class="headerlink" title="函数里面不能修改函数外部变量"></a>函数里面不能修改函数外部变量</h4><pre><code class="hljs python">x = <span class="hljs-number">123</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun3</span><span class="hljs-params">()</span>:</span>
+	x = x + <span class="hljs-number">1</span>   <span class="hljs-comment">#直接报错，可以访问但是不能修改 </span>
+	print(x)
+	<span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+print(fun3())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">UnboundLocalError: local variable <span class="hljs-string">'x'</span> referenced before assignment</code></pre>
+
+
+
+<h4 id="函数里面和函数外部变量名相同"><a href="#函数里面和函数外部变量名相同" class="headerlink" title="函数里面和函数外部变量名相同"></a>函数里面和函数外部变量名相同</h4><pre><code class="hljs python">x = <span class="hljs-number">123</span>
+print(x, id(x))
+<span class="hljs-function"><span class="hljs-keyword">def</span>  <span class="hljs-title">fun4</span><span class="hljs-params">()</span>:</span>
+	x = <span class="hljs-number">456</span>
+	print(x, id(x))
+	x += <span class="hljs-number">1</span>
+	<span class="hljs-keyword">return</span> x
+print(fun4())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">123</span> <span class="hljs-number">1722514256</span>
+<span class="hljs-number">456</span> <span class="hljs-number">1982594811888</span>
+<span class="hljs-number">457</span></code></pre>
+
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><h5 id="global"><a href="#global" class="headerlink" title="global"></a><code>global</code></h5><pre><code class="hljs python">x = <span class="hljs-number">123</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun5</span><span class="hljs-params">()</span>:</span>
+	<span class="hljs-keyword">global</span> x   <span class="hljs-comment">#如果非要改变全局的变量</span>
+	x += <span class="hljs-number">1</span>
+	<span class="hljs-keyword">return</span> x
+print(fun5())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">124</span></code></pre>
+
+<blockquote>
+<p>函数内部如果需要修改全局变量，就需要使用global修饰变量。</p>
+</blockquote>
+<h5 id="nonlocal"><a href="#nonlocal" class="headerlink" title="nonlocal"></a><code>nonlocal</code></h5><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span>  <span class="hljs-title">fun6</span><span class="hljs-params">()</span>:</span>
+	x = <span class="hljs-number">123</span>
+	<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun7</span><span class="hljs-params">()</span>:</span>
+		<span class="hljs-keyword">nonlocal</span> x  <span class="hljs-comment">#python2没有，python3独有的</span>
+		x += <span class="hljs-number">1</span>
+		<span class="hljs-keyword">return</span>  x
+	<span class="hljs-keyword">return</span> fun7()
+
+print(fun6())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">124</span></code></pre>
+
+<blockquote>
+<p>在函数嵌套的情况下，同样也有函数作用域的问题，但是在Python3中提供了方便，只需要使用nonlocal就可以在里层函数内部修改外部函数的变量。</p>
+</blockquote>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/95671711.jpg" srcset="/img/loading.gif" alt="1"></p>
+<blockquote>
+<p>函数内部： 函数内部的变量，作业域只在函数内部，函数内部不可以直接更改函数外部的变量。</p>
+<p>global：函数内部如果需要修改全局变量，就需要使用global修饰变量。</p>
+<p>nonlocal:  在函数嵌套的情况下，同样也有函数作用域的问题，但是在Python3中提供了方便，只需要使用nonlocal就可以在里层函数内部修改外部函数的变量。</p>
+</blockquote>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>函数里面可以再定义函数，那函数里面定义的函数可以在外面调用吗？</p>
+<h4 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h4><pre><code class="hljs python">g = <span class="hljs-keyword">lambda</span> x: x&gt;<span class="hljs-number">10</span>
+g
+Out[<span class="hljs-number">3</span>]: &lt;function __main__.&lt;<span class="hljs-keyword">lambda</span>&gt;(x)&gt;
+g(<span class="hljs-number">100</span>)
+Out[<span class="hljs-number">4</span>]: <span class="hljs-literal">True</span>
+h = g
+h
+Out[<span class="hljs-number">6</span>]: &lt;function __main__.&lt;<span class="hljs-keyword">lambda</span>&gt;(x)&gt;
+h(<span class="hljs-number">111</span>)
+Out[<span class="hljs-number">7</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>在进行函数调用的时候需要加上<code>()</code>，才能进行使用。</p>
+</blockquote>
+<h4 id="内嵌函数"><a href="#内嵌函数" class="headerlink" title="内嵌函数"></a>内嵌函数</h4><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun6</span><span class="hljs-params">()</span>:</span>
+    x = <span class="hljs-number">123</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun7</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-keyword">nonlocal</span> x
+        x += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span>  x
+    <span class="hljs-keyword">return</span> fun7
+
+f7=fun6()
+print(f7())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">124</span></code></pre>
+
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>闭包是函数里面嵌套函数，外层函数返回里层函数，这种情况称之为闭包。</p>
+<p>闭包是概念，不是某种函数类型，和递归的概念类似，就是种特殊的函数调用。</p>
+<p>闭包可以得到外层函数的局部变量，是函数内部和函数外部沟通的桥梁。</p>
+</blockquote>
+<h3 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h3><p>函数里面可以自身调用自身吗</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fun8</span><span class="hljs-params">(n)</span>:</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> fun8(n - <span class="hljs-number">1</span>)* n
+print(fun8(<span class="hljs-number">8</span>))</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">40320</span></code></pre>
+
+<blockquote>
+<p>递归中可以函数自身调用自身，但是使用时类似于条件循环一样，要有递归的终止条件</p>
+</blockquote>
+<h4 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>使用递归时，常常可以让代码更加简洁</p>
+<p>递归会占用比较多的内存，当递归次数比较多时，性能就会降低，因此不建议多使用递归</p>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F/">函数作用域</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/">匿名函数</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-class/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第八话之类定义、属性和继承</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-main/">
+                        <span class="hidden-mobile">python第六话之函数基础和函数参数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第七话之函数作用域和匿名函数&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

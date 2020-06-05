@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【三】数字成像系统 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-03-03 10:00">
+      2019年3月3日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="光通量"><a href="#光通量" class="headerlink" title="光通量"></a>光通量</h3><blockquote>
+<p>指人眼所能感觉到的辐射功率，它等于单位时间内某一波段的辐射能量和该波段的相对视见率的乘积。</p>
+<p>符号：Φ</p>
+<p>单位：lm(流明)</p>
+<p>1lm = 0.00146瓦</p>
+</blockquote>
+<h4 id="常见光源的光通量"><a href="#常见光源的光通量" class="headerlink" title="常见光源的光通量"></a>常见光源的光通量</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/66671052.jpg" srcset="/img/loading.gif" alt="光通量"></p>
+<h3 id="辐照度"><a href="#辐照度" class="headerlink" title="辐照度"></a>辐照度</h3><blockquote>
+<p>指投射到一平方米表面上的辐射通量密度。也就是说是到达一平方米表面上，单位时间，单位面积上的辐射能。</p>
+<p>符号：E</p>
+<p>单位：lux(勒克斯)</p>
+<p>1 lux = 1 lm/$m^2$</p>
+</blockquote>
+<h4 id="常见照明环境的辐照度"><a href="#常见照明环境的辐照度" class="headerlink" title="常见照明环境的辐照度"></a>常见照明环境的辐照度</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/6673147.jpg" srcset="/img/loading.gif" alt="辐射度"></p>
+<h3 id="光源类别"><a href="#光源类别" class="headerlink" title="光源类别"></a>光源类别</h3><blockquote>
+<p>按方向</p>
+<ul>
+<li>直射光</li>
+<li>漫射光</li>
+</ul>
+<p>按光谱</p>
+<ul>
+<li>可见光</li>
+<li>近可见光</li>
+</ul>
+<p>其他</p>
+<ul>
+<li>偏振</li>
+<li>其他</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202114.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>【<strong>透视轮廓–背光源</strong>】</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202131.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>发射面是一个漫射面， 均匀性好。可用于镜面反射材料，如晶片或者玻璃基底上的伤痕检测；LCD检测；微小电子元件尺寸、形状、靶标测试</p>
+</blockquote>
+<p>【<strong>表面照明–漫射光源</strong>】</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202143.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>在一定工作距离下，光束集中、亮度高、均匀性好、照射面积相对较小。常用于液晶校正、塑胶容器检查、工作螺孔定位、标签检查、管脚检查、集成电路印字检查等等</p>
+</blockquote>
+<p>【<strong>颜色光源</strong>】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/88508873.jpg" srcset="/img/loading.gif" alt="互补光源"></p>
+<blockquote>
+<p>如果希望更加鲜明地突出某些颜色，则选择色环上相对应的互补颜色光源照明，这样就可以明显的提高图像的对比度。</p>
+</blockquote>
+<h3 id="RGB"><a href="#RGB" class="headerlink" title="RGB"></a>RGB</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/81330727.jpg" srcset="/img/loading.gif" alt="rgb"></p>
+<blockquote>
+<p>为生活中所最常见的三基色，也是和视觉感受一一致的，很多颜色都是由这三基色产生。</p>
+<p>三基色: 红、绿、蓝</p>
+<p>三色相交互是白色。</p>
+</blockquote>
+<h3 id="CYMK"><a href="#CYMK" class="headerlink" title="CYMK"></a>CYMK</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/84796285.jpg" srcset="/img/loading.gif" alt="cymk"></p>
+<blockquote>
+<p>补色模型</p>
+<p>基色变为基本三基色的补色–红色–&gt;青色、绿色–&gt;黄色、蓝色–&gt;品红</p>
+<p>三基色：青、黄、品红</p>
+<p>三色交互是黑色。</p>
+</blockquote>
+<h3 id="HSI"><a href="#HSI" class="headerlink" title="HSI"></a>HSI</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/29068085.jpg" srcset="/img/loading.gif" alt="hsi"></p>
+<blockquote>
+<ul>
+<li>色调H：描述纯色的属性（红、黄）。</li>
+<li>饱和度S：表示的是一种纯色被白光稀释的程度的度量。</li>
+<li>亮度I：体现了无色的光照强度的概念，是一个主观的描述。</li>
+</ul>
+</blockquote>
+<p>【与RGB<strong>的换算关系</strong>】</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202246.png" srcset="/img/loading.gif" alt=""></p>
+<p><code>代码演示</code></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+
+<span class="hljs-comment"># 加载图片</span>
+img = cv2.imread(<span class="hljs-string">'2.jpg'</span>)
+<span class="hljs-comment"># 缩放+灰度化</span>
+sizeImage = cv2.pyrDown(img)
+grayImage = cv2.cvtColor(sizeImage, cv2.COLOR_BGR2GRAY)
+
+cv2.imshow(<span class="hljs-string">"source image"</span>, sizeImage)
+cv2.imshow(<span class="hljs-string">"gray"</span>, grayImage)
+<span class="hljs-comment"># RGB通道分离--opencv中，RGB三个通道是反过来的</span>
+rgbImage = cv2.split(sizeImage)
+cv2.imshow(<span class="hljs-string">"R"</span>, rgbImage[<span class="hljs-number">2</span>])
+cv2.imshow(<span class="hljs-string">"G"</span>, rgbImage[<span class="hljs-number">1</span>])
+cv2.imshow(<span class="hljs-string">"B"</span>, rgbImage[<span class="hljs-number">0</span>])
+<span class="hljs-comment"># 分离后为单通道，相当于分离通道的同时把其他两个通道填充了相同的数值。</span>
+<span class="hljs-comment"># 比如红色通道，分离出红色通道的同时，绿色和蓝色被填充为和红色相同的数值，这样一来就只有黑白灰了。</span>
+<span class="hljs-comment"># 可以进行观察，会发现原图中颜色越接近红色的地方在红色通道越接近白色。</span>
+<span class="hljs-comment"># 在纯红的地方在红色通道会出现纯白。</span>
+<span class="hljs-comment"># R值为255 -&gt; RGB(255，255，255)，为纯白</span>
+
+<span class="hljs-comment"># HSI颜色模型+通道分离</span>
+hsv = cv2.cvtColor(sizeImage, cv2.COLOR_BGR2HSV)
+hsvChannels = cv2.split(hsv)
+cv2.imshow(<span class="hljs-string">"Hue"</span>, hsvChannels[<span class="hljs-number">0</span>])
+cv2.imshow(<span class="hljs-string">"Saturation"</span>, hsvChannels[<span class="hljs-number">1</span>])
+cv2.imshow(<span class="hljs-string">"Value"</span>, hsvChannels[<span class="hljs-number">2</span>])
+
+cv2.waitKey(<span class="hljs-number">0</span>)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309210844.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="CCD传感器基本原理"><a href="#CCD传感器基本原理" class="headerlink" title="CCD传感器基本原理"></a>CCD传感器基本原理</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202350.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="彩色图像传感器的基本原理"><a href="#彩色图像传感器的基本原理" class="headerlink" title="彩色图像传感器的基本原理"></a>彩色图像传感器的基本原理</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/45875188.jpg" srcset="/img/loading.gif" alt="彩色  图像传感器"></p>
+<blockquote>
+<p>最底层的感光区同样是采用CCD图像传感器</p>
+<p>彩色滤色片阵列(Color Filter Array),也被称为拜尔滤色镜(Bayer Filter)，排列在感光区上方。</p>
+<p>传感器不同，排列方式就不同。</p>
+</blockquote>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/152560.jpg" srcset="/img/loading.gif" alt="Bayer"></p>
+<blockquote>
+<p>这个单元包含了三原色：红(R),绿(G),蓝(B)。对于单个像素点，只有一种特定的彩色滤色片放置在其上方。彩色图像的像素点不仅包含通常的感光区域还包括了一个彩色滤色片。因为人眼对绿色的敏感度很高，所以我们使用了更多的绿色滤色片，类似棋盘格的形式来摆放绿色滤色片，以期得到有着更高空间分辨率的图像。红色和蓝色滤色片每隔一行与绿色滤色片错落放置。</p>
+</blockquote>
+<h3 id="γ校正"><a href="#γ校正" class="headerlink" title="γ校正"></a>γ校正</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/21721761.jpg" srcset="/img/loading.gif" alt="校正"></p>
+<blockquote>
+<p>图像传感器输出时经过γ校正，以符合人的视觉习惯；存储时还原回原有的RGB值。</p>
+</blockquote>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/22073630.jpg" srcset="/img/loading.gif" alt="校正环节"></p>
+<h3 id="图像传输的方式"><a href="#图像传输的方式" class="headerlink" title="图像传输的方式"></a>图像传输的方式</h3><blockquote>
+<ul>
+<li>模拟视频传输：采用同轴电缆等方式，将亮度和色度分离，在不同频带调制后在同一信号线上传输。常用的为同轴电缆，同轴电缆的中心导线用于传输信号，外层是金属屏蔽网。</li>
+<li>RGB方式：显示器，投影</li>
+<li>数字传输（长距离）：光纤高清信号，网线</li>
+<li>数字传输（短距离）：USB，火线，HDMI</li>
+</ul>
+</blockquote>
+<h3 id="模拟、数字视频传输接口"><a href="#模拟、数字视频传输接口" class="headerlink" title="模拟、数字视频传输接口"></a>模拟、数字视频传输接口</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202521.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="常见的图像和视频压缩标准"><a href="#常见的图像和视频压缩标准" class="headerlink" title="常见的图像和视频压缩标准"></a>常见的图像和视频压缩标准</h3><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-11/87798349.jpg" srcset="/img/loading.gif" alt="标准"></p>
+<h3 id="显示设备及参数（液晶显示）"><a href="#显示设备及参数（液晶显示）" class="headerlink" title="显示设备及参数（液晶显示）"></a>显示设备及参数（液晶显示）</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190309202658.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<ul>
+<li>分辨率（最佳分辨率）及显示器尺寸</li>
+<li>亮度和对比度：LCD的亮度以流明/平方米（cd/m2）度量，对比度是直接反映LCD显示器能否现丰富的色阶的参数</li>
+<li>响应时间：响应时间是LCD显示器的一个重要的参数，它指的是LCD显示器对于输入信号的反应时间。</li>
+<li>坏点：如果液晶显示屏中某一个发光单元有问题就会出现总丌透光、总透光、半透光等现象，这就是所谓的“坏点”</li>
+</ul>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%AD%97%E6%88%90%E5%83%8F%E7%B3%BB%E7%BB%9F/">数字成像系统</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_filter/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【四】图像滤波</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/cv-visualsystem/">
+                        <span class="hidden-mobile">【二】视觉系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【三】数字成像系统&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

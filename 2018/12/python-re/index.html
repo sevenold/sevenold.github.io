@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第十四话之正则 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-21 10:00">
+      2018年12月21日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h3><p>在实际的应用中，我们会经常得到用户的输入，在得到用户的输入之后，需要我们对输入进行判断时候合法，比如判断输入的手机号码，从形式上来看是争取的呢？</p>
+<pre><code class="hljs python">mu = input(<span class="hljs-string">'请输入电话号码：'</span>)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phone_number</span><span class="hljs-params">(st)</span>:</span>
+    st = str(st)
+    <span class="hljs-keyword">if</span> len(st) == <span class="hljs-number">11</span> <span class="hljs-keyword">and</span> st.startswith(<span class="hljs-string">'1'</span>) <span class="hljs-keyword">and</span> st.isdigit() :
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">'Phone Number Error'</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+print(phone_number(mu))</code></pre>
+
+<pre><code class="hljs python">请输入电话号码：<span class="hljs-number">12332112345</span>
+<span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>那有什么简单的方法呢？</p>
+</blockquote>
+<h4 id="正则搜索"><a href="#正则搜索" class="headerlink" title="正则搜索"></a>正则搜索</h4><h5 id="match"><a href="#match" class="headerlink" title="match"></a><code>match</code></h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> re
+a = <span class="hljs-string">'12345678900'</span>
+rm = re.match(<span class="hljs-string">r'1\d&#123;10&#125;'</span>,a)
+print(rm)</code></pre>
+
+<pre><code class="hljs python">&lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">11</span>), match=<span class="hljs-string">'12345678900'</span>&gt;</code></pre>
+
+<h5 id="search"><a href="#search" class="headerlink" title="search"></a><code>search</code></h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> re
+a = <span class="hljs-string">'12345678900'</span>
+rs = re.search(<span class="hljs-string">r'1\d&#123;10&#125;'</span>,a)
+print(rs)</code></pre>
+
+<pre><code class="hljs python">&lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">11</span>), match=<span class="hljs-string">'12345678900'</span>&gt;</code></pre>
+
+<blockquote>
+<p>通过对比，可以很明显的发现，下面这种方式能够简单快捷的匹配出电话号码</p>
+</blockquote>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>正则表达式：正则表达式是一种通用的用来简洁表达一组字符串的表达式，因此，正则表达式是和python无关的，在其他的语言或者不同的系统中，是通用的。</p>
+<p>匹配：通过正则表达式就可以去匹配现有的字符串。</p>
+<p>应用：通过正则匹配，可以迅速的过滤出我们需要的全部或者一部分字符串，查找文本中的特质值(如：病毒)等等。</p>
+</blockquote>
+<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><p>正则表达式该如何书写呢？</p>
+<p>观察如下两个例子：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">3</span>]: re.search(<span class="hljs-string">'a'</span>, <span class="hljs-string">'abc'</span>)
+Out[<span class="hljs-number">3</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;
+
+In [<span class="hljs-number">5</span>]: re.search(<span class="hljs-string">'.'</span>, <span class="hljs-string">'ab.cd.de'</span>)
+Out[<span class="hljs-number">5</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;</code></pre>
+
+<blockquote>
+<p>在第一个例子中，可以匹配出a</p>
+<p>但是下面这个不能匹配，但是下面这个没有匹配出点，而是匹配到 a </p>
+<p>这个 .  不是不能匹配到点，而是匹配任意字符，这个点已经被赋予了特殊的含义，  .(点)就是一个元字符</p>
+</blockquote>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-21/81430927.jpg" srcset="/img/loading.gif" alt="元字符"></p>
+<blockquote>
+<p>正因为有这些元字符的存在，正则表达式才变得强大.</p>
+</blockquote>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-21/73314241.jpg" srcset="/img/loading.gif" alt="元字符含义"></p>
+<h4 id="b"><a href="#b" class="headerlink" title="\b"></a>\b</h4><pre><code class="hljs python">In [<span class="hljs-number">23</span>]: re.search(<span class="hljs-string">'\bs\b'</span>, <span class="hljs-string">'abcdsd s we'</span>)
+
+In [<span class="hljs-number">24</span>]: re.search(<span class="hljs-string">r'\bs\b'</span>, <span class="hljs-string">'abcdsd s we'</span>)
+Out[<span class="hljs-number">24</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">7</span>, <span class="hljs-number">8</span>), match=<span class="hljs-string">'s'</span>&gt;</code></pre>
+
+<blockquote>
+<p>在正则中，加上r 去掉字符串的转义，以免影响正则的使用</p>
+</blockquote>
+<blockquote>
+<p>\b匹配一个单词边界，也就是指单词和空格间的位置。</p>
+</blockquote>
+<h4 id=""><a href="#" class="headerlink" title="."></a>.</h4><pre><code class="hljs python">In [<span class="hljs-number">26</span>]: re.search(<span class="hljs-string">r'.'</span>, <span class="hljs-string">'abcdsd s we'</span>)
+Out[<span class="hljs-number">26</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;
+
+In [<span class="hljs-number">27</span>]: re.search(<span class="hljs-string">r'.'</span>, <span class="hljs-string">'\nabcdsd s we'</span>)
+Out[<span class="hljs-number">27</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), match=<span class="hljs-string">'a'</span>&gt;</code></pre>
+
+<blockquote>
+<p>匹配除换行符之外的所有的字符</p>
+</blockquote>
+<h4 id="d"><a href="#d" class="headerlink" title="\d"></a>\d</h4><pre><code class="hljs python">In [<span class="hljs-number">28</span>]: re.search(<span class="hljs-string">r'\d'</span>,<span class="hljs-string">r'abc141342d'</span>)
+Out[<span class="hljs-number">28</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), match=<span class="hljs-string">'1'</span>&gt;</code></pre>
+
+<blockquote>
+<p>匹配0~9的数字   </p>
+</blockquote>
+<h4 id="s"><a href="#s" class="headerlink" title="\s"></a>\s</h4><pre><code class="hljs python">In [<span class="hljs-number">30</span>]: re.search(<span class="hljs-string">r'\s'</span>,<span class="hljs-string">r'abc 141342d'</span>)
+Out[<span class="hljs-number">30</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), match=<span class="hljs-string">' '</span>&gt;</code></pre>
+
+<blockquote>
+<p>匹配任意的空白符，包括空格，制表符(Tab)，换行符等</p>
+</blockquote>
+<h4 id="w"><a href="#w" class="headerlink" title="\w"></a>\w</h4><pre><code class="hljs python">In [<span class="hljs-number">31</span>]: re.search(<span class="hljs-string">r'\w'</span>,<span class="hljs-string">r'abc 141342d'</span>)
+Out[<span class="hljs-number">31</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;</code></pre>
+
+<blockquote>
+<p>匹配字母或数字或下划线或汉字等 \b   表示单词的边界</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">32</span>]: re.search(<span class="hljs-string">r'\bc\b'</span>,<span class="hljs-string">r'abc c 342d'</span>)
+Out[<span class="hljs-number">32</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>), match=<span class="hljs-string">'c'</span>&gt;
+
+In [<span class="hljs-number">33</span>]: re.search(<span class="hljs-string">r'\bbcb\b'</span>,<span class="hljs-string">r'abc bcb 342d'</span>)
+Out[<span class="hljs-number">33</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">4</span>, <span class="hljs-number">7</span>), match=<span class="hljs-string">'bcb'</span>&gt;</code></pre>
+
+
+
+<h4 id="-1"><a href="#-1" class="headerlink" title="\."></a>\.</h4><pre><code class="hljs python">In [<span class="hljs-number">34</span>]: re.search(<span class="hljs-string">r'\.'</span>,<span class="hljs-string">r'ab.c .bcb 342d'</span>)
+Out[<span class="hljs-number">34</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>), match=<span class="hljs-string">'.'</span>&gt;</code></pre>
+
+<blockquote>
+<p>表示匹配点号本身</p>
+</blockquote>
+<h4 id="D、-S、-W、-B"><a href="#D、-S、-W、-B" class="headerlink" title="\D、\S、\W、\B"></a>\D、\S、\W、\B</h4><pre><code class="hljs python">In [<span class="hljs-number">35</span>]: re.search(<span class="hljs-string">r'\D'</span>,<span class="hljs-string">'abc.1213'</span>)
+Out[<span class="hljs-number">35</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;
+
+In [<span class="hljs-number">36</span>]: re.search(<span class="hljs-string">r'\S'</span>,<span class="hljs-string">'abc.1213'</span>)
+Out[<span class="hljs-number">36</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;
+
+In [<span class="hljs-number">37</span>]: re.search(<span class="hljs-string">r'\W'</span>,<span class="hljs-string">'abc.1213'</span>)
+Out[<span class="hljs-number">37</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), match=<span class="hljs-string">'.'</span>&gt;
+
+In [<span class="hljs-number">38</span>]: re.search(<span class="hljs-string">r'\B'</span>,<span class="hljs-string">'abc.1213'</span>)
+Out[<span class="hljs-number">38</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">''</span>&gt;</code></pre>
+
+<blockquote>
+<p>是与小写的相反的作用</p>
+</blockquote>
+<h4 id="D"><a href="#D" class="headerlink" title="\D"></a>\D</h4><pre><code class="hljs python">In [<span class="hljs-number">39</span>]: re.search(<span class="hljs-string">r'\D'</span>,<span class="hljs-string">'abc.1213'</span>)
+Out[<span class="hljs-number">39</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'a'</span>&gt;</code></pre>
+
+<blockquote>
+<p>除了数字以外的字符</p>
+</blockquote>
+<h4 id="-2"><a href="#-2" class="headerlink" title="^"></a>^</h4><pre><code class="hljs python">In [<span class="hljs-number">41</span>]: re.search(<span class="hljs-string">r'^ab'</span>,<span class="hljs-string">r'abc 141342d'</span>)
+Out[<span class="hljs-number">41</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>), match=<span class="hljs-string">'ab'</span>&gt;</code></pre>
+
+<blockquote>
+<p>脱字符，匹配输入字符串的开始的位置</p>
+</blockquote>
+<h4 id="-3"><a href="#-3" class="headerlink" title="$"></a>$</h4><pre><code class="hljs python">In [<span class="hljs-number">42</span>]: re.search(<span class="hljs-string">r'd$'</span>,<span class="hljs-string">r'abc 141342d'</span>)
+Out[<span class="hljs-number">42</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">10</span>, <span class="hljs-number">11</span>), match=<span class="hljs-string">'d'</span>&gt;</code></pre>
+
+<blockquote>
+<p>匹配输入字符串的结束位置</p>
+</blockquote>
+<h4 id="-4"><a href="#-4" class="headerlink" title="{}"></a>{}</h4><pre><code class="hljs python">In [<span class="hljs-number">43</span>]: re.search(<span class="hljs-string">r'\d&#123;1,3&#125;'</span>,<span class="hljs-string">r'abc 141 qw 342d'</span>)  <span class="hljs-comment"># 对象，找到一个就不找了</span>
+Out[<span class="hljs-number">43</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">4</span>, <span class="hljs-number">7</span>), match=<span class="hljs-string">'141'</span>&gt;
+
+In [<span class="hljs-number">44</span>]: re.findall(<span class="hljs-string">r'\d&#123;1,3&#125;'</span>,<span class="hljs-string">r'abc 141 qw 342d'</span>)  <span class="hljs-comment">#列表，全部找出来</span>
+Out[<span class="hljs-number">44</span>]: [<span class="hljs-string">'141'</span>, <span class="hljs-string">'342'</span>]
+
+In [<span class="hljs-number">45</span>]: re.findall(<span class="hljs-string">r'\d&#123;1,&#125;'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">45</span>]: [<span class="hljs-string">'141'</span>, <span class="hljs-string">'34325252'</span>]
+
+In [<span class="hljs-number">46</span>]: re.findall(<span class="hljs-string">r'\d&#123;,5&#125;'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">46</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'141'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'34325'</span>, <span class="hljs-string">'252'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]
+
+In [<span class="hljs-number">47</span>]: re.findall(<span class="hljs-string">r'\d&#123;0,3&#125;'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">47</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'141'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'343'</span>, <span class="hljs-string">'252'</span>, <span class="hljs-string">'52'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]</code></pre>
+
+<blockquote>
+<p>{M,N}   M和N 为非负整数，其中M&lt;=N 表示前面的匹配M~N次</p>
+<p>{M，}   表示需要匹配M次</p>
+<p>{，N}    等价于{0~N}</p>
+<p>{N}       表示需要匹配N次</p>
+</blockquote>
+<h4 id="-5"><a href="#-5" class="headerlink" title="*"></a>*</h4><pre><code class="hljs python">In [<span class="hljs-number">49</span>]: re.findall(<span class="hljs-string">r'\d*'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">49</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'141'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'34325252'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]
+
+In [<span class="hljs-number">50</span>]: re.findall(<span class="hljs-string">r'\d&#123;0,&#125;'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">50</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'141'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'34325252'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]</code></pre>
+
+<blockquote>
+<p>匹配前面的子表达式零次或多次，等价于{0，}</p>
+</blockquote>
+<h4 id="-6"><a href="#-6" class="headerlink" title="+"></a>+</h4><pre><code class="hljs python">In [<span class="hljs-number">51</span>]: re.findall(<span class="hljs-string">r'\d+'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">51</span>]: [<span class="hljs-string">'141'</span>, <span class="hljs-string">'34325252'</span>]
+
+In [<span class="hljs-number">52</span>]: re.findall(<span class="hljs-string">r'\d&#123;1,&#125;'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">52</span>]: [<span class="hljs-string">'141'</span>, <span class="hljs-string">'34325252'</span>]</code></pre>
+
+<blockquote>
+<p>匹配前面的子表达式一次或多次，等价于{1，} </p>
+</blockquote>
+<h4 id="-7"><a href="#-7" class="headerlink" title="?"></a>?</h4><pre><code class="hljs python">In [<span class="hljs-number">57</span>]: re.findall(<span class="hljs-string">r'\d&#123;0,1&#125;'</span>,<span class="hljs-string">r'ab5252d'</span>)
+Out[<span class="hljs-number">57</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]
+
+In [<span class="hljs-number">58</span>]: re.findall(<span class="hljs-string">r'\d?'</span>,<span class="hljs-string">r'ab5252d'</span>)
+Out[<span class="hljs-number">58</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]</code></pre>
+
+<blockquote>
+<p>匹配前面的子表达式零次或一次，等价于{0,1}</p>
+</blockquote>
+<h4 id="贪婪与非贪婪"><a href="#贪婪与非贪婪" class="headerlink" title="贪婪与非贪婪"></a>贪婪与非贪婪</h4><h5 id="、-？"><a href="#、-？" class="headerlink" title="*?、+？"></a>*?、+？</h5><pre><code class="hljs python">In [<span class="hljs-number">61</span>]: re.findall(<span class="hljs-string">r'\d*?'</span>,<span class="hljs-string">r'ab5252d'</span>)
+Out[<span class="hljs-number">61</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>]
+
+In [<span class="hljs-number">62</span>]: re.findall(<span class="hljs-string">r'\d+?'</span>,<span class="hljs-string">r'ab5252d'</span>)
+Out[<span class="hljs-number">62</span>]: [<span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>]</code></pre>
+
+<pre><code class="hljs python">In [<span class="hljs-number">65</span>]: st =<span class="hljs-string">"&lt;html&gt;aaaa&lt;/html&gt;&lt;td&gt;bbbb&lt;/td&gt;"</span>
+
+In [<span class="hljs-number">66</span>]: re.findall(<span class="hljs-string">r'&lt;.*&gt;'</span>,st)
+Out[<span class="hljs-number">66</span>]: [<span class="hljs-string">'&lt;html&gt;aaaa&lt;/html&gt;&lt;td&gt;bbbb&lt;/td&gt;'</span>]
+
+In [<span class="hljs-number">67</span>]: re.findall(<span class="hljs-string">r'&lt;.*?&gt;'</span>,st)
+Out[<span class="hljs-number">67</span>]: [<span class="hljs-string">'&lt;html&gt;'</span>, <span class="hljs-string">'&lt;/html&gt;'</span>, <span class="hljs-string">'&lt;td&gt;'</span>, <span class="hljs-string">'&lt;/td&gt;'</span>]</code></pre>
+
+<blockquote>
+<p>在非贪婪模式下，始终找最短匹配</p>
+</blockquote>
+<h4 id="字符集合"><a href="#字符集合" class="headerlink" title="[]字符集合"></a>[]字符集合</h4><blockquote>
+<p>[]   字符类，将要匹配的一类字符集放在[]里面</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">68</span>]: re.findall(<span class="hljs-string">r'[\d]'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">68</span>]: [<span class="hljs-string">'1'</span>, <span class="hljs-string">'4'</span>, <span class="hljs-string">'1'</span>, <span class="hljs-string">'3'</span>, <span class="hljs-string">'4'</span>, <span class="hljs-string">'3'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>]
+
+In [<span class="hljs-number">69</span>]: re.findall(<span class="hljs-string">r'[0-9]'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">69</span>]: [<span class="hljs-string">'1'</span>, <span class="hljs-string">'4'</span>, <span class="hljs-string">'1'</span>, <span class="hljs-string">'3'</span>, <span class="hljs-string">'4'</span>, <span class="hljs-string">'3'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'5'</span>, <span class="hljs-string">'2'</span>]
+
+In [<span class="hljs-number">70</span>]: re.findall(<span class="hljs-string">r'[a-z]'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">70</span>]: [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'q'</span>, <span class="hljs-string">'w'</span>, <span class="hljs-string">'d'</span>]</code></pre>
+
+<blockquote>
+<p>[ . ? * ( ) {} ]          匹配里面的这些符号</p>
+<p>[0-9]                    匹配0到9的数字相当于\d</p>
+<p>[^\d]                    匹配除数字以外的字符，相当于\D取反的意思</p>
+<p>[a-z]                    匹配所有的小写字母</p>
+<p>[^a-z]                   匹配非小写字母</p>
+<p> |                          相当于或（or）分支条件</p>
+</blockquote>
+<h4 id="分组匹配"><a href="#分组匹配" class="headerlink" title="()分组匹配"></a>()分组匹配</h4><blockquote>
+<p>() 分组，将要匹配的一类字符集放在()组成一个小组</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">75</span>]: re.findall(<span class="hljs-string">r'(32)'</span>,<span class="hljs-string">r'abc 141 qw 34325252d'</span>)
+Out[<span class="hljs-number">75</span>]: [<span class="hljs-string">'32'</span>]
+
+In [<span class="hljs-number">76</span>]: re.findall(<span class="hljs-string">r'a(3|2)'</span>,<span class="hljs-string">r'a3 a2 a23 '</span>)
+Out[<span class="hljs-number">76</span>]: [<span class="hljs-string">'3'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'2'</span>]
+
+In [<span class="hljs-number">77</span>]: re.findall(<span class="hljs-string">r'a([32])'</span>,<span class="hljs-string">r'a3 a2 a23 '</span>)
+Out[<span class="hljs-number">77</span>]: [<span class="hljs-string">'3'</span>, <span class="hljs-string">'2'</span>, <span class="hljs-string">'2'</span>]</code></pre>
+
+<blockquote>
+<p>分组匹配匹配() 内的字符串组合</p>
+</blockquote>
+<h3 id="re模块"><a href="#re模块" class="headerlink" title="re模块"></a>re模块</h3><h4 id="compile"><a href="#compile" class="headerlink" title="compile"></a>compile</h4><blockquote>
+<p>编译正则表达式为模式对象</p>
+<p>当正则表达式多次使用，可以采用这种方式</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">78</span>]: r = re.compile(<span class="hljs-string">r'\das'</span>)
+
+In [<span class="hljs-number">79</span>]: r.findall(<span class="hljs-string">'1as234'</span>)
+Out[<span class="hljs-number">79</span>]: [<span class="hljs-string">'1as'</span>]</code></pre>
+
+<h4 id="sub"><a href="#sub" class="headerlink" title="sub"></a>sub</h4><blockquote>
+<p>字符串替换</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">80</span>]: re.sub(<span class="hljs-string">'i'</span>,<span class="hljs-string">'o'</span>,<span class="hljs-string">'pythin***pythin'</span>,<span class="hljs-number">1</span>)
+Out[<span class="hljs-number">80</span>]: <span class="hljs-string">'python***pythin'</span>
+
+In [<span class="hljs-number">81</span>]: re.sub(<span class="hljs-string">'i'</span>,<span class="hljs-string">'o'</span>,<span class="hljs-string">'pythin***pythin'</span>,<span class="hljs-number">2</span>)
+Out[<span class="hljs-number">81</span>]: <span class="hljs-string">'python***python'</span>
+
+In [<span class="hljs-number">82</span>]: re.sub(<span class="hljs-string">'i'</span>,<span class="hljs-string">'o'</span>,<span class="hljs-string">'pythin***pythin'</span>)
+Out[<span class="hljs-number">82</span>]: <span class="hljs-string">'python***python'</span></code></pre>
+
+<h4 id="match-1"><a href="#match-1" class="headerlink" title="match"></a>match</h4><blockquote>
+<p>从字符串开始位置匹配</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">83</span>]: re.match(<span class="hljs-string">r'\d'</span>,<span class="hljs-string">'123ad'</span>)
+Out[<span class="hljs-number">83</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), match=<span class="hljs-string">'1'</span>&gt;
+
+In [<span class="hljs-number">84</span>]: re.match(<span class="hljs-string">r'\d'</span>,<span class="hljs-string">'a123ad'</span>)</code></pre>
+
+<h4 id="group"><a href="#group" class="headerlink" title="group"></a>group</h4><blockquote>
+<p>得到匹配到的元素</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">94</span>]: re.search(<span class="hljs-string">r'\d&#123;1,3&#125;'</span>,<span class="hljs-string">r'abc 141 qw 342d'</span>)
+Out[<span class="hljs-number">94</span>]: &lt;_sre.SRE_Match object; span=(<span class="hljs-number">4</span>, <span class="hljs-number">7</span>), match=<span class="hljs-string">'141'</span>&gt;
+
+In [<span class="hljs-number">95</span>]: li = re.search(<span class="hljs-string">r'\d&#123;1,3&#125;'</span>,<span class="hljs-string">r'abc 141 qw 342d'</span>)
+
+In [<span class="hljs-number">96</span>]: li.group()
+Out[<span class="hljs-number">96</span>]: <span class="hljs-string">'141'</span></code></pre>
+
+<h4 id="start"><a href="#start" class="headerlink" title="start"></a>start</h4><blockquote>
+<p>得到开始位置</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">97</span>]: li.start()
+Out[<span class="hljs-number">97</span>]: <span class="hljs-number">4</span></code></pre>
+
+<h4 id="end"><a href="#end" class="headerlink" title="end"></a>end</h4><blockquote>
+<p>得到结束位置</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">98</span>]: li.end()
+Out[<span class="hljs-number">98</span>]: <span class="hljs-number">7</span></code></pre>
+
+<h4 id="span"><a href="#span" class="headerlink" title="span"></a>span</h4><blockquote>
+<p>得到位置范围</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">99</span>]: li.span()
+Out[<span class="hljs-number">99</span>]: (<span class="hljs-number">4</span>, <span class="hljs-number">7</span>)</code></pre>
+
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><blockquote>
+<p>这几个方法在search中也存在</p>
+</blockquote>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><blockquote>
+<p>在re中也有和字符串一样的split方法</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">85</span>]: re.split(<span class="hljs-string">r'\s'</span>,<span class="hljs-string">' cee'</span>)
+Out[<span class="hljs-number">85</span>]: [<span class="hljs-string">''</span>, <span class="hljs-string">'cee'</span>]
+
+In [<span class="hljs-number">86</span>]: re.split(<span class="hljs-string">r'\s'</span>,<span class="hljs-string">'aa bb cc dd'</span>)
+Out[<span class="hljs-number">86</span>]: [<span class="hljs-string">'aa'</span>, <span class="hljs-string">'bb'</span>, <span class="hljs-string">'cc'</span>, <span class="hljs-string">'dd'</span>]
+
+In [<span class="hljs-number">87</span>]: re.split(<span class="hljs-string">r'[\s|c]'</span>,<span class="hljs-string">'aa bb c dd ee'</span>)
+Out[<span class="hljs-number">87</span>]: [<span class="hljs-string">'aa'</span>, <span class="hljs-string">'bb'</span>, <span class="hljs-string">''</span>, <span class="hljs-string">''</span>, <span class="hljs-string">'dd'</span>, <span class="hljs-string">'ee'</span>]</code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%AD%A3%E5%88%99/">正则</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-reptile/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第十五话之requests库及爬虫案例</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-model/">
+                        <span class="hidden-mobile">python第十三话之列表推导式、迭代器生成器，模块和包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第十四话之正则&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

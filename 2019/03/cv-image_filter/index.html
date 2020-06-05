@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【四】图像滤波 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-03-04 10:00">
+      2019年3月4日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="图像滤波基本原理"><a href="#图像滤波基本原理" class="headerlink" title="图像滤波基本原理"></a>图像滤波基本原理</h3><blockquote>
+<p>图像信息在采集过程中往往受到各种噪声源的干扰，这些噪声在图像上的常常表现为一些孤立像素点，这可理解为像素的灰度是空间相关的，即噪声点像素灰度与它们临近像素的灰度有着显著不同。通常，一般的前置图像处理后的信息仍然带有后续所不希望夹带的孤立像素点，这种干扰或孤立像素点如不经过滤波处理，会对以后的图像区域分割、分析和判断带来影响。</p>
+</blockquote>
+<h3 id="基本图像预处理滤波方法"><a href="#基本图像预处理滤波方法" class="headerlink" title="基本图像预处理滤波方法"></a>基本图像预处理滤波方法</h3><h4 id="图像滤波与卷积"><a href="#图像滤波与卷积" class="headerlink" title="图像滤波与卷积"></a><strong>图像滤波与卷积</strong></h4><h5 id="【公式定义】"><a href="#【公式定义】" class="headerlink" title="【公式定义】"></a>【<strong>公式定义</strong>】</h5><blockquote>
+<p>与1维信号滤波类似，图像滤波由卷积定义。</p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/01/13/FvLb6O.png" srcset="/img/loading.gif" alt="卷积公式"></p>
+<blockquote>
+<p>在图像中， 以模板形式定义。</p>
+</blockquote>
+<p><img src="https://s2.ax1x.com/2019/01/13/FvLX0H.png" srcset="/img/loading.gif" alt="卷积公式模板"></p>
+<blockquote>
+<p>注意：如果滤波器是对称的，那么两个公式就是等价的。</p>
+<p>​        $f(x, y)$为图片原始数据、$g(x, y)$为卷积核。</p>
+</blockquote>
+<h5 id="【计算方式】"><a href="#【计算方式】" class="headerlink" title="【计算方式】"></a>【<strong>计算方式</strong>】</h5><p><strong>举个栗子</strong>：</p>
+<p>假设一张图像有 5x5 个像素，1 代表白，0 代表黑，这幅图像被视为 5x5 的单色图像。现在用一个由随机地 0 和 1 组成的 3x3 矩阵去和图像中的子区域做Hadamard乘积，每次迭代移动一个像素，这样该乘法会得到一个新的 3x3 的矩阵。下面的动图展示了这个过程。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133041.png" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>直观上来理解</strong>：</p>
+<ul>
+<li>用一个小的权重矩阵去覆盖输入数据，对应位置元素加权相乘，其和作为结果的一个像素点。</li>
+<li>这个权重在输入数据上滑动，形成一张新的矩阵</li>
+<li>这个权重矩阵就被称为<code>卷积核</code>（convolution kernel）</li>
+<li>其覆盖的位置称为<code>感受野</code>（receptive fileld ）</li>
+<li>生成的新矩阵叫做<code>特征图</code>（feature map）</li>
+</ul>
+<p>分解开来，就如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133042.gif" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>其中：</strong></p>
+<ul>
+<li><p>滑动的像素数量就叫做<code>步长</code>（stride），步长为1，表示跳过1个像素，步长为2，就表示跳过2个像素，以此类推</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133043.png" srcset="/img/loading.gif" alt="images"></p>
+</li>
+<li><p>以卷积核的边还是中心点作为开始/结束的依据，决定了卷积的<code>补齐</code>（padding）方式。前面我们所举的栗子是<code>valid</code>方式，而<code>same</code>方式则会在图像的边缘用0补齐，如将前面的<code>valid</code>改为<code>same</code>方式，如图所示：</p>
+</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133044.gif" srcset="/img/loading.gif" alt="images"></p>
+<p>其采样方式对应变换为：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133045.gif" srcset="/img/loading.gif" alt="images"></p>
+<ul>
+<li>我们前面所提到的输入图像都是灰色的，只有一个通道，但是我们一般会遇到输入通道不只有一个，那么卷积核是三阶的，也就是说所有的通道的结果做累加。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133046.gif" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133047.gif" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133048.gif" srcset="/img/loading.gif" alt="images"></p>
+<p>当然，最后，这里有一个术语：“<code>偏置</code>（bias）”，每个输出滤波器都有一个偏置项，偏置被添加到输出通道产生最终输出通道。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603133049.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="图像去噪"><a href="#图像去噪" class="headerlink" title="图像去噪"></a><strong>图像去噪</strong></h4><h5 id="【平均滤波】"><a href="#【平均滤波】" class="headerlink" title="【平均滤波】"></a>【<strong>平均滤波</strong>】</h5><blockquote>
+<p>在一个小区域内（通常是3*3）像素值平均。</p>
+</blockquote>
+<p><strong>数学公式定义</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113205514.png" srcset="/img/loading.gif" alt="平均滤波公式"></p>
+<blockquote>
+<p>说明：如果在3*3的一个区域内，如果存在5个有效像素值，那么整体就除以5，以此类推。</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113205855.png" srcset="/img/loading.gif" alt="平均滤波示例"></p>
+<h5 id="【加权平均滤波】"><a href="#【加权平均滤波】" class="headerlink" title="【加权平均滤波】"></a>【<strong>加权平均滤波</strong>】</h5><blockquote>
+<p>在一个小区域内（通常是3*3）像素值加权平均。</p>
+</blockquote>
+<p><strong>数学公式定义</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113210305.png" srcset="/img/loading.gif" alt="滤波加权平均"></p>
+<blockquote>
+<p>在进行基本平均滤波前，先把原始数据乘以一个指定的权重值，然后再进行平均。</p>
+</blockquote>
+<p><strong>普通卷积核</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113211941.png" srcset="/img/loading.gif" alt="普通卷积核"></p>
+<p><strong>高斯卷积核</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113212008.png" srcset="/img/loading.gif" alt="高斯卷积核"></p>
+<blockquote>
+<p>权重的分布符合高斯分布，所以叫高斯卷积核。</p>
+</blockquote>
+<h5 id="【中值滤波】"><a href="#【中值滤波】" class="headerlink" title="【中值滤波】"></a>【<strong>中值滤波</strong>】</h5><blockquote>
+<ol>
+<li>将滤波模板（含有若干个点的滑动窗口）在图像中漫游，并将模板中心与图中某个像素位置重合</li>
+<li>读取模板中各对应像素的灰度值；</li>
+<li>将这些灰度值从小到大排列；</li>
+<li>取这一列数据的中间数据，将其赋给对应模板中心位置的像素。如果窗口中有奇数个元素，中值取元素按灰度值大小排序后的中间元素灰度值。如果窗口中有偶数个元素，中值取元素按灰度值大小排序后，中间两个元素灰度的平均值。因为图像为二维信号，中值滤波的窗口形状和尺寸对滤波器效果影响很大，不同图像内容和不同应用要求往往选用不同的窗口形状和尺寸。</li>
+</ol>
+</blockquote>
+<p><strong>示例</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113212631.png" srcset="/img/loading.gif" alt="中值滤波示例"></p>
+<p><strong>常用选取形式</strong></p>
+<p><code>3*3</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113213612.png" srcset="/img/loading.gif" alt="中值滤波选取形式"></p>
+<p><code>5*5</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113213654.png" srcset="/img/loading.gif" alt="中值滤波选取形式"></p>
+<blockquote>
+<p>中值滤波对椒盐噪声有效。</p>
+</blockquote>
+<h3 id="数学形态学滤波"><a href="#数学形态学滤波" class="headerlink" title="数学形态学滤波"></a>数学形态学滤波</h3><h4 id="【概述】"><a href="#【概述】" class="headerlink" title="【概述】"></a>【<strong>概述</strong>】</h4><blockquote>
+<p>形态学（morphology）一词通常表示生物学的一个分支，该分支主要研究动植物的形态和结构。而我们图像处理中指的形态学，往往表示的是数学形态学。</p>
+<p>数学形态学（Mathematical morphology） 是一门建立在格论和拓扑学基础之上的图像分析学科，是数学形态学图像处理的基本理论。其基本的运算包括：二值腐蚀和膨胀、二值开闭运算、骨架抽取、极限腐蚀、击中击不中变换、形态学梯度、Top-hat变换、颗粒分析、流域变换、灰值腐蚀和膨胀、灰值开闭运算、灰值形态学梯度等。</p>
+</blockquote>
+<h4 id="【膨胀和腐蚀】"><a href="#【膨胀和腐蚀】" class="headerlink" title="【膨胀和腐蚀】"></a>【<strong>膨胀和腐蚀</strong>】</h4><blockquote>
+<p>按数学方面来说，膨胀或者腐蚀操作就是将图像（或图像的一部分区域，我们称之为A）与核（我们称之为B）进行卷积。</p>
+<p>核可以是任何的形状和大小，它拥有一个单独定义出来的参考点，我们称其为锚点（anchorpoint）。多数情况下，核是一个小的中间带有参考点和实心正方形或者圆盘，其实，我们可以把核视为模板或者掩码。</p>
+</blockquote>
+<h5 id="膨胀"><a href="#膨胀" class="headerlink" title="膨胀"></a><code>膨胀</code></h5><blockquote>
+<p>膨胀就是求局部最大值的操作，核B与图形卷积，即计算核B覆盖的区域的像素点的最大值，并把这个最大值赋值给参考点指定的像素。这样就会使图像中的高亮区域逐渐增长。</p>
+</blockquote>
+<p><strong>数学定义</strong></p>
+<blockquote>
+<p>$A\oplus B$表示集合A用<code>结构元素B</code>膨胀。</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113214217.png" srcset="/img/loading.gif" alt="膨胀公式"></p>
+<p><strong>示例</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113221916.png" srcset="/img/loading.gif" alt="膨胀示例"></p>
+<h5 id="腐蚀"><a href="#腐蚀" class="headerlink" title="腐蚀"></a><code>腐蚀</code></h5><blockquote>
+<p><code>腐蚀</code>就是<code>膨胀</code>的相反操作，腐蚀就是求局部最小值的操作。</p>
+</blockquote>
+<p><strong>数学定义</strong></p>
+<blockquote>
+<p>$A\ominus B$表示集合A用<code>结构元素B</code>腐蚀。</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113215646.png" srcset="/img/loading.gif" alt="腐蚀数学定义"></p>
+<p><strong>示例</strong></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113222014.png" srcset="/img/loading.gif" alt="腐蚀结果"></p>
+<h4 id="【开闭运算】"><a href="#【开闭运算】" class="headerlink" title="【开闭运算】"></a>【<strong>开闭运算</strong>】</h4><blockquote>
+<p><code>膨胀</code>和<code>腐蚀</code>并不互为<code>逆运算</code>，二者<code>级联</code>使用可生成新的形态学运算。</p>
+</blockquote>
+<p><code>开运算</code></p>
+<blockquote>
+<p>先腐蚀后膨胀</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113220210.png" srcset="/img/loading.gif" alt="开运算"></p>
+<p><code>闭运算</code></p>
+<blockquote>
+<p>先膨胀后腐蚀</p>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113220258.png" srcset="/img/loading.gif" alt="闭运算"></p>
+<p><code>先开后闭</code></p>
+<blockquote>
+<p>可有效的去除噪声。</p>
+</blockquote>
+<h3 id="滤波总结"><a href="#滤波总结" class="headerlink" title="滤波总结"></a>滤波总结</h3><blockquote>
+<ol>
+<li>滤波即卷积，由逐点乘积后累加得到</li>
+<li>平滑滤波包括平均滤波、高斯滤波、中值滤波等方法，其中高斯滤波最为常用</li>
+<li>数学形态学滤波基于腐蚀与膨胀两个基本操作</li>
+</ol>
+</blockquote>
+<h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a><strong>代码演示</strong></h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+
+<span class="hljs-comment"># 加载图片</span>
+image = cv2.imread(<span class="hljs-string">'lena.jpg'</span>)
+img = cv2.pyrDown(image)
+cv2.imshow(<span class="hljs-string">"source image"</span>, img)
+<span class="hljs-comment"># 高斯平滑滤波</span>
+gaussImage = cv2.GaussianBlur(img, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>), <span class="hljs-number">0</span>)
+cv2.imshow(<span class="hljs-string">"gauss image"</span>, gaussImage)
+<span class="hljs-comment"># 中值滤波</span>
+medianImage = cv2.medianBlur(img, <span class="hljs-number">5</span>)
+cv2.imshow(<span class="hljs-string">"median image"</span>, medianImage)
+<span class="hljs-comment"># 形态学滤波</span>
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>))
+<span class="hljs-comment"># 腐蚀图像</span>
+eroded = cv2.erode(img, kernel)
+cv2.imshow(<span class="hljs-string">"Eroded Image"</span>, eroded)
+<span class="hljs-comment"># 膨胀图像</span>
+dilated = cv2.dilate(img, kernel)
+cv2.imshow(<span class="hljs-string">"dilated Image"</span>, dilated)
+<span class="hljs-comment"># 形态学滤波-开运算</span>
+morphImage_open = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+cv2.imshow(<span class="hljs-string">"image-open"</span>, morphImage_open)
+<span class="hljs-comment"># 形态学滤波-闭运算</span>
+morphImage_close = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+cv2.imshow(<span class="hljs-string">"image-close"</span>, morphImage_close)
+<span class="hljs-comment"># 形态学滤波-先开后闭运算</span>
+morphImage_open_close = cv2.morphologyEx(morphImage_open, cv2.MORPH_CLOSE, kernel)
+cv2.imshow(<span class="hljs-string">"image-open-close"</span>, morphImage_open_close)
+cv2.waitKey(<span class="hljs-number">0</span>)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190113221555.png" srcset="/img/loading.gif" alt="代码演示"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2/">图像滤波</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_edge/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【五】图像边缘检测</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/cv-digitaltoimage/">
+                        <span class="hidden-mobile">【三】数字成像系统</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【四】图像滤波&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

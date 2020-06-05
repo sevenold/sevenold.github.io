@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>TensorFlow实现卷积神经网络-LeNet - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-24 10:00">
+      2018年8月24日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="LeNet5"><a href="#LeNet5" class="headerlink" title="LeNet5"></a><strong>LeNet5</strong></h3><p>LeNet5 诞生于 1994 年，是最早的卷积神经网络之一，并且推动了深度学习领域的发展。自从 1988 年开始，在许多次成功的迭代后，这项由 Yann LeCun 完成的开拓性成果被命名为 LeNet5（参见：Gradient-Based Learning Applied to Document Recognition）。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182316.png" srcset="/img/loading.gif" alt="images"></p>
+<p>LeNet5 的架构基于这样的观点：图像的特征分布在整张图像上，以及带有可学习参数的卷积是一种用少量参数在多个位置上提取相似特征的有效方式。</p>
+<p>在那时候，没有 GPU 帮助训练，甚至 CPU 的速度也很慢。因此，能够保存参数以及计算过程是一个关键进展。这和将每个像素用作一个大型多层神经网络的单独输入相反。</p>
+<p>LeNet5 阐述了那些像素不应该被使用在第一层，因为图像具有很强的空间相关性，而使用图像中独立的像素作为不同的输入特征则利用不到这些相关性。</p>
+<h3 id="LeNet5特点"><a href="#LeNet5特点" class="headerlink" title="LeNet5特点"></a><strong>LeNet5特点</strong></h3><p>LeNet5特征能够总结为如下几点： </p>
+<p> 1）卷积神经网络使用三个层作为一个系列： 卷积，池化，非线性 </p>
+<p> 2） 使用卷积提取空间特征</p>
+<p>  3）使用映射到空间均值下采样（subsample）  </p>
+<p>4）双曲线（tanh）或S型（sigmoid）形式的非线性  </p>
+<p>5）多层神经网络（MLP）作为最后的分类器  </p>
+<p>6）层与层之间的稀疏连接矩阵避免大的计算成本</p>
+<h3 id="LeNet5实现"><a href="#LeNet5实现" class="headerlink" title="LeNet5实现"></a><strong>LeNet5实现</strong></h3><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># @Time    : 2018/8/24 16:35</span>
+<span class="hljs-comment"># @Author  : Seven</span>
+<span class="hljs-comment"># @Site    :</span>
+<span class="hljs-comment"># @File    : LeNet.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 0.导入环境</span>
+
+<span class="hljs-keyword">from</span> tensorflow.examples.tutorials.mnist <span class="hljs-keyword">import</span> input_data
+<span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> sklearn.utils <span class="hljs-keyword">import</span> shuffle
+<span class="hljs-keyword">import</span> os
+os.environ[<span class="hljs-string">'TF_CPP_MIN_LOG_LEVEL'</span>] = <span class="hljs-string">'2'</span>
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 1.数据准备</span>
+
+<span class="hljs-comment"># 使用tensorflow自带的工具加载MNIST手写数字集合</span>
+mnist = input_data.read_data_sets(<span class="hljs-string">'data'</span>, reshape=<span class="hljs-literal">False</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 2.数据处理</span>
+x_train, y_train = mnist.train.images, mnist.train.labels
+x_validation, y_validation = mnist.validation.images, mnist.validation.labels
+x_test, y_test = mnist.test.images, mnist.test.labels
+
+<span class="hljs-comment"># 预先判断下维度是否一致</span>
+<span class="hljs-keyword">assert</span>(len(x_train) == len(y_train))
+<span class="hljs-keyword">assert</span>(len(x_validation) == len(y_validation))
+<span class="hljs-keyword">assert</span>(len(x_test) == len(y_test))
+
+print(<span class="hljs-string">"Image Shape: &#123;&#125;"</span>.format(x_train[<span class="hljs-number">0</span>].shape))
+print(<span class="hljs-string">"Training Set:   &#123;&#125; samples"</span>.format(len(x_train)))
+print(<span class="hljs-string">"Validation Set: &#123;&#125; samples"</span>.format(len(x_validation)))
+print(<span class="hljs-string">"Test Set:       &#123;&#125; samples"</span>.format(len(x_test)))
+
+<span class="hljs-comment"># TensorFlow预加载的MNIST数据为28x28x1图像。</span>
+<span class="hljs-comment"># 但是，LeNet架构只接受32x32xC图像，其中C是颜色通道的数量。</span>
+<span class="hljs-comment"># 为了将MNIST数据重新格式化为LeNet将接受的形状，我们在顶部和底部填充两行零，并在左侧和右侧填充两列零（28 + 2 + 2 = 32）</span>
+x_train = np.pad(x_train, ((<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)), <span class="hljs-string">'constant'</span>)
+x_validation = np.pad(x_validation, ((<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)), <span class="hljs-string">'constant'</span>)
+x_test = np.pad(x_test, ((<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)), <span class="hljs-string">'constant'</span>)
+print(<span class="hljs-string">"Updated Image Shape: &#123;&#125;"</span>.format(x_train[<span class="hljs-number">0</span>].shape))
+
+<span class="hljs-comment">#  查看下灰度图</span>
+index = random.randint(<span class="hljs-number">0</span>, len(x_train))
+image = x_train[index].squeeze()
+plt.figure(figsize=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))
+plt.imshow(image, cmap=<span class="hljs-string">"gray"</span>)
+<span class="hljs-comment"># plt.show()</span>
+print(y_train[index])
+
+<span class="hljs-comment"># Shuffle the training data.</span>
+x_train, y_train = shuffle(x_train, y_train)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 3.准备好placeholder</span>
+x = tf.placeholder(tf.float32, (<span class="hljs-literal">None</span>, <span class="hljs-number">32</span>, <span class="hljs-number">32</span>, <span class="hljs-number">1</span>))
+y = tf.placeholder(tf.int32, <span class="hljs-literal">None</span>)
+one_hot_y = tf.one_hot(y, <span class="hljs-number">10</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 4.构建网络计算图结构</span>
+
+epochs = <span class="hljs-number">10</span>
+batch_size = <span class="hljs-number">128</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">LeNet</span><span class="hljs-params">(input)</span>:</span>
+
+    mu = <span class="hljs-number">0</span>
+    sigma = <span class="hljs-number">0.1</span>
+
+    <span class="hljs-comment"># 层深度定义</span>
+    layer_depth = &#123;
+        <span class="hljs-string">'layer1'</span>: <span class="hljs-number">6</span>,
+        <span class="hljs-string">'layer2'</span>: <span class="hljs-number">16</span>,
+        <span class="hljs-string">'layer3'</span>: <span class="hljs-number">120</span>,
+        <span class="hljs-string">'layer_fc1'</span>: <span class="hljs-number">84</span>
+    &#125;
+
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 第一层卷积：输入=32x32x1, 输出=28x28x6</span>
+    conv1_w = tf.Variable(tf.truncated_normal(shape=[<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>], mean=mu, stddev=sigma))
+    conv1_b = tf.Variable(tf.zeros(<span class="hljs-number">6</span>))
+
+    conv1 = tf.nn.conv2d(input, conv1_w, strides=[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], padding=<span class="hljs-string">'VALID'</span>) + conv1_b
+
+    <span class="hljs-comment"># 激活函数</span>
+    conv1_out = tf.nn.relu(conv1)
+
+    <span class="hljs-comment"># 池化层， 输入=28x28x6, 输出=14x14x6</span>
+    pool_1 = tf.nn.max_pool(conv1_out, ksize=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], strides=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], padding=<span class="hljs-string">'VALID'</span>)
+    print(pool_1.shape)
+
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 第二层卷积： 输入=14x14x6， 输出=10x10x16</span>
+    conv2_w = tf.Variable(tf.truncated_normal(shape=[<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">16</span>], mean=mu, stddev=sigma))
+    conv2_b = tf.Variable(tf.zeros(<span class="hljs-number">16</span>))
+
+    conv2 = tf.nn.conv2d(pool_1, conv2_w, strides=[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], padding=<span class="hljs-string">'VALID'</span>) + conv2_b
+
+    <span class="hljs-comment"># 激活函数</span>
+    conv2_out = tf.nn.relu(conv2)
+
+    <span class="hljs-comment"># 池化层， 输入=10x10x16, 输出=5x5x16</span>
+    pool_2 = tf.nn.max_pool(conv2_out, ksize=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], strides=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>], padding=<span class="hljs-string">'VALID'</span>)
+
+    <span class="hljs-comment"># Flatten 输入=5x5x16， 输出=400</span>
+    pool_2_flat = tf.reshape(pool_2, [<span class="hljs-number">-1</span>, <span class="hljs-number">400</span>])
+    print(pool_2_flat.shape)
+
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 第三层全连接层， 输入=400， 输出=120</span>
+    fc1_w = tf.Variable(tf.truncated_normal(shape=[<span class="hljs-number">400</span>, <span class="hljs-number">120</span>], mean=mu, stddev=sigma))
+    fc1_b = tf.Variable(tf.zeros(<span class="hljs-number">120</span>))
+
+    fc1 = tf.matmul(pool_2_flat, fc1_w) + fc1_b
+
+    <span class="hljs-comment"># 激活函数</span>
+    fc1_out = tf.nn.relu(fc1)
+    print(fc1_out.shape)
+
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 第四层全连接层： 输入=120， 输出=84</span>
+    fc2_w = tf.Variable(tf.truncated_normal(shape=[<span class="hljs-number">120</span>, <span class="hljs-number">84</span>], mean=mu, stddev=sigma))
+    fc2_b = tf.Variable(tf.zeros(<span class="hljs-number">84</span>))
+
+    fc2 = tf.matmul(fc1_out, fc2_w) + fc2_b
+
+    <span class="hljs-comment"># 激活函数</span>
+    fc2_out = tf.nn.relu(fc2)
+    print(fc2_out.shape)
+
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 第五层全连接层： 输入=84， 输出=10</span>
+    fc3_w = tf.Variable(tf.truncated_normal(shape=[<span class="hljs-number">84</span>, <span class="hljs-number">10</span>], mean=mu, stddev=sigma))
+    fc3_b = tf.Variable(tf.zeros(<span class="hljs-number">10</span>))
+
+    fc3_out = tf.matmul(fc2_out, fc3_w) + fc3_b
+    print(fc3_out.shape)
+
+    <span class="hljs-keyword">return</span> fc3_out
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 5.计算损失值并初始化optimizer</span>
+learning_rate = <span class="hljs-number">0.001</span>
+
+logits = LeNet(x)
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=one_hot_y)
+loss_operation = tf.reduce_mean(cross_entropy)
+
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+training_operation = optimizer.minimize(loss_operation)
+
+print(<span class="hljs-string">"FUNCTION READY!!"</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 6.初始化变量</span>
+init = tf.global_variables_initializer()
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 7.模型评估</span>
+correct_prediction = tf.equal(tf.argmax(logits, <span class="hljs-number">1</span>), tf.argmax(one_hot_y, <span class="hljs-number">1</span>))
+accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate</span><span class="hljs-params">(X_data, y_data)</span>:</span>
+    num_examples = len(X_data)
+    total_accuracy = <span class="hljs-number">0</span>
+    sess = tf.get_default_session()
+    <span class="hljs-keyword">for</span> offset <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, num_examples, batch_size):
+        batch_x, batch_y = X_data[offset:offset+batch_size], y_data[offset:offset+batch_size]
+
+        accuracy = sess.run(accuracy_operation, feed_dict=&#123;x: batch_x, y: batch_y&#125;)
+        total_accuracy += (accuracy * len(batch_x))
+    <span class="hljs-keyword">return</span> total_accuracy / num_examples
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 保存模型</span>
+saver = tf.train.Saver()
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 8.训练模型</span>
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    sess.run(init)
+    num_examples = len(x_train)
+
+    print(<span class="hljs-string">"Training....."</span>)
+
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> range(epochs):
+        <span class="hljs-keyword">for</span> offset <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, num_examples, batch_size):
+            batch_x, batch_y = x_train[offset:offset+batch_size], y_train[offset:offset+batch_size]
+            sess.run(training_operation, feed_dict=&#123;x: batch_x, y: batch_y&#125;)
+
+        validation_accuracy = evaluate(x_validation, y_validation)
+        print(<span class="hljs-string">"EPOCH &#123;&#125; ..."</span>.format(n + <span class="hljs-number">1</span>))
+        print(<span class="hljs-string">"Validation Accuracy = &#123;:.3f&#125;"</span>.format(validation_accuracy))
+
+    saver.save(sess, <span class="hljs-string">'./model/LeNet.model'</span>)
+    print(<span class="hljs-string">"Model saved"</span>)
+
+    print(<span class="hljs-string">"Evaluate The Model"</span>)
+    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 读取模型</span>
+    saver.restore(sess, <span class="hljs-string">'./model/LeNet.model'</span>)
+    test_accuracy = evaluate(x_test, y_test)
+    print(<span class="hljs-string">"Test Accuracy = &#123;:.3f&#125;"</span>.format(test_accuracy))</code></pre>
+
+<h3 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h3><pre><code class="hljs bash">FUNCTION READY!!
+Training.....
+EPOCH 1 ...
+Validation Accuracy = 0.969
+EPOCH 2 ...
+Validation Accuracy = 0.974
+EPOCH 3 ...
+Validation Accuracy = 0.979
+EPOCH 4 ...
+Validation Accuracy = 0.981
+EPOCH 5 ...
+Validation Accuracy = 0.984
+EPOCH 6 ...
+Validation Accuracy = 0.986
+EPOCH 7 ...
+Validation Accuracy = 0.986
+EPOCH 8 ...
+Validation Accuracy = 0.986
+EPOCH 9 ...
+Validation Accuracy = 0.986
+EPOCH 10 ...
+Validation Accuracy = 0.984
+Model saved
+Evaluate The Model
+Test Accuracy = 0.988</code></pre>
+
+
+
+
+
+
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/TensorFlow/">TensorFlow</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/TensorFlow/">TensorFlow</a>
+                    
+                      <a class="hover-with-bg" href="/tags/LeNet/">LeNet</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/DL-CNN-AlexNet/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorFlow实现卷积神经网络-AlexNet</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/DL-CNN-python/">
+                        <span class="hidden-mobile">TensorFlow实现简单的卷积神经网络-CNN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TensorFlow实现卷积神经网络-LeNet&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

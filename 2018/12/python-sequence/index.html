@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第二话之序列类型方法 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-08 10:00">
+      2018年12月8日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      62
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="序列类型方法"><a href="#序列类型方法" class="headerlink" title="序列类型方法"></a>序列类型方法</h3><p>前面我们简单的介绍了什么是序列类型，并且简单的给大家提了下<code>字符串</code>、<code>元组</code>、<code>列表</code>的一些基本操作。接下来我们详细的来看下关于<code>字符串</code>、<code>元组</code>、<code>列表</code>的常用操作。</p>
+<h4 id="列表常用方法"><a href="#列表常用方法" class="headerlink" title="列表常用方法"></a>列表常用方法</h4><p>我们先查看下<code>list</code>可以使用的一些方法：</p>
+<blockquote>
+<p>  append(…)<br>|      L.append(object) -&gt; None – append object to end<br>|<br>|  clear(…)<br>|      L.clear() -&gt; None – remove all items from L<br>|<br>|  copy(…)<br>|      L.copy() -&gt; list – a shallow copy of L<br>|<br>|  count(…)<br>|      L.count(value) -&gt; integer – return number of occurrences of value<br>|<br>|  extend(…)<br>|      L.extend(iterable) -&gt; None – extend list by appending elements from the iterable<br>|<br>|  index(…)<br>|      L.index(value, [start, [stop]]) -&gt; integer – return first index of value.<br>|      Raises ValueError if the value is not present.<br>|<br>|  insert(…)<br>|      L.insert(index, object) – insert object before index<br>|<br>|  pop(…)<br>|      L.pop([index]) -&gt; item – remove and return item at index (default last).<br>|      Raises IndexError if list is empty or index is out of range.<br>|<br>|  remove(…)<br>|      L.remove(value) -&gt; None – remove first occurrence of value.<br>|      Raises ValueError if the value is not present.<br>|<br>|  reverse(…)<br>|      L.reverse() – reverse <em>IN PLACE</em><br>|<br>|  sort(…)<br>|      L.sort(key=None, reverse=False) -&gt; None – stable sort *IN PLAC</p>
+</blockquote>
+<p>接下来我们给大家分类讲解一下这样操作方法。</p>
+<h5 id="增加元素"><a href="#增加元素" class="headerlink" title="增加元素"></a><code>增加元素</code></h5><p><strong>append</strong></p>
+<p>查看下<code>append</code>这个方法的用法：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">1</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>]                                    
+
+In [<span class="hljs-number">2</span>]: help(s.append)</code></pre>
+
+<blockquote>
+<p>append(…) method of builtins.list instance<br>​    L.append(object) -&gt; None – append object to end</p>
+<p>使用方式：L.append(‘s’)</p>
+<p>注意：append方法是在列表的最后添加元素</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">3</span>]: s.append(<span class="hljs-string">'w'</span>)                                                  
+
+In [<span class="hljs-number">4</span>]: s                                                              
+Out[<span class="hljs-number">4</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'w'</span>]</code></pre>
+
+<p><strong>insert</strong></p>
+<p>查看<code>insert</code>的使用方法：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">5</span>]: help(s.insert)</code></pre>
+
+<blockquote>
+<p>insert(…) method of builtins.list instance<br>​    L.insert(index, object) – insert object before index</p>
+<p>使用方法： L.insert(index,’s’)</p>
+<p>注意：index: 索引值，s为元素</p>
+<p>insert方法是在指定的索引值处添加元素</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">6</span>]: s.insert(<span class="hljs-number">3</span>,<span class="hljs-string">'s'</span>)                                                
+
+In [<span class="hljs-number">7</span>]: s                                                              
+Out[<span class="hljs-number">7</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-string">'s'</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'w'</span>]</code></pre>
+
+<p><strong>extend</strong></p>
+<p>查看<code>extend</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">8</span>]: help(s.extend)</code></pre>
+
+<blockquote>
+<p>extend(…) method of builtins.list instance<br>​    L.extend(iterable) -&gt; None – extend list by appending elements from the iterable</p>
+<p>使用方法：L.extend([1,2,’a’]) </p>
+<p>注意：extend方法是指在列表中追加可迭代器</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">9</span>]: a = [<span class="hljs-string">'w'</span>,<span class="hljs-string">'o'</span>,<span class="hljs-number">0</span>]                                                
+
+In [<span class="hljs-number">10</span>]: s.extend(a)                                                   
+
+In [<span class="hljs-number">11</span>]: s                                                             
+Out[<span class="hljs-number">11</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-string">'s'</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'w'</span>, <span class="hljs-string">'w'</span>, <span class="hljs-string">'o'</span>, <span class="hljs-number">0</span>]</code></pre>
+
+<h5 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a><code>删除元素</code></h5><p><strong>clear</strong></p>
+<p>查看下<code>clear</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">14</span>]: help(s.clear)</code></pre>
+
+
+
+<blockquote>
+<p>clear(…) method of builtins.list instance<br>​    L.clear() -&gt; None – remove all items from L</p>
+<p>使用方法：L.clear()</p>
+<p>注意：clear是删除所有的元素</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">20</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>]                                   
+
+In [<span class="hljs-number">21</span>]: s.clear()                                                     
+
+In [<span class="hljs-number">22</span>]: s                                                             
+Out[<span class="hljs-number">22</span>]: []</code></pre>
+
+<p><strong>pop</strong></p>
+<p>查看<code>pop</code>的使用方法：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">23</span>]: help(s.pop)</code></pre>
+
+<blockquote>
+<p>pop(…) method of builtins.list instance<br>​    L.pop([index]) -&gt; item – remove and return item at index (default last).<br>​    Raises IndexError if list is empty or index is out of range.</p>
+<p>使用方法：L.pop()、L.pop(index)</p>
+<p>注意：L.pop()指的是删除最后一个元素</p>
+<p>​        L.pop(index)指的是指定索引值删除元素</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">24</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>]                                   
+
+In [<span class="hljs-number">25</span>]: s.pop()                                                       
+Out[<span class="hljs-number">25</span>]: <span class="hljs-string">'c'</span>
+
+In [<span class="hljs-number">26</span>]: s.pop()                                                       
+Out[<span class="hljs-number">26</span>]: <span class="hljs-string">'b'</span>
+
+In [<span class="hljs-number">27</span>]: s.pop()                                                       
+Out[<span class="hljs-number">27</span>]: <span class="hljs-string">'a'</span>
+
+In [<span class="hljs-number">28</span>]: s.pop()                                                       
+Out[<span class="hljs-number">28</span>]: <span class="hljs-number">5</span>
+
+In [<span class="hljs-number">29</span>]: s.pop(<span class="hljs-number">1</span>)                                                      
+Out[<span class="hljs-number">29</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">30</span>]: s                                                             
+Out[<span class="hljs-number">30</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]</code></pre>
+
+<p><strong>remove</strong></p>
+<p>查看<code>remove</code>的使用方法：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">35</span>]: help(s.remove)</code></pre>
+
+<blockquote>
+<p>remove(…) method of builtins.list instance<br>​    L.remove(value) -&gt; None – remove first occurrence of value.<br>​    Raises ValueError if the value is not present.</p>
+<p>使用方法：L.remove(obj) </p>
+<p>注意：移除指定元素从左边开始的第一个。</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">56</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]                             
+
+In [<span class="hljs-number">57</span>]: s.remove(<span class="hljs-number">2</span>)                                                   
+
+In [<span class="hljs-number">58</span>]: s                                                             
+Out[<span class="hljs-number">58</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+In [<span class="hljs-number">59</span>]: s.remove(<span class="hljs-number">2</span>)                                                   
+
+In [<span class="hljs-number">60</span>]: s                                                             
+Out[<span class="hljs-number">60</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]</code></pre>
+
+<h5 id="修改元素"><a href="#修改元素" class="headerlink" title="修改元素"></a><code>修改元素</code></h5><p>修改元素在列表中就非常简单了。</p>
+<blockquote>
+<p>使用方法：L[index] = obj</p>
+<p>注意：修改元素是根据元素的索引来修改。</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">61</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]                                               
+
+In [<span class="hljs-number">62</span>]: s[<span class="hljs-number">3</span>]=<span class="hljs-string">'s'</span>                                                      
+
+In [<span class="hljs-number">63</span>]: s                                                             
+Out[<span class="hljs-number">63</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-string">'s'</span>, <span class="hljs-number">5</span>]</code></pre>
+
+<h5 id="查找元素"><a href="#查找元素" class="headerlink" title="查找元素"></a><code>查找元素</code></h5><p><strong>index</strong></p>
+<p>查看index的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">64</span>]: help(s.index)</code></pre>
+
+<blockquote>
+<p>index(…) method of builtins.list instance<br>​    L.index(value, [start, [stop]]) -&gt; integer – return first index of value.<br>​    Raises ValueError if the value is not present.</p>
+<p>使用方法：L.index(obj) , L.index(value, [start, [stop]])</p>
+<p>注意：L.index(obj) 从列表中找某个值第一个匹配项的索引位置。</p>
+<p>​        L.index(value, [start, [stop]])指定索引范围查找元素</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">71</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]                                               
+
+In [<span class="hljs-number">72</span>]: s.index(<span class="hljs-number">1</span>)                                                    
+Out[<span class="hljs-number">72</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">73</span>]: s.index(<span class="hljs-number">3</span>)                                                    
+Out[<span class="hljs-number">73</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">98</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]                             
+
+In [<span class="hljs-number">99</span>]: s.index(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)                                                  
+Out[<span class="hljs-number">99</span>]: <span class="hljs-number">9</span>
+
+In [<span class="hljs-number">100</span>]: s.index(<span class="hljs-number">2</span>)                                                   
+Out[<span class="hljs-number">100</span>]: <span class="hljs-number">1</span></code></pre>
+
+<p><strong>count</strong></p>
+<p>查看<code>count</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">74</span>]: help(s.count)</code></pre>
+
+<blockquote>
+<p>count(…) method of builtins.list instance<br>​    L.count(value) -&gt; integer – return number of occurrences of value</p>
+<p>使用方法：L.count(obj)</p>
+<p>注意：统计某个元素在列表中出现的次数。</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">75</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>]                                         
+
+In [<span class="hljs-number">76</span>]: s.count(<span class="hljs-number">2</span>)                                                    
+Out[<span class="hljs-number">76</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">77</span>]: s.count(<span class="hljs-number">3</span>)                                                    
+Out[<span class="hljs-number">77</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">78</span>]: s.count(<span class="hljs-number">1</span>)                                                    
+Out[<span class="hljs-number">78</span>]: <span class="hljs-number">1</span></code></pre>
+
+<h5 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a><code>扩展</code></h5><p><strong>copy</strong></p>
+<p>查看<code>copy</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">79</span>]: help(s.copy)</code></pre>
+
+<blockquote>
+<p>copy(…) method of builtins.list instance<br>​    L.copy() -&gt; list – a shallow copy of L</p>
+<p>使用方法： L.copy()</p>
+<p>注意： 复制列表，和L[:]的复制方式一样属于浅复制。</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">101</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]                                              
+
+In [<span class="hljs-number">102</span>]: a = s.copy()                                                 
+
+In [<span class="hljs-number">103</span>]: a                                                            
+Out[<span class="hljs-number">103</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+
+In [<span class="hljs-number">104</span>]: id(s)                                                        
+Out[<span class="hljs-number">104</span>]: <span class="hljs-number">140462445434696</span>
+
+In [<span class="hljs-number">105</span>]: id(a)                                                        
+Out[<span class="hljs-number">105</span>]: <span class="hljs-number">140462410623560</span></code></pre>
+
+<p><strong>reverse</strong></p>
+<p>查看<code>reverse</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">83</span>]: help(s.reverse)</code></pre>
+
+<blockquote>
+<p>reverse(…) method of builtins.list instance<br>​    L.reverse() – reverse <em>IN PLACE</em></p>
+<p>使用方法：L.reverse()</p>
+<p>注意： 反向列表中元素。</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">84</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]                                               
+
+In [<span class="hljs-number">85</span>]: s.reverse()                                                   
+
+In [<span class="hljs-number">86</span>]: s                                                             
+Out[<span class="hljs-number">86</span>]: [<span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]</code></pre>
+
+<p><strong>sort</strong></p>
+<p>查看<code>sort</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">87</span>]: help(s.sort)</code></pre>
+
+<blockquote>
+<p>sort(…) method of builtins.list instance<br>​    L.sort(key=None, reverse=False) -&gt; None – stable sort <em>IN PLACE</em></p>
+<p>使用方法：L.sort() </p>
+<p>注意： 对原列表进行排序。列表中的元素要类型相同  (key = len int lambda)，不同元素需要改变元素类型，然后根据ASCII码进行排序。</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">92</span>]: s                                                             
+Out[<span class="hljs-number">92</span>]: [<span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]
+
+In [<span class="hljs-number">93</span>]: s.sort()                                                      
+
+In [<span class="hljs-number">94</span>]: s                                                             
+Out[<span class="hljs-number">94</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+    
+In [<span class="hljs-number">110</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'a'</span>]                                      
+
+In [<span class="hljs-number">111</span>]: s.sort()                                                     
+-----------------------------------------------------------------------
+TypeError                             Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-111</span><span class="hljs-number">-474</span>c8408a842&gt; <span class="hljs-keyword">in</span> &lt;module&gt;
+----&gt; 1 s.sort()
+
+TypeError: unorderable types: str() &lt; int()
+
+In [<span class="hljs-number">112</span>]: s.sort(key=str)                                              
+
+In [<span class="hljs-number">113</span>]: s                                                            
+Out[<span class="hljs-number">113</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]</code></pre>
+
+
+
+<h4 id="字符串常用方法"><a href="#字符串常用方法" class="headerlink" title="字符串常用方法"></a>字符串常用方法</h4><h5 id="增加元素-1"><a href="#增加元素-1" class="headerlink" title="增加元素"></a><code>增加元素</code></h5><p><strong>使用 +</strong></p>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">215</span>]: a = <span class="hljs-string">'hello'</span>                                                  
+
+In [<span class="hljs-number">216</span>]: b = <span class="hljs-string">'python'</span>                                                 
+
+In [<span class="hljs-number">217</span>]: c = <span class="hljs-string">'!'</span>                                                      
+
+In [<span class="hljs-number">218</span>]: a+b+c                                                        
+Out[<span class="hljs-number">218</span>]: <span class="hljs-string">'hellopython!'</span>
+
+In [<span class="hljs-number">219</span>]: a+<span class="hljs-string">' '</span>+b+<span class="hljs-string">' '</span>+c                                                
+Out[<span class="hljs-number">219</span>]: <span class="hljs-string">'hello python !'</span></code></pre>
+
+
+
+<p><strong>格式化字符串</strong></p>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">220</span>]: a = <span class="hljs-string">'hello'</span>                                                  
+
+In [<span class="hljs-number">221</span>]: b = <span class="hljs-string">'python'</span>                                                 
+
+In [<span class="hljs-number">222</span>]: c = <span class="hljs-string">'!'</span>                                                      
+
+In [<span class="hljs-number">223</span>]: <span class="hljs-string">'%s %s %s'</span>%(a,b,c)                                           
+Out[<span class="hljs-number">223</span>]: <span class="hljs-string">'hello python !'</span></code></pre>
+
+
+
+<p><strong>使用join</strong></p>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">229</span>]: a = <span class="hljs-string">'hello'</span>                                                  
+
+In [<span class="hljs-number">230</span>]: b = <span class="hljs-string">'python'</span>                                                 
+
+In [<span class="hljs-number">231</span>]: c = <span class="hljs-string">'!'</span>                                                      
+
+In [<span class="hljs-number">232</span>]: <span class="hljs-string">' '</span>.join([a,b,c])                                            
+Out[<span class="hljs-number">232</span>]: <span class="hljs-string">'hello python !'</span>
+
+In [<span class="hljs-number">233</span>]: <span class="hljs-string">'****'</span>.join(<span class="hljs-string">'abc'</span>)                                           
+Out[<span class="hljs-number">233</span>]: <span class="hljs-string">'a****b****c'</span></code></pre>
+
+
+
+<p><strong>使用format</strong></p>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">234</span>]: a = <span class="hljs-string">'hello'</span>                                                  
+
+In [<span class="hljs-number">235</span>]: b = <span class="hljs-string">'python'</span>                                                 
+
+In [<span class="hljs-number">236</span>]: c = <span class="hljs-string">'!'</span>                                                      
+
+In [<span class="hljs-number">237</span>]: <span class="hljs-string">'&#123;&#125; &#123;&#125; &#123;&#125;'</span>.format(a,b,c)                                     
+Out[<span class="hljs-number">237</span>]: <span class="hljs-string">'hello python !'</span>
+
+In [<span class="hljs-number">238</span>]: <span class="hljs-string">'&#123;0&#125; &#123;1&#125; &#123;2&#125;'</span>.format(a,b,c)                                  
+Out[<span class="hljs-number">238</span>]: <span class="hljs-string">'hello python !'</span>
+
+In [<span class="hljs-number">239</span>]: <span class="hljs-string">'&#123;2&#125; &#123;1&#125; &#123;0&#125;'</span>.format(a,b,c)                                  
+Out[<span class="hljs-number">239</span>]: <span class="hljs-string">'! python hello'</span>
+
+In [<span class="hljs-number">240</span>]: <span class="hljs-string">'&#123;1&#125; &#123;1&#125; &#123;1&#125;'</span>.format(a,b,c)                                  
+Out[<span class="hljs-number">240</span>]: <span class="hljs-string">'python python python'</span>
+
+In [<span class="hljs-number">241</span>]: <span class="hljs-string">'&#123;n1&#125; &#123;n2&#125; &#123;n3&#125;'</span>.format(n1=a, n2=b, n3=c)                    
+Out[<span class="hljs-number">241</span>]: <span class="hljs-string">'hello python !'</span></code></pre>
+
+
+
+<h5 id="删除元素-1"><a href="#删除元素-1" class="headerlink" title="删除元素"></a><code>删除元素</code></h5><p><strong>replace</strong></p>
+<p>查看<code>replace</code> 的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.replace)</code></pre>
+
+<blockquote>
+<p>replace(…) method of builtins.str instance<br>​    S.replace(old, new[, count]) -&gt; str<br>​    Return a copy of S with all occurrences of substring old replaced by new.  If the optional argument count is given, only the first count occurrences are replaced.</p>
+<p>使用方法：s.replace (x,y) ：</p>
+<p>注意： 子串替换,在字符串s中出现字符串x的任意位置都用y进行替换</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">205</span>]: s = <span class="hljs-string">'abc cnn dnn'</span>                                            
+
+In [<span class="hljs-number">206</span>]: s.replace(<span class="hljs-string">'a'</span>,<span class="hljs-string">'2'</span>)                                           
+Out[<span class="hljs-number">206</span>]: <span class="hljs-string">'2bc cnn dnn'</span>
+
+In [<span class="hljs-number">207</span>]: s.replace(<span class="hljs-string">'n'</span>,<span class="hljs-string">'w'</span>,<span class="hljs-number">1</span>)                                         
+Out[<span class="hljs-number">207</span>]: <span class="hljs-string">'abc cwn dnn'</span>
+
+In [<span class="hljs-number">208</span>]: s.replace(<span class="hljs-string">'n'</span>,<span class="hljs-string">'w'</span>,<span class="hljs-number">2</span>)                                         
+Out[<span class="hljs-number">208</span>]: <span class="hljs-string">'abc cww dnn'</span>
+
+In [<span class="hljs-number">209</span>]: s.replace(<span class="hljs-string">'n'</span>,<span class="hljs-string">'w'</span>)                                           
+Out[<span class="hljs-number">209</span>]: <span class="hljs-string">'abc cww dww'</span></code></pre>
+
+
+
+<h5 id="修改元素-1"><a href="#修改元素-1" class="headerlink" title="修改元素"></a><code>修改元素</code></h5><p><strong>upper</strong></p>
+<p>查看<code>upper</code> 的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">116</span>]: help(s.upper)</code></pre>
+
+<blockquote>
+<p>upper(…) method of builtins.str instance<br>​    S.upper() -&gt; str</p>
+<p>Return a copy of S converted to uppercase.</p>
+<p>使用方法： s.upper () </p>
+<p>注意： 将字符串转为大写 </p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">189</span>]: s = <span class="hljs-string">'123456abc'</span>                                              
+
+In [<span class="hljs-number">190</span>]: s.upper()                                                    
+Out[<span class="hljs-number">190</span>]: <span class="hljs-string">'123456ABC'</span></code></pre>
+
+
+
+<p><strong>lower</strong></p>
+<p>查看<code>lower</code> 的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">116</span>]: help(s.lower)</code></pre>
+
+<blockquote>
+<p>lower(…) method of builtins.str instance<br>​    S.lower() -&gt; str<br>​    Return a copy of the string S converted to lowercase.</p>
+<p>使用方法：s.lower () </p>
+<p>注意：将字符串转为小写</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">193</span>]: s = <span class="hljs-string">'123456abcDF'</span>                                            
+
+In [<span class="hljs-number">194</span>]: s.lower()                                                    
+Out[<span class="hljs-number">194</span>]: <span class="hljs-string">'123456abcdf'</span></code></pre>
+
+
+
+<p><strong>strip(lstrip、rstrip)</strong></p>
+<p>查看<code>strip(lstrip、rstrip)</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">116</span>]: help(s.strip) 
+In [<span class="hljs-number">117</span>]: help(s.lstrip) 
+In [<span class="hljs-number">118</span>]: help(s.rstrip)</code></pre>
+
+<blockquote>
+<p>strip(…) method of builtins.str instance<br>​    S.strip([chars]) -&gt; str<br>   Return a copy of the string S with leading and trailing whitespace removed. If chars is given and not None, remove characters in chars instead</p>
+<p>使用方式：s.trip()</p>
+<p>注意：去除两边的空格</p>
+</blockquote>
+<blockquote>
+<p>lstrip(…) method of builtins.str instance<br>​    S.lstrip([chars]) -&gt; str    </p>
+<p>Return a copy of the string S with leading whitespace removed.  If chars is given and not None, remove characters in chars instead</p>
+<p>使用方式：s.lstrip()</p>
+<p>注意:去除左边的空格</p>
+</blockquote>
+<blockquote>
+<p>rstrip(…) method of builtins.str instance<br>​    S.rstrip([chars]) -&gt; str<br>   Return a copy of the string S with trailing whitespace removed.  If chars is given and not None, remove characters in chars instead</p>
+<p>使用方式：s.rstrip()</p>
+<p>注意：去除右边空格</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">195</span>]: s = <span class="hljs-string">'    abc    '</span>                                            
+
+In [<span class="hljs-number">196</span>]: s.strip()                                                    
+Out[<span class="hljs-number">196</span>]: <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">197</span>]: s.lstrip()                                                   
+Out[<span class="hljs-number">197</span>]: <span class="hljs-string">'abc    '</span>
+
+In [<span class="hljs-number">198</span>]: s.rstrip()                                                   
+Out[<span class="hljs-number">198</span>]: <span class="hljs-string">'    abc'</span></code></pre>
+
+
+
+<p><strong>capitalize</strong></p>
+<p>查看<code>capitalize</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.capitalize)</code></pre>
+
+<blockquote>
+<p>capitalize(…) method of builtins.str instance<br>​    S.capitalize() -&gt; str<br>​    Return a capitalized version of S, i.e. make the first character  have upper case and the rest lower case.</p>
+<p>使用方式： s.capitalize()</p>
+<p>注意：首字母大写</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs plain">In [201]: s &#x3D; &#39;abc cnn dnn&#39;                                            
+
+In [202]: s.capitalize()                                               
+Out[202]: &#39;Abc cnn dnn&#39;</code></pre>
+
+
+
+<p><strong>title</strong></p>
+<p>查看<code>title</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.title)</code></pre>
+
+<blockquote>
+<p>title(…) method of builtins.str instance<br>​    S.title() -&gt; str<br>​    Return a titlecased version of S, i.e. words start with title case characters, all remaining cased characters have lower case.</p>
+<p>使用方式： S.title() </p>
+<p>注意：每个单词的首字母大写</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">203</span>]: s = <span class="hljs-string">'abc cnn dnn'</span>                                            
+
+In [<span class="hljs-number">204</span>]: s.title()                                                    
+Out[<span class="hljs-number">204</span>]: <span class="hljs-string">'Abc Cnn Dnn'</span></code></pre>
+
+
+
+<p><strong>split</strong></p>
+<p>查看<code>split</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.split)</code></pre>
+
+<blockquote>
+<p>split(…) method of builtins.str instance<br>​    S.split(sep=None, maxsplit=-1) -&gt; list of strings<br>​    Return a list of the words in S, using sep as the delimiter string.  If maxsplit is given, at most maxsplit splits are done. If sep is not specified or is None, any whitespace string is a separator and empty strings are removed from the result.</p>
+<p>使用方法：s.split()，s.split(a,b)</p>
+<p>注意：s.split()指的是返回一系列用空格分割的字符串列表</p>
+<p>​        s.split(a,b)指的是a,b为可选参数，a是将要分割的字符串，b是说明最多要分割几个</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">210</span>]: s = <span class="hljs-string">'abc123cba'</span>                                              
+
+In [<span class="hljs-number">211</span>]: s.split(<span class="hljs-string">'b'</span>)                                                 
+Out[<span class="hljs-number">211</span>]: [<span class="hljs-string">'a'</span>, <span class="hljs-string">'c123c'</span>, <span class="hljs-string">'a'</span>]
+
+In [<span class="hljs-number">213</span>]: s = <span class="hljs-string">'abc cnn dnn'</span>                                            
+
+In [<span class="hljs-number">214</span>]: s.split(<span class="hljs-string">' '</span>)                                                 
+Out[<span class="hljs-number">214</span>]: [<span class="hljs-string">'abc'</span>, <span class="hljs-string">'cnn'</span>, <span class="hljs-string">'dnn'</span>]</code></pre>
+
+
+
+<h5 id="查找元素-1"><a href="#查找元素-1" class="headerlink" title="查找元素"></a><code>查找元素</code></h5><p><strong>count</strong></p>
+<p>查看<code>count</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.count)</code></pre>
+
+<blockquote>
+<p>count(…) method of builtins.str instance<br>​    S.count(sub[, start[, end]]) -&gt; int<br>​    Return the number of non-overlapping occurrences of substring sub in string S[start:end].  Optional arguments start and end are interpreted as in slice notation.</p>
+<p>使用方法：s.count(x)</p>
+<p>注意： 返回字符串x在s中出现的次数，带可选参数</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">138</span>]: s = <span class="hljs-string">'abc123abc321678'</span>                                        
+
+In [<span class="hljs-number">139</span>]: s.count(<span class="hljs-string">'a'</span>)                                                 
+Out[<span class="hljs-number">139</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">140</span>]: s.count(<span class="hljs-string">'8'</span>)                                                 
+Out[<span class="hljs-number">140</span>]: <span class="hljs-number">1</span></code></pre>
+
+
+
+<p><strong>index</strong></p>
+<p>查看<code>index</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.index)</code></pre>
+
+<blockquote>
+<p>index(…) method of builtins.str instance<br>​    S.index(sub[, start[, end]]) -&gt; int<br>​    Like S.find() but raise ValueError when the substring is not found</p>
+<p>使用方法：s.index(x)</p>
+<p>注意：返回字符串中出现x的最左端的索引值，如果不在则抛出valueError异常</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">141</span>]: s = <span class="hljs-string">'abc123abc321678'</span>                                        
+
+In [<span class="hljs-number">142</span>]: s.index(<span class="hljs-string">'a'</span>)                                                 
+Out[<span class="hljs-number">142</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">143</span>]: s.index(<span class="hljs-string">'a'</span>,<span class="hljs-number">2</span>)                                               
+Out[<span class="hljs-number">143</span>]: <span class="hljs-number">6</span></code></pre>
+
+
+
+<p><strong>find</strong></p>
+<p>查看<code>find</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.find)</code></pre>
+
+<blockquote>
+<p>find(…) method of builtins.str instance<br>​    S.find(sub[, start[, end]]) -&gt; int<br>​    Return the lowest index in S where substring sub is found, such that sub is contained within S[start:end].Optional<br>arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+<p>使用方法：s.find(x) </p>
+<p>注意：返回字符串中出现x的最左端字符的索引值，如果不在则返回-1</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">146</span>]: s = <span class="hljs-string">'abc123abc321678'</span>                                        
+
+In [<span class="hljs-number">147</span>]: s.index(<span class="hljs-string">'a'</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>)  <span class="hljs-comment"># index没有找到就报错                                            </span>
+-----------------------------------------------------------------------
+ValueError                            Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-147</span>-fbbfe36ae6a6&gt; <span class="hljs-keyword">in</span> &lt;module&gt;
+----&gt; 1 s.index('a',1,4)
+
+ValueError: substring <span class="hljs-keyword">not</span> found
+
+In [<span class="hljs-number">148</span>]: s.find(<span class="hljs-string">'a'</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>)  <span class="hljs-comment"># find 没有找到就提示-1                                             </span>
+Out[<span class="hljs-number">148</span>]: <span class="hljs-number">-1</span>
+
+In [<span class="hljs-number">149</span>]: s.find(<span class="hljs-string">'a'</span>,<span class="hljs-number">1</span>)                                                
+Out[<span class="hljs-number">149</span>]: <span class="hljs-number">6</span>
+
+In [<span class="hljs-number">150</span>]: s.find(<span class="hljs-string">'a'</span>)                                                  
+Out[<span class="hljs-number">150</span>]: <span class="hljs-number">0</span></code></pre>
+
+
+
+<p><strong>isdigit</strong></p>
+<p>查看<code>isdigit</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.isdigit)</code></pre>
+
+<blockquote>
+<p>isdigit(…) method of builtins.str instance<br>​    S.isdigit() -&gt; bool<br>​    Return True if all characters in S are digits and there is at least one character in S, False otherwise.</p>
+<p>使用方法：s.isdigit ()</p>
+<p>注意 ：测试是否全是数字，都是数字则返回 True 否则返回 False.</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python">In [<span class="hljs-number">151</span>]: s = <span class="hljs-string">'123456'</span>                                                 
+
+In [<span class="hljs-number">152</span>]: s1 = <span class="hljs-string">'123abc'</span>                                                
+
+In [<span class="hljs-number">153</span>]: s2 = <span class="hljs-string">'abcdef'</span>                                                
+
+In [<span class="hljs-number">154</span>]: s.isdigit()                                                  
+Out[<span class="hljs-number">154</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">155</span>]: s1.isdigit()                                                 
+Out[<span class="hljs-number">155</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">156</span>]: s2.isdigit()                                                 
+Out[<span class="hljs-number">156</span>]: <span class="hljs-literal">False</span></code></pre>
+
+
+
+<p>*<em>isalpha *</em></p>
+<p>查看<code>isalpha</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.isalpha )</code></pre>
+
+<blockquote>
+<p>isalpha(…) method of builtins.str instance<br>​    S.isalpha() -&gt; bool<br>​    Return True if all characters in S are alphabetic and there is at least one character in S, False otherwise.</p>
+<p>使用方法：s.isalpha () </p>
+<p>注意 ：测试是否全是字母，都是字母则返回 True,否则返回 False.</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">157</span>]: s = <span class="hljs-string">'123456'</span>                                                 
+
+In [<span class="hljs-number">158</span>]: s1 = <span class="hljs-string">'123abc'</span>                                                
+
+In [<span class="hljs-number">159</span>]: s2 = <span class="hljs-string">'abcdef'</span>                                                
+
+In [<span class="hljs-number">160</span>]: s.isalpha()                                                  
+Out[<span class="hljs-number">160</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">161</span>]: s1.isalpha()                                                 
+Out[<span class="hljs-number">161</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">162</span>]: s2.isalpha()                                                 
+Out[<span class="hljs-number">162</span>]: <span class="hljs-literal">True</span></code></pre>
+
+
+
+<p><strong>endswith</strong></p>
+<p>查看<code>endswith</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.endswith )</code></pre>
+
+<blockquote>
+<p>endswith(…) method of builtins.str instance<br>​    S.endswith(suffix[, start[, end]]) -&gt; bool<br>​    Return True if S ends with the specified suffix, False otherwise. With optional start, test S beginning at that position. With optional end, stop comparing S at that position. suffix can also be a tuple of strings to try.</p>
+<p>使用方法：s.endswith(x)</p>
+<p>注意：如果字符串s以x结尾，返回True</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">163</span>]: s = <span class="hljs-string">'123456abc'</span>                                              
+
+In [<span class="hljs-number">164</span>]: s1 = <span class="hljs-string">'123abced'</span>                                              
+
+In [<span class="hljs-number">165</span>]: s2 = <span class="hljs-string">'abcdef'</span>                                                
+
+In [<span class="hljs-number">166</span>]: s.endswith(<span class="hljs-string">'c'</span>)                                              
+Out[<span class="hljs-number">166</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">167</span>]: s.endswith(<span class="hljs-string">'2'</span>)                                              
+Out[<span class="hljs-number">167</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">168</span>]: s1.endswith(<span class="hljs-string">'d'</span>)                                             
+Out[<span class="hljs-number">168</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">169</span>]: s2.endswith(<span class="hljs-string">'f'</span>)                                             
+Out[<span class="hljs-number">169</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>备注：方法s.startwith与s.endwith相反，前者是以什么开始，后者是以什么结尾。</p>
+</blockquote>
+<p><strong>islower</strong></p>
+<p>查看<code>islower</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.islower )</code></pre>
+
+<blockquote>
+<p>islower(…) method of builtins.str instance<br>​    S.islower() -&gt; bool<br>​    Return True if all cased characters in S are lowercase and there is at least one cased character in S, False otherwise.</p>
+<p>使用方法：s.islower () </p>
+<p>注意：测试是否全是小写</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">173</span>]: s = <span class="hljs-string">'123456abc'</span>                                              
+
+In [<span class="hljs-number">174</span>]: s1 = <span class="hljs-string">'abcDE'</span>                                                 
+
+In [<span class="hljs-number">175</span>]: s2 = <span class="hljs-string">'DE'</span>                                                    
+
+In [<span class="hljs-number">176</span>]: s.islower()                                                  
+Out[<span class="hljs-number">176</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">177</span>]: s1.islower()                                                 
+Out[<span class="hljs-number">177</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">178</span>]: s2.islower()                                                 
+Out[<span class="hljs-number">178</span>]: <span class="hljs-literal">False</span></code></pre>
+
+
+
+<p><strong>isupper</strong></p>
+<p>查看<code>isupper</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.isupper )</code></pre>
+
+<blockquote>
+<p>isupper(…) method of builtins.str instance<br>​    S.isupper() -&gt; bool<br>​    Return True if all cased characters in S are uppercase and there is at least one cased character in S, False otherwise.</p>
+<p>使用方式：s.isupper () </p>
+<p>注意：测试是否全是大写</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">181</span>]: s = <span class="hljs-string">'123456abc'</span>                                              
+
+In [<span class="hljs-number">182</span>]: s1 = <span class="hljs-string">'abcDE'</span>                                                 
+
+In [<span class="hljs-number">183</span>]: s2 = <span class="hljs-string">'DE'</span>                                                    
+
+In [<span class="hljs-number">184</span>]: s3 = <span class="hljs-string">'123ADFAFA'</span>                                             
+
+In [<span class="hljs-number">185</span>]: s.isupper()                                                  
+Out[<span class="hljs-number">185</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">186</span>]: s1.isupper()                                                 
+Out[<span class="hljs-number">186</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">187</span>]: s2.isupper()                                                 
+Out[<span class="hljs-number">187</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">188</span>]: s3.isupper()                                                 
+Out[<span class="hljs-number">188</span>]: <span class="hljs-literal">True</span></code></pre>
+
+
+
+<h4 id="元组常用方法"><a href="#元组常用方法" class="headerlink" title="元组常用方法"></a>元组常用方法</h4><blockquote>
+<p>元组为不可变序列，所以只有两种方法。</p>
+</blockquote>
+<h5 id="查找元素-2"><a href="#查找元素-2" class="headerlink" title="查找元素"></a><code>查找元素</code></h5><p><strong>count</strong></p>
+<p>查看<code>count</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.count )</code></pre>
+
+<blockquote>
+<p>count(…) method of builtins.tuple instance<br>​    T.count(value) -&gt; integer – return number of occurrences of value</p>
+<p>使用方法：s.count(value)</p>
+<p>注意：统计元素的个数</p>
+</blockquote>
+<p><strong>演示：</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">243</span>]: s = (<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>)                                          
+
+In [<span class="hljs-number">244</span>]: s.count(<span class="hljs-number">1</span>)                                                   
+Out[<span class="hljs-number">244</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">245</span>]: s.count(<span class="hljs-number">4</span>)                                                   
+Out[<span class="hljs-number">245</span>]: <span class="hljs-number">1</span></code></pre>
+
+
+
+<p><strong>index</strong></p>
+<p>查看<code>index</code>的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">115</span>]: help(s.index )</code></pre>
+
+<blockquote>
+<p>index(…) method of builtins.tuple instance<br>​    T.index(value, [start, [stop]]) -&gt; integer – return first index of value.<br>​    Raises ValueError if the value is not present.</p>
+<p>使用方式：  T.index(value, [start, [stop]])</p>
+<p>注意：查看元素的索引</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">246</span>]: s = (<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>)                                          
+
+In [<span class="hljs-number">247</span>]: s.index(<span class="hljs-number">1</span>)                                                   
+Out[<span class="hljs-number">247</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">248</span>]: s.index(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)                                                 
+Out[<span class="hljs-number">248</span>]: <span class="hljs-number">6</span>
+
+In [<span class="hljs-number">249</span>]: s.index(<span class="hljs-number">4</span>)                                                   
+Out[<span class="hljs-number">249</span>]: <span class="hljs-number">3</span></code></pre>
+
+
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B/">序列类型</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-output/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第三话之格式化输出和深浅复制</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-numerical-sequence/">
+                        <span class="hidden-mobile">python第一话之数值类型和序列类型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第二话之序列类型方法&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

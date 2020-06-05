@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-@/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第十话之描述器和装饰器">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-@/">python第十话之描述器和装饰器</a>
+
+      <a href="/2018/12/python-@/" class="index-excerpt">
+        
+        
+          
+        
+        <div>单例模式类每次实例化的时候都会创建一个新的对象，如果要求类只能被实例化一次该怎么做呢？
+class Earth:
+
+    def __init__(self):
+        self.name = 'earth'
+
+
+e = Earth()
+print(e, id(e))
+a = Earth()
+print(a, id(a))
+
+
+按照我们上一节讲的，类可以多个实例化
+
+&lt;__main</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-17
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/">描述器</a>
+            
+              <a href="/tags/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%89%BF/">装饰器承</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-magic/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第九话之多继承和魔法方法">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-magic/">python第九话之多继承和魔法方法</a>
+
+      <a href="/2018/12/python-magic/" class="index-excerpt">
+        
+        
+          
+        
+        <div>多继承和魔法方法在上一节中，我们讲了类的定义，属性和方法，那么我们这个节课来看看多继承和魔法方法。
+多继承在上节我们讲到了继承，一个类可以继承一个类，继承之后可以把父类所有的方法和属性都直接继承过来，那一个类可以继承多个类呢？
+如果可以继承多个类的话，那如果两个父类中有一样的方法的情况下，子类继承哪一个呢？
+演示class Base:
+    def play(self):
+        ret</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-16
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF/">多继承</a>
+            
+              <a href="/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%E6%89%BF/">魔法方法承</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-class/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第八话之类定义、属性和继承">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-class/">python第八话之类定义、属性和继承</a>
+
+      <a href="/2018/12/python-class/" class="index-excerpt">
+        
+        
+          
+        
+        <div>类定义、属性和继承面向对象是一种编程思想，所以这一章内容会比较抽象，大家可以先学会怎么去写，后面用的多了写的多了自然就理解了。在第一章中大概阐述了python中的类与类型，前面学过的基本数据类型就是类，这里就来自定义类。
+类定义之前我们在数据类型里面学习到了列表的方法，那是怎么做的可以让列表里面放下这么多方法呢？
+class Abc:
+    def fun1(self):
+        pri</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-15
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%B1%BB/">类</a>
+            
+              <a href="/tags/%E5%B1%9E%E6%80%A7/">属性</a>
+            
+              <a href="/tags/%E7%BB%A7%E6%89%BF/">继承</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-function/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第七话之函数作用域和匿名函数">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-function/">python第七话之函数作用域和匿名函数</a>
+
+      <a href="/2018/12/python-function/" class="index-excerpt">
+        
+        
+          
+        
+        <div>函数作用域和匿名函数本节知识点：匿名函数、闭包、函数作用域、递归函数。
+匿名函数上节我们讲过的filter函数，可以过滤出列表中大于10的数据，但是使用都需要提前定义一个函数，有没有更加简便的方式呢？
+我们先来复习下filter函数：
+In [1]: s = [3, 20, 4, 6, 5, 9]
+
+In [2]: s
+Out[2]: [3, 20, 4, 6, 5, 9]
+
+In [3]: de</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-14
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F/">函数作用域</a>
+            
+              <a href="/tags/%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/">匿名函数</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-main/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第六话之函数基础和函数参数">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-main/">python第六话之函数基础和函数参数</a>
+
+      <a href="/2018/12/python-main/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+函数基础和函数参数函数是组织好的，可重复使用的，用来实现单一，或相关联功能的代码段。
+函数能提高应用的模块性，和代码的重复利用率。你已经知道Python提供了许多内建函数，比如print()。但你也可以自己创建函数，这被叫做用户自定义函数。
+函数基础定义一个函数
+你可以定义一个由自己想要功能的函数，以下是简单的规则：
+
+函数代码块以 def 关键词开头，后接函数标识符名称和圆括号 ()</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-13
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%9F%BA%E7%A1%80/">函数基础</a>
+            
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0/">函数参数</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-if-while/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第五话之控制流程">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-if-while/">python第五话之控制流程</a>
+
+      <a href="/2018/12/python-if-while/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+控制流程逻辑值包含了两个值：True：表示非空的量(比如：string,tuple.list.set,dictonary等) ，所有非零数 。False：表示0,None,空的量等作用：主要用于判断语句中，用来判断
+
+一个字符串是否为空
+一个运算结果是否为零
+一个表达式是否可用
+
+条件判断条件语句是根据条件来设置程序接下来的走向。
+条件语句的关键字有if，elif，else。
+基本形式</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-12
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B/">控制流程</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-dict-set/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第四话之散列类型、运算优先级和逻辑运算">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-dict-set/">python第四话之散列类型、运算优先级和逻辑运算</a>
+
+      <a href="/2018/12/python-dict-set/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+散列类型、运算优先级和逻辑运算散列类型也就是我们所熟知的字典和集合，我们今天来看看散列类型的相关逻辑运算。
+集合（set）集合的特点：无序、元素是唯一的。
+集合的创建：用大括号“{}”，各元素之间用逗号隔开；也可以通过类型转换的方式使用set()内置函数将列表或元祖转换为集合类型。在创建的过程中会自动过滤掉重复的元素，保证元素的唯一性。
+演示In [1]: s = [1,2,3,4,1</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-11
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%A3%E5%88%97%E7%B1%BB%E5%9E%8B/">散列类型</a>
+            
+              <a href="/tags/%E8%BF%90%E7%AE%97%E4%BC%98%E5%85%88%E7%BA%A7/">运算优先级</a>
+            
+              <a href="/tags/%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/">逻辑运算</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-output/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第三话之格式化输出和深浅复制">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-output/">python第三话之格式化输出和深浅复制</a>
+
+      <a href="/2018/12/python-output/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+格式化输出和深浅拷贝前面我熟悉了列表、字符串、元组的常用操作以及对应的增删改查，今天我们来深入了解格式化输出和深浅复制相关的知识点。
+格式化输出传统方法%s
+%字符串
+
+演示：
+In [1]: a = 'hello'                                                    
+
+In [2]: b = 'python '           </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-08
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA/">格式化输出</a>
+            
+              <a href="/tags/%E6%B7%B1%E6%B5%85%E5%A4%8D%E5%88%B6/">深浅复制</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-sequence/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第二话之序列类型方法">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-sequence/">python第二话之序列类型方法</a>
+
+      <a href="/2018/12/python-sequence/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+序列类型方法前面我们简单的介绍了什么是序列类型，并且简单的给大家提了下字符串、元组、列表的一些基本操作。接下来我们详细的来看下关于字符串、元组、列表的常用操作。
+列表常用方法我们先查看下list可以使用的一些方法：
+
+  append(…)|      L.append(object) -&gt; None – append object to end||  clear(…)|    </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-08
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B/">序列类型</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/12/python-numerical-sequence/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113853.png" srcset="/img/loading.gif" alt="python第一话之数值类型和序列类型">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/12/python-numerical-sequence/">python第一话之数值类型和序列类型</a>
+
+      <a href="/2018/12/python-numerical-sequence/" class="index-excerpt">
+        
+        
+          
+        
+        <div>[TOC]
+Python的数值类型Python中的基本数据类型有数值类型、字符串型、列表、元组、字典、集合等。本节介绍数值类型。数值类型包括整型、布尔型、浮点型和复数类型。
+基本整形四则运算用Python实现简单的加减乘除
+我们先进入Python的交互模式
+
+或者执行ipython
+
+加法In [1]: 1+1
+Out[1]: 2
+
+In [2]: 12+2
+Out[2]: 14
+
+减法In [3</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-12-01
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B/">数值类型</a>
+            
+              <a href="/tags/%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B/">序列类型</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Self-discipline is freedom&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

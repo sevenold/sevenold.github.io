@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>OpenCV环境配置（win10+opencv3.4.1+vs2017） - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-01-07 10:00">
+      2019年1月7日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p><strong>简介：</strong> OpenCV是一个基于BSD许可（开源）发行的跨平台计算机视觉库，可以运行在Linux、Windows、Android和Mac OS操作系统上。它轻量级而且高效——由一系列 C 函数和少量 C++ 类构成，同时提供了Python、Java、Ruby、MATLAB等语言的接口，实现了图像处理和计算机视觉方面的很多通用算法。</p>
+<h3 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h3><p>系统：windows 10 - 1809</p>
+<p>OpenCV版本：3.4.1</p>
+<p>Microsoft Visio Studio：2017</p>
+<h3 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h3><blockquote>
+<p>默认vs2017已经安装。</p>
+</blockquote>
+<p><strong>下载路径</strong>：从<a href="https://link.jianshu.com/?t=https%3A%2F%2Fopencv.org%2F" target="_blank" rel="noopener">OpenCV Library</a>下载安装包并安装</p>
+<ul>
+<li><p>进入官网首页，点击【<strong>Releases</strong>】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/71143712.jpg" srcset="/img/loading.gif" alt="opencv下载"></p>
+</li>
+<li><p>在<strong>Releases</strong> 界面下找到<strong>3.4.1</strong>版本, 因为是Windows平台且使用安装包方式，故点击<strong>【Win pack】</strong></p>
+</li>
+</ul>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/4000755.jpg" srcset="/img/loading.gif" alt="opencv3.4.1"></p>
+<ul>
+<li><p>下载完毕后，【双击安装包】开始安装</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/51001757.jpg" srcset="/img/loading.gif" alt="opencv安装"></p>
+<blockquote>
+<p>我这里是安装在D盘，不用再新建文件夹，解压后会自动创建一个【opencv】的文件夹。</p>
+<p>注意：安装路径不要有中文，避免出现问题。</p>
+</blockquote>
+</li>
+<li><p>等待，直到安装完毕。</p>
+</li>
+</ul>
+<h3 id="配置OpenCV的系统环境"><a href="#配置OpenCV的系统环境" class="headerlink" title="配置OpenCV的系统环境"></a>配置OpenCV的系统环境</h3><ul>
+<li><p>在【桌面】或者【资源管理器】-&gt; 【右击】【此电脑】-&gt; 选择【属性】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/1812340.jpg" srcset="/img/loading.gif" alt="属性"></p>
+</li>
+<li><p>选择【高级系统设置】-&gt; 点击【环境变量】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/3290596.jpg" srcset="/img/loading.gif" alt="环境变量"></p>
+</li>
+<li><p>环境变量界面分为两部分，上方为<strong>【用户变量】</strong>，下方为<strong>【系统变量】</strong></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/18148003.jpg" srcset="/img/loading.gif" alt="path"></p>
+</li>
+<li><p>在<strong>【系统变量】</strong>列表中找到<strong>【Path】</strong>，双击打开</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/43977585.jpg" srcset="/img/loading.gif" alt="系统环境变量"></p>
+</li>
+<li><p>在打开界面的右侧列表中选择<strong>【浏览】</strong>,进入<strong>opencv安装路径</strong>并选取<strong>XXXX\opencv\build\x64\vc14\bin</strong>目录，逐级<strong>【确定】</strong>保存。</p>
+</li>
+<li><p>系统环境变量设置完毕。</p>
+</li>
+</ul>
+<h3 id="在VS2017项目中配置OpenCV"><a href="#在VS2017项目中配置OpenCV" class="headerlink" title="在VS2017项目中配置OpenCV"></a>在VS2017项目中配置OpenCV</h3><h4 id="【新建空项目】"><a href="#【新建空项目】" class="headerlink" title="【新建空项目】"></a>【<strong>新建空项目</strong>】</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/70133617.jpg" srcset="/img/loading.gif" alt="新建项目"></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/85326264.jpg" srcset="/img/loading.gif" alt="空项目"></p>
+<h4 id="【新建cpp文件】"><a href="#【新建cpp文件】" class="headerlink" title="【新建cpp文件】"></a>【<strong>新建cpp文件</strong>】</h4><p>右击-&gt;【<strong>源文件</strong>】-&gt; 【<strong>添加</strong>】-&gt; 【<strong>新建项</strong>】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/31670791.jpg" srcset="/img/loading.gif" alt="新建文件"></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/71795105.jpg" srcset="/img/loading.gif" alt="cpp文件"></p>
+<h4 id="【属性管理】"><a href="#【属性管理】" class="headerlink" title="【属性管理】"></a>【<strong>属性管理</strong>】</h4><p><strong>VS2017</strong>上方菜单栏找到<strong>【视图】</strong>–&gt;<strong>【其他窗口】</strong>–&gt;<strong>【属性管理器】</strong>，点击开启</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/12879883.jpg" srcset="/img/loading.gif" alt="属性管理器"></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/18122186.jpg" srcset="/img/loading.gif" alt="属性管理器"></p>
+<h4 id="【Debug-X64设置】"><a href="#【Debug-X64设置】" class="headerlink" title="【Debug X64设置】"></a><strong>【Debug X64设置】</strong></h4><p>右击【<strong>Debug|x64</strong>】,点击【<strong>属性</strong>】</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/31611889.jpg" srcset="/img/loading.gif" alt="属性"></p>
+<ul>
+<li><p>在左侧<strong>【通用属性】</strong>菜单下找到<strong>【VC++目录】</strong>，点击，右侧找到<strong>【包含目录】</strong>，点击，右侧出现<strong>【倒三角】</strong>，点击，在弹出下拉列表中点击<strong>【编辑】</strong></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/83946786.jpg" srcset="/img/loading.gif" alt="编辑属性"></p>
+</li>
+<li><p>在弹出界面中通过点击右上角<strong>【新行】</strong>按钮，添加三条路径：<br><strong>【XXXX\opencv\build\include\opencv2】</strong><br><strong>【XXXX\opencv\build\include\opencv】</strong><br><strong>【XXXX\opencv\build\include】</strong></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/34773414.jpg" srcset="/img/loading.gif" alt="新行"></p>
+</li>
+<li><p>在【<strong>库目录</strong>】添加路径</p>
+<p><strong>【XXXX\opencv\build\x64\vc14\lib】</strong></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/41741966.jpg" srcset="/img/loading.gif" alt="库目录"></p>
+</li>
+<li><p>在左侧<strong>【通用属性】</strong>菜单下找到<strong>【链接器】</strong>，展开菜单，选择<strong>【输入】</strong>，在右侧找到<strong>【附加依赖项】</strong>，以<strong>【第4步】</strong>中同样方式打开<strong>【编辑】</strong>，在上方空白处手动键入:<strong>【opencv_world341d.lib】</strong>。</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/9953370.jpg" srcset="/img/loading.gif" alt="依赖项"></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/3510846.jpg" srcset="/img/loading.gif" alt="附加依赖项"></p>
+</li>
+<li><p>保存退出</p>
+</li>
+</ul>
+<blockquote>
+<p> 此处键入的文件<strong>随版本号不同而不同</strong>，若非OpenCV 3.4.1版本可自行进入<strong>【XXXX\opencv\build\x64\vc14\lib】</strong>目录查看文件名并键入。</p>
+</blockquote>
+<h4 id="【Release-x64设置】"><a href="#【Release-x64设置】" class="headerlink" title="【Release|x64设置】"></a>【<strong>Release|x64设置</strong>】</h4><p>重复执行<strong>【Debug|X64设置】</strong>–&gt; 不同的就是【<strong>依赖项</strong>】的选择。</p>
+<blockquote>
+<p> 文件夹下会看到几个几乎同名的文件，区别仅仅为文件名<strong>末尾有无字母d</strong>，其中d代表debug版本，其他为release版本，以3.4.1版本为例，配置<strong>【Debug|x64】</strong>时使用<strong>opencv_world341d.lib</strong>，配置<strong>【Release|x64】</strong>时使用<strong>opencv_world341.lib</strong>.</p>
+</blockquote>
+<h4 id="【环境搭建完成】"><a href="#【环境搭建完成】" class="headerlink" title="【环境搭建完成】"></a>【<strong>环境搭建完成</strong>】</h4><h3 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h3><h4 id="【测试代码】"><a href="#【测试代码】" class="headerlink" title="【测试代码】"></a>【测试代码】</h4><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;opencv2/opencv.hpp&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+    Mat <span class="hljs-built_in">image</span> = imread(<span class="hljs-string">"opencv.png"</span>);  
+    imshow(<span class="hljs-string">"显示图像"</span>, <span class="hljs-built_in">image</span>);
+    waitKey(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+
+<h4 id="【运行环境】"><a href="#【运行环境】" class="headerlink" title="【运行环境】"></a>【运行环境】</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/59828793.jpg" srcset="/img/loading.gif" alt="运行环境"></p>
+<h4 id="【运行结果】"><a href="#【运行结果】" class="headerlink" title="【运行结果】"></a>【<strong>运行结果</strong>】</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/83983634.jpg" srcset="/img/loading.gif" alt="运行结果"></p>
+<h4 id="【环境搭建成功】"><a href="#【环境搭建成功】" class="headerlink" title="【环境搭建成功】"></a>【<strong>环境搭建成功</strong>】</h4><h3 id="配置属性表"><a href="#配置属性表" class="headerlink" title="配置属性表"></a>配置属性表</h3><blockquote>
+<p>我们知道了如何对新建的项目进行属性配置，但若每次都从头进行一遍是十分繁琐的，所以可以通过<strong>【配置属性表并导出】</strong>，下次新建项目时<strong>【导入】</strong>，来减少这些不必要的重复劳动。</p>
+</blockquote>
+<h4 id="【新建属性表】"><a href="#【新建属性表】" class="headerlink" title="【新建属性表】"></a>【<strong>新建属性表</strong>】</h4><ul>
+<li>以对【<strong>Debug|x64</strong>】操作为例，右击，选择<strong>【添加新项目属性表】</strong></li>
+</ul>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/42846413.jpg" srcset="/img/loading.gif" alt="新建属性表"></p>
+<ul>
+<li>在跳出的窗口中选择<strong>【属性表】</strong>格式文件，对文件<strong>【命名】</strong>,<strong>【选择保存位置】</strong>，点击<strong>【添加】</strong>新建成功</li>
+</ul>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/38050191.jpg" srcset="/img/loading.gif" alt="属性表"></p>
+<ul>
+<li><p>此时我们在<strong>【Debug|x64】</strong>目录下会看到创建好的属性表文件，对其双击打开，<code>以同样的方式配置</code><strong>【包含目录】</strong>、<strong>【库目录】</strong>、<strong>【附加依赖项】</strong>，保存，对于【<strong>Release|x64</strong>】同理</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/81378791.jpg" srcset="/img/loading.gif" alt="属性文件"></p>
+</li>
+<li><p>相应的位置即可找到这两个文件</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/31368933.jpg" srcset="/img/loading.gif" alt="属性文件"></p>
+</li>
+</ul>
+<h4 id="【导入属性表】"><a href="#【导入属性表】" class="headerlink" title="【导入属性表】"></a>【<strong>导入属性表</strong>】</h4><p>以后<strong>再次新建项目</strong>只需在属性管理器中通过<strong>【添加现有属性表】</strong>导入即可完成配置</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/19-1-7/25516145.jpg" srcset="/img/loading.gif" alt="现有属性"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/opencv/">opencv</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/OpenCV/">OpenCV</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-introduction/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【一】计算机视觉引论</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-reptile/">
+                        <span class="hidden-mobile">python第十五话之requests库及爬虫案例</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "OpenCV环境配置（win10+opencv3.4.1+vs2017）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

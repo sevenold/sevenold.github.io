@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第十五话之requests库及爬虫案例 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-24 10:00">
+      2018年12月24日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="Request库"><a href="#Request库" class="headerlink" title="Request库"></a>Request库</h3><blockquote>
+<p>使用 Requests 发送网络请求非常简单。</p>
+</blockquote>
+<h4 id="requests-get"><a href="#requests-get" class="headerlink" title="requests.get()"></a>requests.get()</h4><pre><code class="hljs python">requests.get(url, params=<span class="hljs-literal">None</span>, **kwargs)</code></pre>
+
+<blockquote>
+<p>获取HTML网页的主要方法，对应于HTTP的GET.</p>
+<p>构造一个向服务器请求资源的Request对象</p>
+<p>返回一个包含服务器资源的Response对象.</p>
+</blockquote>
+<pre><code class="hljs python">help(requests.get)</code></pre>
+
+<blockquote>
+<p>Sends a GET request.<br>      :param url: URL for the new :class:<code>Request</code> object.<br>​    :param params: (optional) Dictionary or bytes to be sent in the query string for the :class:<code>Request</code>.<br>​    :param **kwargs: Optional arguments that <code>request</code> takes.<br>​    :return: :class:<code>Response &lt;Response&gt;</code> object<br>​    :rtype: requests.Response</p>
+<hr>
+<p>发送GET请求。</p>
+<p>url：拟获取页面的url链接</p>
+<p>params：url中的额外参数，字典或字节流格式，可选</p>
+<p>**kwargs：12个控制访问的参数</p>
+</blockquote>
+<h5 id="普通get"><a href="#普通get" class="headerlink" title="普通get"></a>普通get</h5><pre><code class="hljs python">In [<span class="hljs-number">22</span>]: <span class="hljs-keyword">import</span> requests
+
+In [<span class="hljs-number">23</span>]: url
+Out[<span class="hljs-number">23</span>]: <span class="hljs-string">'https://www.baidu.com'</span>
+
+In [<span class="hljs-number">24</span>]: r = requests.get(url)
+Out[<span class="hljs-number">24</span>]: &lt;Response [<span class="hljs-number">200</span>]&gt;
+
+In [<span class="hljs-number">27</span>]: r.url
+Out[<span class="hljs-number">27</span>]: <span class="hljs-string">'https://www.baidu.com/'</span></code></pre>
+
+<h5 id="带参get"><a href="#带参get" class="headerlink" title="带参get"></a>带参get</h5><pre><code class="hljs python">In [<span class="hljs-number">41</span>]: r = requests.get(url+<span class="hljs-string">'/s'</span>, params=&#123;<span class="hljs-string">'wd'</span>:<span class="hljs-string">'dog'</span>&#125;)
+
+In [<span class="hljs-number">42</span>]: r.url
+Out[<span class="hljs-number">42</span>]: <span class="hljs-string">'https://www.baidu.com/s?wd=dog'</span></code></pre>
+
+<h4 id="requests-head"><a href="#requests-head" class="headerlink" title="requests.head()"></a>requests.head()</h4><blockquote>
+<p>获取HTML网页头信息的方法，对应于HTTP的HEAD</p>
+</blockquote>
+<pre><code class="hljs python">requests.head(url, **kwargs)</code></pre>
+
+<blockquote>
+<p>url：拟获取页面的url链接</p>
+<p>  **kwargs：13个控制访问的参数</p>
+</blockquote>
+<h4 id="requests-post"><a href="#requests-post" class="headerlink" title="requests.post()"></a>requests.post()</h4><blockquote>
+<p>向HTML网页提交POST请求的方法，对应于HTTP的POST</p>
+</blockquote>
+<pre><code class="hljs python">requests.post(url, data=<span class="hljs-literal">None</span>, json=<span class="hljs-literal">None</span>, **kwargs)</code></pre>
+
+<blockquote>
+<p>url：拟获取页面的url链接</p>
+<p>  data：字典、字节序列或文件，Request的内容</p>
+<p>  json：JSON格式的数据，Request的内容</p>
+<p>  **kwargs：11个控制访问参数</p>
+</blockquote>
+<h4 id="requests-put"><a href="#requests-put" class="headerlink" title="requests.put()"></a>requests.put()</h4><blockquote>
+<p>向HTML网页提交PUT请求的方法，对应于HTTP的PUT</p>
+</blockquote>
+<pre><code class="hljs python">requests.put(url, data=<span class="hljs-literal">None</span>, **kwargs)</code></pre>
+
+<blockquote>
+<p>url：拟更新页面的url链接</p>
+<p>  data：字典、字节序列或文件，Request的内容</p>
+<p>  **kwargs：12个控制访问参数</p>
+</blockquote>
+<h4 id="requests-patch"><a href="#requests-patch" class="headerlink" title="requests.patch()"></a>requests.patch()</h4><blockquote>
+<p>向HTML网页提交局部修改请求，对应于HTTP的PATCH</p>
+</blockquote>
+<pre><code class="hljs python">requests.patch(url, data=<span class="hljs-literal">None</span>, **kwargs)</code></pre>
+
+<blockquote>
+<p>url：拟更新页面的url链接</p>
+<p>  data：字典、字节序列或文件，Request的内容</p>
+<p>  **kwargs：12个控制访问参数</p>
+</blockquote>
+<h4 id="requests-delete"><a href="#requests-delete" class="headerlink" title="requests.delete()"></a>requests.delete()</h4><blockquote>
+<p>向HTML页面提交删除请求，对应于HTTP的DELETE</p>
+</blockquote>
+<pre><code class="hljs python">requests.delete(url, **kwargs)</code></pre>
+
+<blockquote>
+<p>url：拟删除页面的url链接</p>
+<p>  **kwargs：13个控制访问参数</p>
+</blockquote>
+<h4 id="response对象的属性"><a href="#response对象的属性" class="headerlink" title="response对象的属性"></a>response对象的属性</h4><p><code>r.status_code</code></p>
+<blockquote>
+<p>HTTP请求的返回状态，200表示连接成功，404表示失败</p>
+</blockquote>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-24/38874266.jpg" srcset="/img/loading.gif" alt="http状态码"></p>
+<p><code>r.text</code></p>
+<blockquote>
+<p>HTTP响应内容的字符串形式，即，url对应的页面内容</p>
+</blockquote>
+<p><code>r.emcoding</code></p>
+<blockquote>
+<p>从HTTPheader中猜测的响应内容编码方式</p>
+</blockquote>
+<p><code>r.apparent_encoding</code></p>
+<blockquote>
+<p>从内容分析出的响应内容编码方式（备选编码方式）.</p>
+</blockquote>
+<p><code>r.content</code></p>
+<blockquote>
+<p>HTTP响应内容的二进制形式.</p>
+</blockquote>
+<h4 id="理解Response的编码"><a href="#理解Response的编码" class="headerlink" title="理解Response的编码"></a>理解Response的编码</h4><h5 id="r-encoding"><a href="#r-encoding" class="headerlink" title="r.encoding"></a>r.encoding</h5><blockquote>
+<p>从HTTP header中猜测的响应内容编码方式</p>
+<p>注意：如果header中不存在charset，则认为编码为ISO-8859-1。</p>
+</blockquote>
+<h5 id="r-apparent-encoding"><a href="#r-apparent-encoding" class="headerlink" title="r.apparent_encoding"></a>r.apparent_encoding</h5><blockquote>
+<p>从内容中分析出的响应内容编码方式（备选编码方式）</p>
+<p>注意：根据网页内容分析出的编码方式</p>
+</blockquote>
+<h4 id="理解Requests库的异常"><a href="#理解Requests库的异常" class="headerlink" title="理解Requests库的异常"></a>理解Requests库的异常</h4><h5 id="requests-ConnectionError"><a href="#requests-ConnectionError" class="headerlink" title="requests.ConnectionError"></a>requests.ConnectionError</h5><blockquote>
+<p>网络连接错误异常，如DNS查询失败、拒绝连接等</p>
+</blockquote>
+<h5 id="requests-HTTPErrorHTTP"><a href="#requests-HTTPErrorHTTP" class="headerlink" title="requests.HTTPErrorHTTP"></a>requests.HTTPErrorHTTP</h5><blockquote>
+<p>错误异常</p>
+</blockquote>
+<h5 id="requests-URLRequired"><a href="#requests-URLRequired" class="headerlink" title="requests.URLRequired"></a>requests.URLRequired</h5><blockquote>
+<p>URL缺失异常</p>
+</blockquote>
+<h5 id="requests-TooMangRedirects"><a href="#requests-TooMangRedirects" class="headerlink" title="requests.TooMangRedirects"></a>requests.TooMangRedirects</h5><blockquote>
+<p>超过最大重定向次数，产生重定向异常</p>
+</blockquote>
+<h5 id="requests-ConnectTimeout"><a href="#requests-ConnectTimeout" class="headerlink" title="requests.ConnectTimeout"></a>requests.ConnectTimeout</h5><blockquote>
+<p>连接远程服务器超时异常</p>
+</blockquote>
+<h5 id="requests-Timeout"><a href="#requests-Timeout" class="headerlink" title="requests.Timeout"></a>requests.Timeout</h5><blockquote>
+<p>请求URL超时，产生超时异常</p>
+</blockquote>
+<h5 id="r-raise-for-status"><a href="#r-raise-for-status" class="headerlink" title="r.raise_for_status()"></a>r.raise_for_status()</h5><blockquote>
+<p>如果不是200，产生异常requests.HTTPError</p>
+</blockquote>
+<h4 id="爬取网页的通用代码框架"><a href="#爬取网页的通用代码框架" class="headerlink" title="爬取网页的通用代码框架"></a>爬取网页的通用代码框架</h4><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getHTMLText</span><span class="hljs-params">(url)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+        r = requests.get(url, timeout=<span class="hljs-number">30</span>)
+        r.raise_for_status() <span class="hljs-comment">#如果状态不是200，引发HTTPError异常#</span>
+        r.encoding = r.apparent_encoding
+        <span class="hljs-keyword">return</span> r.text
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"产生异常"</span>
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    url = <span class="hljs-string">"http://www.baidu.com"</span>
+    print(getHTMLText(url))</code></pre>
+
+
+
+<h4 id="HTTP协议对资源的操作"><a href="#HTTP协议对资源的操作" class="headerlink" title="HTTP协议对资源的操作"></a>HTTP协议对资源的操作</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-24/49709395.jpg" srcset="/img/loading.gif" alt="协议"></p>
+<h4 id="request-request"><a href="#request-request" class="headerlink" title="request.request()"></a>request.request()</h4><blockquote>
+<p>requests.request(method, url, **kwargs)</p>
+<p>method：请求方式</p>
+<p>url：拟获取页面的url链接</p>
+</blockquote>
+<pre><code class="hljs python">r = requests.request(<span class="hljs-string">'GET'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'HEAD'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'POST'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'PUT'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'PATCH'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'DELETE'</span>, url, **kwargs)
+r = requests.request(<span class="hljs-string">'OPTIONS'</span>, url, **kwargs)
+**kwargs：控制访问的参数，均为可选项，共<span class="hljs-number">13</span>个</code></pre>
+
+<h4 id="超参数"><a href="#超参数" class="headerlink" title="超参数"></a>超参数</h4><h5 id="params"><a href="#params" class="headerlink" title="params"></a><code>params</code></h5><blockquote>
+<p> 字典或字节序列，作为参数增加到url中</p>
+</blockquote>
+<pre><code class="hljs python">kv = &#123;<span class="hljs-string">'key1'</span>: <span class="hljs-string">'value1'</span>, <span class="hljs-string">'key2'</span>: <span class="hljs-string">'value2'</span>&#125;
+r = requests.request(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'http://python123.io/ws'</span>,  params=kv)
+print(r.url)</code></pre>
+
+<pre><code class="hljs python">https://python123.io/ws?key1=value1&amp;key2=value2</code></pre>
+
+<h5 id="data"><a href="#data" class="headerlink" title="data"></a><code>data</code></h5><blockquote>
+<p>字典、字节序列或文件对象，作为Request的对象</p>
+</blockquote>
+<pre><code class="hljs python">body = <span class="hljs-string">'主体内容'</span>.encode(<span class="hljs-string">'utf-8'</span>)
+r = requests.request(<span class="hljs-string">'POST'</span>, <span class="hljs-string">'http://python123.io/ws'</span>, data=body)
+print(r.url)</code></pre>
+
+<pre><code class="hljs python">http://python123.io/ws</code></pre>
+
+<h5 id="json"><a href="#json" class="headerlink" title="json"></a><code>json</code></h5><blockquote>
+<p>JSON格式的数据，作为Request的内容</p>
+</blockquote>
+<pre><code class="hljs python">kv = &#123;<span class="hljs-string">'key1'</span>: <span class="hljs-string">'value1'</span>&#125;
+r = requests.request(<span class="hljs-string">'POST'</span>, <span class="hljs-string">'http://python123.io/ws'</span>, json=kv)
+print(r.url)</code></pre>
+
+<pre><code class="hljs python">http://python123.io/ws</code></pre>
+
+<p><code>headers</code></p>
+<blockquote>
+<p>字典，HTTP定制头</p>
+</blockquote>
+<pre><code class="hljs python">hd = &#123;<span class="hljs-string">'user-agent'</span>: <span class="hljs-string">'Chrome/10'</span>&#125;
+r = requests.request(<span class="hljs-string">'POST'</span>, <span class="hljs-string">'http://python123.io/ws'</span>, headers=hd)
+print(r.url)</code></pre>
+
+<pre><code class="hljs python">http://python123.io/ws</code></pre>
+
+<h5 id="cookies"><a href="#cookies" class="headerlink" title="cookies"></a><code>cookies</code></h5><blockquote>
+<p>字典或CookieJar，Request中的cookie</p>
+</blockquote>
+<h5 id="auth"><a href="#auth" class="headerlink" title="auth"></a><code>auth</code></h5><blockquote>
+<p>元组，支持HTTP认证功能</p>
+</blockquote>
+<h5 id="files"><a href="#files" class="headerlink" title="files"></a><code>files</code></h5><blockquote>
+<p>字典类型，传输文件</p>
+</blockquote>
+<pre><code class="hljs python">fs = &#123;<span class="hljs-string">'file'</span>: open(<span class="hljs-string">'data.xls'</span>,<span class="hljs-string">'rb'</span>)&#125;
+r = requests.request(<span class="hljs-string">'POST'</span>, <span class="hljs-string">'http://python123.io/ws'</span>, files=fs)
+print(r.url)</code></pre>
+
+<h5 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a><code>timeout</code></h5><blockquote>
+<p> 设定超时时间，秒为单位</p>
+</blockquote>
+<pre><code class="hljs python">r = requests.request(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'http://www.baidu.com'</span>, timeout=<span class="hljs-number">10</span>)</code></pre>
+
+<h5 id="proxies"><a href="#proxies" class="headerlink" title="proxies"></a><code>proxies</code></h5><blockquote>
+<p> 字典类型，设置访问代理服务器，可以增加登录认证</p>
+</blockquote>
+<pre><code class="hljs python">pxs = &#123;<span class="hljs-string">'http'</span>: <span class="hljs-string">'http://user:pass@10.10.10.1:1234'</span>
+                <span class="hljs-string">'https'</span>: <span class="hljs-string">'https://10.10.10.1:4321'</span>&#125;
+r = requests.request(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'http://www.baidu.com'</span>, proxies=pxs)</code></pre>
+
+<h5 id="allow-redirects"><a href="#allow-redirects" class="headerlink" title="allow_redirects"></a><code>allow_redirects</code></h5><blockquote>
+<p>True/False，默认为Ture，重定向开关</p>
+</blockquote>
+<h5 id="stream"><a href="#stream" class="headerlink" title="stream"></a><code>stream</code></h5><blockquote>
+<p>True/False，默认为True，获取内容立即下载开关</p>
+</blockquote>
+<h5 id="verify"><a href="#verify" class="headerlink" title="verify"></a><code>verify</code></h5><blockquote>
+<p>True/False，默认为True，认证SSL证书开关</p>
+</blockquote>
+<h5 id="cert"><a href="#cert" class="headerlink" title="cert"></a><code>cert</code></h5><blockquote>
+<p>本地SSL证书路径</p>
+</blockquote>
+<h3 id="爬虫案例"><a href="#爬虫案例" class="headerlink" title="爬虫案例"></a>爬虫案例</h3><h4 id="网站"><a href="#网站" class="headerlink" title="网站"></a>网站</h4><blockquote>
+<p>实例网站：<a href="http://image.baidu.com/" target="_blank" rel="noopener">百度图片搜索</a></p>
+</blockquote>
+<h4 id="分析网页"><a href="#分析网页" class="headerlink" title="分析网页"></a>分析网页</h4><p>搜索关键字：猫</p>
+<pre><code class="hljs python">https://image.baidu.com/search/index?tn=baiduimage&amp;ipn=r&amp;ct=201326592&amp;cl=2&amp;lm=-1&amp;st=-1&amp;sf=1&amp;fmq=&amp;pv=&amp;ic=0&amp;nc=1&amp;z=&amp;se=1&amp;showtab=0&amp;fb=0&amp;width=&amp;height=&amp;face=0&amp;istype=2&amp;ie=utf-8&amp;fm=index&amp;pos=history&amp;word=%E7%8C%AB</code></pre>
+
+<p>搜索关键字：狗</p>
+<pre><code class="hljs python">https://image.baidu.com/search/index?tn=baiduimage&amp;ipn=r&amp;ct=201326592&amp;cl=2&amp;lm=-1&amp;st=-1&amp;sf=1&amp;fmq=&amp;pv=&amp;ic=0&amp;nc=1&amp;z=&amp;se=1&amp;showtab=0&amp;fb=0&amp;width=&amp;height=&amp;face=0&amp;istype=2&amp;ie=utf-8&amp;fm=index&amp;pos=history&amp;word=%E7%8B%97</code></pre>
+
+<blockquote>
+<p>对比get的网址，发现只有搜索关键字不一样。</p>
+</blockquote>
+<h4 id="获得网页数据"><a href="#获得网页数据" class="headerlink" title="获得网页数据"></a>获得网页数据</h4><blockquote>
+<p>我们就才有前面提到的通用的代码框架</p>
+</blockquote>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getHTMLText</span><span class="hljs-params">(url)</span>:</span>
+    <span class="hljs-keyword">try</span>:
+        r = requests.get(url, timeout=<span class="hljs-number">30</span>)
+        r.raise_for_status()  <span class="hljs-comment"># 如果状态不是200，引发HTTPError异常#</span>
+        r.encoding = r.apparent_encoding
+        <span class="hljs-keyword">return</span> r.text
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"产生异常"</span>
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    key_word = <span class="hljs-string">'小狗'</span>
+    url = <span class="hljs-string">'https://image.baidu.com/search/index?tn=baiduimage&amp;ipn=r&amp;ct=201326592&amp;cl=2&amp;lm=-1&amp;st=-1&amp;sf=1&amp;fmq=&amp;pv=&amp;ic=0'</span> \
+          <span class="hljs-string">'&amp;nc=1&amp;z=&amp;se=1&amp;showtab=0&amp;fb=0&amp;width=&amp;height=&amp;face=0&amp;istype=2&amp;ie=utf-8&amp;fm=index&amp;pos=history&amp;word='</span>
+    html = getHTMLText(url+key_word)
+    print(html)</code></pre>
+
+<blockquote>
+<p>通用代码框架加上我们刚刚分析网址get的请求网址，就可以获取到网页的数据。</p>
+</blockquote>
+<h4 id="处理数据"><a href="#处理数据" class="headerlink" title="处理数据"></a>处理数据</h4><blockquote>
+<p>接下来就是处理数据，把我们所需要的图片网址匹配出来</p>
+</blockquote>
+<p>通过F12找到图片的网址–这个不是原图地址</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-24/44722566.jpg" srcset="/img/loading.gif" alt="F12"></p>
+<p>右键 查看网页源代码，分析JSON数据可知，其中的字段objURL，即表示了原图的下载地址。</p>
+<p>通过正则在代码里匹配出图片的网址</p>
+<pre><code class="hljs python">pic_urls = re.findall(<span class="hljs-string">'"objURL":"(.*?)",'</span>, html, re.S)
+print(pic_urls)</code></pre>
+
+<h4 id="展示结果"><a href="#展示结果" class="headerlink" title="展示结果"></a>展示结果</h4><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">down</span><span class="hljs-params">(urls)</span>:</span>
+    <span class="hljs-keyword">for</span> i, url <span class="hljs-keyword">in</span> enumerate(urls):
+        <span class="hljs-keyword">try</span>:
+            pic = requests.get(url, timeout=<span class="hljs-number">15</span>)
+            string = str(i + <span class="hljs-number">1</span>) + <span class="hljs-string">'.jpg'</span>
+            <span class="hljs-keyword">with</span> open(string, <span class="hljs-string">'wb'</span>) <span class="hljs-keyword">as</span> f:
+                f.write(pic.content)
+                print(<span class="hljs-string">'成功下载第%s张图片: %s'</span> % (str(i + <span class="hljs-number">1</span>), str(url)))
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            print(<span class="hljs-string">'下载第%s张图片时失败: %s'</span> % (str(i + <span class="hljs-number">1</span>), str(url)))
+            print(e)
+            <span class="hljs-keyword">continue</span></code></pre>
+
+<blockquote>
+<p>通过访问我们获取到的图片网址，对图片进行保存。</p>
+</blockquote>
+<h4 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h4><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> re
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getHTMLText</span><span class="hljs-params">(url)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    获取网页数据</span>
+<span class="hljs-string">    :param url: 访问网址</span>
+<span class="hljs-string">    :return: </span>
+<span class="hljs-string">    """</span>
+    <span class="hljs-keyword">try</span>:
+        r = requests.get(url, timeout=<span class="hljs-number">30</span>)
+        r.raise_for_status()  <span class="hljs-comment"># 如果状态不是200，引发HTTPError异常#</span>
+        r.encoding = r.apparent_encoding
+        <span class="hljs-keyword">return</span> r.text
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"产生异常"</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">down</span><span class="hljs-params">(urls)</span>:</span>
+    <span class="hljs-string">"""</span>
+<span class="hljs-string">    下载图片</span>
+<span class="hljs-string">    :param urls: 图片网址列表</span>
+<span class="hljs-string">    :return: </span>
+<span class="hljs-string">    """</span>
+    <span class="hljs-keyword">for</span> i, url <span class="hljs-keyword">in</span> enumerate(urls):
+        <span class="hljs-keyword">try</span>:
+            pic = requests.get(url, timeout=<span class="hljs-number">15</span>)
+            string = str(i + <span class="hljs-number">1</span>) + <span class="hljs-string">'.jpg'</span>
+            <span class="hljs-keyword">with</span> open(string, <span class="hljs-string">'wb'</span>) <span class="hljs-keyword">as</span> f:
+                f.write(pic.content)
+                print(<span class="hljs-string">'成功下载第%s张图片: %s'</span> % (str(i + <span class="hljs-number">1</span>), str(url)))
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            print(<span class="hljs-string">'下载第%s张图片时失败: %s'</span> % (str(i + <span class="hljs-number">1</span>), str(url)))
+            print(e)
+            <span class="hljs-keyword">continue</span>
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    key_word = <span class="hljs-string">'小狗'</span>
+    url = <span class="hljs-string">'https://image.baidu.com/search/index?tn=baiduimage&amp;ipn=r&amp;ct=201326592&amp;cl=2&amp;lm=-1&amp;st=-1&amp;sf=1&amp;fmq=&amp;pv=&amp;ic=0'</span> \
+          <span class="hljs-string">'&amp;nc=1&amp;z=&amp;se=1&amp;showtab=0&amp;fb=0&amp;width=&amp;height=&amp;face=0&amp;istype=2&amp;ie=utf-8&amp;fm=index&amp;pos=history&amp;word='</span>
+    html = getHTMLText(url+key_word)
+    urls = re.findall(<span class="hljs-string">'"objURL":"(.*?)",'</span>, html, re.S)  <span class="hljs-comment"># 匹配原图地址</span>
+    print(len(urls))
+    down(urls)</code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/requests/">requests</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/01/opencv-setup/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OpenCV环境配置（win10+opencv3.4.1+vs2017）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-re/">
+                        <span class="hidden-mobile">python第十四话之正则</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第十五话之requests库及爬虫案例&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第一话之数值类型和序列类型 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-01 10:00">
+      2018年12月1日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      32
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="Python的数值类型"><a href="#Python的数值类型" class="headerlink" title="Python的数值类型"></a>Python的数值类型</h3><p>Python中的基本数据类型有数值类型、字符串型、列表、元组、字典、集合等。本节介绍数值类型。数值类型包括整型、布尔型、浮点型和复数类型。</p>
+<h4 id="基本整形四则运算"><a href="#基本整形四则运算" class="headerlink" title="基本整形四则运算"></a>基本整形四则运算</h4><p>用Python实现简单的加减乘除</p>
+<p>我们先进入<code>Python的交互模式</code></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-1/36226595.jpg" srcset="/img/loading.gif" alt="python"></p>
+<p>或者执行<code>ipython</code></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-1/65669846.jpg" srcset="/img/loading.gif" alt="ipython"></p>
+<h5 id="加法"><a href="#加法" class="headerlink" title="加法"></a><code>加法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">1</span>]: <span class="hljs-number">1</span>+<span class="hljs-number">1</span>
+Out[<span class="hljs-number">1</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">2</span>]: <span class="hljs-number">12</span>+<span class="hljs-number">2</span>
+Out[<span class="hljs-number">2</span>]: <span class="hljs-number">14</span></code></pre>
+
+<h5 id="减法"><a href="#减法" class="headerlink" title="减法"></a><code>减法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">3</span>]: <span class="hljs-number">21</span><span class="hljs-number">-1</span>
+Out[<span class="hljs-number">3</span>]: <span class="hljs-number">20</span>
+
+In [<span class="hljs-number">4</span>]: <span class="hljs-number">20</span><span class="hljs-number">-22</span>
+Out[<span class="hljs-number">4</span>]: <span class="hljs-number">-2</span></code></pre>
+
+<h5 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a><code>乘法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">5</span>]: <span class="hljs-number">2</span>*<span class="hljs-number">2</span>
+Out[<span class="hljs-number">5</span>]: <span class="hljs-number">4</span>
+
+In [<span class="hljs-number">6</span>]: <span class="hljs-number">10</span>*<span class="hljs-number">10</span>
+Out[<span class="hljs-number">6</span>]: <span class="hljs-number">100</span></code></pre>
+
+<h5 id="除法"><a href="#除法" class="headerlink" title="除法"></a><code>除法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">9</span>]: <span class="hljs-number">4</span>/<span class="hljs-number">2</span>
+Out[<span class="hljs-number">9</span>]: <span class="hljs-number">2.0</span>
+
+In [<span class="hljs-number">10</span>]: <span class="hljs-number">2</span>/<span class="hljs-number">2</span>
+Out[<span class="hljs-number">10</span>]: <span class="hljs-number">1.0</span></code></pre>
+
+<blockquote>
+<p>以上就是我们所遇到的一些基本的加减乘除运算，接下来我们再看看其他形式的扩展。</p>
+</blockquote>
+<h4 id="保存计算结果-基本的赋值运算"><a href="#保存计算结果-基本的赋值运算" class="headerlink" title="保存计算结果-基本的赋值运算"></a>保存计算结果-基本的赋值运算</h4><p>在我们后面的学习中，经常会遇到需要保存计算结果的情况，下面我们来看一下如何保存我们的计算结果。</p>
+<pre><code class="hljs python">In [<span class="hljs-number">11</span>]: a = <span class="hljs-number">1</span>+<span class="hljs-number">1</span>
+
+In [<span class="hljs-number">12</span>]: <span class="hljs-number">1</span>+<span class="hljs-number">1</span>
+Out[<span class="hljs-number">12</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">13</span>]: a
+Out[<span class="hljs-number">13</span>]: <span class="hljs-number">2</span></code></pre>
+
+<h4 id="基本整数与小数四则运算"><a href="#基本整数与小数四则运算" class="headerlink" title="基本整数与小数四则运算"></a>基本整数与小数四则运算</h4><p>计算机在计算的时候，除了整数运算，还有小数运算，还有小数和整数的混合运算。</p>
+<h5 id="加法-1"><a href="#加法-1" class="headerlink" title="加法"></a><code>加法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">14</span>]: <span class="hljs-number">2</span>+<span class="hljs-number">1.2</span>
+Out[<span class="hljs-number">14</span>]: <span class="hljs-number">3.2</span></code></pre>
+
+<h5 id="减法-1"><a href="#减法-1" class="headerlink" title="减法"></a><code>减法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">16</span>]: <span class="hljs-number">2.2</span><span class="hljs-number">-2</span>
+Out[<span class="hljs-number">16</span>]: <span class="hljs-number">0.20000000000000018</span></code></pre>
+
+<h5 id="乘法-1"><a href="#乘法-1" class="headerlink" title="乘法"></a><code>乘法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">17</span>]: <span class="hljs-number">3.3</span>*<span class="hljs-number">2</span>
+Out[<span class="hljs-number">17</span>]: <span class="hljs-number">6.6</span></code></pre>
+
+<h5 id="除法-1"><a href="#除法-1" class="headerlink" title="除法"></a><code>除法</code></h5><pre><code class="hljs python">In [<span class="hljs-number">18</span>]: <span class="hljs-number">2.4</span>/<span class="hljs-number">4</span>
+Out[<span class="hljs-number">18</span>]: <span class="hljs-number">0.6</span></code></pre>
+
+<blockquote>
+<p>小数一般是<code>float</code>类型</p>
+<pre><code class="hljs python">In [<span class="hljs-number">19</span>]: b = <span class="hljs-number">3</span>+<span class="hljs-number">2.2</span>
+
+In [<span class="hljs-number">20</span>]: type(b)
+Out[<span class="hljs-number">20</span>]: float</code></pre>
+
+<p>但是<code>浮点数</code>不是我们真正看到的数，比如<code>1.2</code>实际是<code>1.1999999999</code></p>
+<p>所以小数计算都是不精确的，那么我们如何进行精确计算呢？</p>
+</blockquote>
+<h4 id="精确计算-decimal的运算"><a href="#精确计算-decimal的运算" class="headerlink" title="精确计算-decimal的运算"></a>精确计算-decimal的运算</h4><p>在<code>Python</code>中如果我们要实现精确计算，我们是使用<code>decimal</code>这个库函数</p>
+<pre><code class="hljs python">In [<span class="hljs-number">27</span>]: <span class="hljs-keyword">import</span> decimal 
+
+In [<span class="hljs-number">28</span>]: a = decimal.Decimal(<span class="hljs-string">'2.2'</span>)
+
+In [<span class="hljs-number">29</span>]: b = decimal.Decimal(<span class="hljs-string">'2'</span>)
+
+In [<span class="hljs-number">30</span>]: a-b
+Out[<span class="hljs-number">30</span>]: Decimal(<span class="hljs-string">'0.2'</span>)</code></pre>
+
+<h4 id="布尔型的计算"><a href="#布尔型的计算" class="headerlink" title="布尔型的计算"></a>布尔型的计算</h4><p><code>布尔型变量</code>只有<code>True</code>和<code>False</code>两种情况，<code>True</code>就是<code>1</code>，<code>False</code>就是<code>0</code>。</p>
+<h5 id="基本情况"><a href="#基本情况" class="headerlink" title="基本情况"></a><code>基本情况</code></h5><pre><code class="hljs python">In [<span class="hljs-number">34</span>]: a = <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">35</span>]: b = <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">36</span>]: a
+Out[<span class="hljs-number">36</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">37</span>]: b
+Out[<span class="hljs-number">37</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">38</span>]: type(a)
+Out[<span class="hljs-number">38</span>]: bool</code></pre>
+
+<h5 id="运算"><a href="#运算" class="headerlink" title="运算"></a><code>运算</code></h5><pre><code class="hljs python">In [<span class="hljs-number">39</span>]: a + <span class="hljs-number">1</span>
+Out[<span class="hljs-number">39</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">40</span>]: a + a 
+Out[<span class="hljs-number">40</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">41</span>]: a + b
+Out[<span class="hljs-number">41</span>]: <span class="hljs-number">1</span></code></pre>
+
+<h4 id="复数类型"><a href="#复数类型" class="headerlink" title="复数类型"></a>复数类型</h4><pre><code class="hljs python">In [<span class="hljs-number">42</span>]: <span class="hljs-number">1</span> + <span class="hljs-number">2j</span>
+Out[<span class="hljs-number">42</span>]: (<span class="hljs-number">1</span>+<span class="hljs-number">2j</span>)
+
+In [<span class="hljs-number">43</span>]: a = <span class="hljs-number">1</span> + <span class="hljs-number">2j</span>
+
+In [<span class="hljs-number">44</span>]: type(a)
+Out[<span class="hljs-number">44</span>]: complex</code></pre>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>整型、布尔型、浮点型和复数类型</p>
+<pre><code class="hljs python">In [<span class="hljs-number">45</span>]: type(<span class="hljs-number">2</span>)
+Out[<span class="hljs-number">45</span>]: int
+
+In [<span class="hljs-number">46</span>]: type(<span class="hljs-literal">True</span>)
+Out[<span class="hljs-number">46</span>]: bool
+
+In [<span class="hljs-number">47</span>]: type(<span class="hljs-number">1.2</span>)
+Out[<span class="hljs-number">47</span>]: float
+
+In [<span class="hljs-number">48</span>]: type(<span class="hljs-number">1</span>+<span class="hljs-number">2j</span>)
+Out[<span class="hljs-number">48</span>]: complex</code></pre>
+
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><h5 id="整除-向下取整"><a href="#整除-向下取整" class="headerlink" title="整除-向下取整"></a><code>整除-向下取整</code></h5><p><code>//</code>在<code>Python</code>中是指的<code>向下取整</code>：1 &lt; 1.n &lt; 2  ==&gt; 1</p>
+<pre><code class="hljs python">In [<span class="hljs-number">49</span>]: <span class="hljs-number">2.3</span> / <span class="hljs-number">2</span>
+Out[<span class="hljs-number">49</span>]: <span class="hljs-number">1.15</span>
+
+In [<span class="hljs-number">50</span>]: <span class="hljs-number">2.3</span> // <span class="hljs-number">2</span>
+Out[<span class="hljs-number">50</span>]: <span class="hljs-number">1.0</span></code></pre>
+
+<h5 id="整除-向上取整"><a href="#整除-向上取整" class="headerlink" title="整除-向上取整"></a><code>整除-向上取整</code></h5><p><code>向上取整</code>：使用<code>math</code>库函数实现</p>
+<pre><code class="hljs python">In [<span class="hljs-number">52</span>]: <span class="hljs-keyword">import</span> math
+
+In [<span class="hljs-number">53</span>]: math.ceil(<span class="hljs-number">2.3</span>/<span class="hljs-number">2</span>)
+Out[<span class="hljs-number">53</span>]: <span class="hljs-number">2</span></code></pre>
+
+<h5 id="幂运算"><a href="#幂运算" class="headerlink" title="幂运算"></a><code>幂运算</code></h5><pre><code class="hljs python">In [<span class="hljs-number">54</span>]: <span class="hljs-number">2</span> * <span class="hljs-number">2</span> *<span class="hljs-number">2</span>
+Out[<span class="hljs-number">54</span>]: <span class="hljs-number">8</span>
+
+In [<span class="hljs-number">55</span>]: <span class="hljs-number">2</span> **<span class="hljs-number">3</span>
+Out[<span class="hljs-number">55</span>]: <span class="hljs-number">8</span></code></pre>
+
+<h5 id="取余"><a href="#取余" class="headerlink" title="取余"></a><code>取余</code></h5><pre><code class="hljs python">In [<span class="hljs-number">56</span>]: <span class="hljs-number">6</span> % <span class="hljs-number">4</span>
+Out[<span class="hljs-number">56</span>]: <span class="hljs-number">2</span></code></pre>
+
+<p>这就是我们常见的数值类型的相关使用和运算。</p>
+<h3 id="Python的序列类型"><a href="#Python的序列类型" class="headerlink" title="Python的序列类型"></a>Python的序列类型</h3><p>前面我们遇到的都是一些数值类型的使用与运算，但是如果我想在Python中表示字母怎么办呢？这就是我们接下来看一下序列类型。</p>
+<h4 id="字符串-str"><a href="#字符串-str" class="headerlink" title="字符串-str"></a>字符串-<code>str</code></h4><pre><code class="hljs python">In [<span class="hljs-number">57</span>]: <span class="hljs-string">'abc'</span>
+Out[<span class="hljs-number">57</span>]: <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">58</span>]: type(<span class="hljs-string">'abc'</span>)
+Out[<span class="hljs-number">58</span>]: str
+
+In [<span class="hljs-number">59</span>]: <span class="hljs-string">"I'm seven"</span>
+Out[<span class="hljs-number">59</span>]: <span class="hljs-string">"I'm seven"</span>
+
+In [<span class="hljs-number">60</span>]: <span class="hljs-string">"""abcde</span>
+<span class="hljs-string">    ...: fghijk"""</span>
+Out[<span class="hljs-number">60</span>]: <span class="hljs-string">'abcde\nfghijk'</span></code></pre>
+
+<h5 id="字符串的使用"><a href="#字符串的使用" class="headerlink" title="字符串的使用"></a><code>字符串的使用</code></h5><blockquote>
+<p>字符串是通过下标索引值来获取对应值的。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">74</span>]: a = <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">75</span>]: a[<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">75</span>]: <span class="hljs-string">'a'</span>
+
+In [<span class="hljs-number">76</span>]: a[<span class="hljs-number">2</span>]
+Out[<span class="hljs-number">76</span>]: <span class="hljs-string">'c'</span>
+
+In [<span class="hljs-number">77</span>]: a[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">77</span>]: <span class="hljs-string">'b'</span></code></pre>
+
+
+
+<h4 id="列表-list"><a href="#列表-list" class="headerlink" title="列表-list"></a>列表-<code>list</code></h4><blockquote>
+<p>数值和字符串的混合使用</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">61</span>]: [<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+Out[<span class="hljs-number">61</span>]: [<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+
+In [<span class="hljs-number">62</span>]: type([<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>])
+Out[<span class="hljs-number">62</span>]: list</code></pre>
+
+<h5 id="列表的使用-简单取值"><a href="#列表的使用-简单取值" class="headerlink" title="列表的使用-简单取值"></a><code>列表的使用-简单取值</code></h5><blockquote>
+<p>根据下标取出对应数据，下标从0开始计数：0,1,2,3…</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">65</span>]: a = [<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+
+In [<span class="hljs-number">66</span>]: a[<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">66</span>]: <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">67</span>]: a[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">67</span>]: <span class="hljs-number">123</span>
+
+In [<span class="hljs-number">68</span>]: a[<span class="hljs-number">2</span>]
+Out[<span class="hljs-number">68</span>]: <span class="hljs-string">'dde'</span></code></pre>
+
+<h5 id="列表的使用-切片"><a href="#列表的使用-切片" class="headerlink" title="列表的使用-切片"></a><code>列表的使用-切片</code></h5><blockquote>
+<p>通过<code>list[start_index : end_index : stride ]</code>来进行<code>切片</code>，<code>切片</code>方式类似数学中的<code>左闭右开区间</code></p>
+<p><code>start_index:</code> 开始的索引值</p>
+<p><code>end_index:</code>  结束的索引值</p>
+<p><code>stride:</code> 步长</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">78</span>]: a = [<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+
+In [<span class="hljs-number">79</span>]: a[:<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">79</span>]: [<span class="hljs-string">'abc'</span>]
+
+In [<span class="hljs-number">80</span>]: a[:<span class="hljs-number">2</span>]
+Out[<span class="hljs-number">80</span>]: [<span class="hljs-string">'abc'</span>, <span class="hljs-number">123</span>]
+
+In [<span class="hljs-number">81</span>]: a[<span class="hljs-number">1</span>:]
+Out[<span class="hljs-number">81</span>]: [<span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+
+In [<span class="hljs-number">82</span>]: a[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]
+Out[<span class="hljs-number">82</span>]: [<span class="hljs-number">123</span>, <span class="hljs-string">'dde'</span>]
+    
+In [<span class="hljs-number">84</span>]: a = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>]
+
+In [<span class="hljs-number">85</span>]: a[<span class="hljs-number">1</span>:<span class="hljs-number">6</span>:<span class="hljs-number">2</span>]
+Out[<span class="hljs-number">85</span>]: [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]</code></pre>
+
+<p>其中：<code>[-1]:</code> 表示倒着计数</p>
+<pre><code class="hljs python">In [<span class="hljs-number">92</span>]: a = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>]
+
+In [<span class="hljs-number">93</span>]: a[<span class="hljs-number">1</span>:]
+Out[<span class="hljs-number">93</span>]: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]
+
+In [<span class="hljs-number">94</span>]: a[<span class="hljs-number">-1</span>:]
+Out[<span class="hljs-number">94</span>]: [<span class="hljs-string">'c'</span>]
+
+In [<span class="hljs-number">95</span>]: a[<span class="hljs-number">2</span>:<span class="hljs-number">-1</span>]
+Out[<span class="hljs-number">95</span>]: [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]
+
+In [<span class="hljs-number">96</span>]: a[<span class="hljs-number">2</span>:<span class="hljs-number">8</span>]
+Out[<span class="hljs-number">96</span>]: [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]</code></pre>
+
+
+
+<h4 id="元组-tuple"><a href="#元组-tuple" class="headerlink" title="元组-tuple"></a>元组-<code>tuple</code></h4><pre><code class="hljs python">In [<span class="hljs-number">63</span>]: (<span class="hljs-number">123</span>, <span class="hljs-string">'abc'</span>, <span class="hljs-string">'seven'</span>)
+Out[<span class="hljs-number">63</span>]: (<span class="hljs-number">123</span>, <span class="hljs-string">'abc'</span>, <span class="hljs-string">'seven'</span>)
+
+In [<span class="hljs-number">64</span>]: type((<span class="hljs-number">123</span>, <span class="hljs-string">'abc'</span>, <span class="hljs-string">'seven'</span>))
+Out[<span class="hljs-number">64</span>]: tuple</code></pre>
+
+<h5 id="元组的使用"><a href="#元组的使用" class="headerlink" title="元组的使用"></a><code>元组的使用</code></h5><blockquote>
+<p>元组的使用是和列表的类似的。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">70</span>]: b = (<span class="hljs-number">123</span>, <span class="hljs-string">'abc'</span>, <span class="hljs-string">'seven'</span>)
+
+In [<span class="hljs-number">71</span>]: b[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">71</span>]: <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">72</span>]: b[<span class="hljs-number">0</span>]
+Out[<span class="hljs-number">72</span>]: <span class="hljs-number">123</span>
+
+In [<span class="hljs-number">73</span>]: b[<span class="hljs-number">2</span>]
+Out[<span class="hljs-number">73</span>]: <span class="hljs-string">'seven'</span></code></pre>
+
+
+
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><blockquote>
+<p>我们经常会使用到这几种类型， 所以这几种类型间的转换又尤为关键</p>
+</blockquote>
+<h5 id="字符串转列表"><a href="#字符串转列表" class="headerlink" title="字符串转列表"></a><code>字符串转列表</code></h5><pre><code class="hljs python">In [<span class="hljs-number">111</span>]: a = <span class="hljs-string">'abcd'</span>
+
+In [<span class="hljs-number">112</span>]: b = list(a)
+
+In [<span class="hljs-number">113</span>]: type(a)
+Out[<span class="hljs-number">113</span>]: str
+
+In [<span class="hljs-number">114</span>]: type(b)
+Out[<span class="hljs-number">114</span>]: list
+
+In [<span class="hljs-number">115</span>]: b
+Out[<span class="hljs-number">115</span>]: [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>]</code></pre>
+
+<h5 id="列表转字符串"><a href="#列表转字符串" class="headerlink" title="列表转字符串"></a><code>列表转字符串</code></h5><blockquote>
+<p>列表变成字符串会把列表里的中括号和空格也变成字符串</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">123</span>]: a = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>]
+
+In [<span class="hljs-number">124</span>]: b = str(a)
+
+In [<span class="hljs-number">125</span>]: type(a)
+Out[<span class="hljs-number">125</span>]: list
+
+In [<span class="hljs-number">126</span>]: type(b)
+Out[<span class="hljs-number">126</span>]: str
+
+In [<span class="hljs-number">127</span>]: b
+Out[<span class="hljs-number">127</span>]: <span class="hljs-string">"['a', 'b', 'c', 'd']"</span></code></pre>
+
+
+
+<h5 id="字符串转元组"><a href="#字符串转元组" class="headerlink" title="字符串转元组"></a><code>字符串转元组</code></h5><pre><code class="hljs python">In [<span class="hljs-number">116</span>]: a = <span class="hljs-string">'abcd'</span>
+
+In [<span class="hljs-number">117</span>]: b = tuple(a)
+
+In [<span class="hljs-number">118</span>]: type(a)
+Out[<span class="hljs-number">118</span>]: str
+
+In [<span class="hljs-number">119</span>]: type(b)
+Out[<span class="hljs-number">119</span>]: tuple
+
+In [<span class="hljs-number">120</span>]: b
+Out[<span class="hljs-number">120</span>]: (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)</code></pre>
+
+<h5 id="元组转字符串"><a href="#元组转字符串" class="headerlink" title="元组转字符串"></a><code>元组转字符串</code></h5><blockquote>
+<p>列表变成字符串会把列表里的小括号和空格也变成字符串</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">128</span>]: a = (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">129</span>]: b = str(a)
+
+In [<span class="hljs-number">130</span>]: type(a)
+Out[<span class="hljs-number">130</span>]: tuple
+
+In [<span class="hljs-number">131</span>]: type(b)
+Out[<span class="hljs-number">131</span>]: str
+
+In [<span class="hljs-number">132</span>]: b
+Out[<span class="hljs-number">132</span>]: <span class="hljs-string">"('a', 'b', 'c', 'd')"</span></code></pre>
+
+
+
+<h4 id="元组和列表的区别"><a href="#元组和列表的区别" class="headerlink" title="元组和列表的区别"></a>元组和列表的区别</h4><blockquote>
+<p>在我们前面的接触过程中，列表和元组基本的功能是一样的，那列表和元组都存在，是为什么呢？</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">133</span>]: a = (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">134</span>]: b = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>]
+
+In [<span class="hljs-number">135</span>]: a[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">135</span>]: <span class="hljs-string">'b'</span>
+
+In [<span class="hljs-number">136</span>]: b[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">136</span>]: <span class="hljs-string">'b'</span>
+
+In [<span class="hljs-number">137</span>]: b[<span class="hljs-number">1</span>] = <span class="hljs-number">3</span>
+
+In [<span class="hljs-number">138</span>]: b
+Out[<span class="hljs-number">138</span>]: [<span class="hljs-string">'a'</span>, <span class="hljs-number">3</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>]
+
+In [<span class="hljs-number">139</span>]: a[<span class="hljs-number">1</span>] = <span class="hljs-number">3</span>
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-139</span><span class="hljs-number">-23</span>f2cf2bdf70&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; 1 a[1] = 3
+
+TypeError: <span class="hljs-string">'tuple'</span> object does <span class="hljs-keyword">not</span> support item assignment</code></pre>
+
+<p><code>扩展：</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">140</span>]: a = <span class="hljs-string">'abcdefg'</span>
+
+In [<span class="hljs-number">141</span>]: type(a)
+Out[<span class="hljs-number">141</span>]: str
+
+In [<span class="hljs-number">142</span>]: a[<span class="hljs-number">1</span>]
+Out[<span class="hljs-number">142</span>]: <span class="hljs-string">'b'</span>
+
+In [<span class="hljs-number">143</span>]: a[<span class="hljs-number">1</span>] = <span class="hljs-string">'s'</span>
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-143</span><span class="hljs-number">-55e6</span>e4038777&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; 1 a[1] = 's'
+
+TypeError: <span class="hljs-string">'str'</span> object does <span class="hljs-keyword">not</span> support item assignment</code></pre>
+
+<blockquote>
+<p>总结：列表：可变</p>
+<p>​        元组： 不可变</p>
+<p>​             字符串： 不可变</p>
+<p>所以，在序列类型中，只有列表才是可变的类型。</p>
+</blockquote>
+<h4 id="更改字符串和元组的元素"><a href="#更改字符串和元组的元素" class="headerlink" title="更改字符串和元组的元素"></a>更改字符串和元组的元素</h4><blockquote>
+<p>前面我们讲了在序列类型中，只有列表才是可变的类型。那我们如何来更改不可变数据类型的元素呢？</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">151</span>]: a = <span class="hljs-string">'abcdefg'</span>
+
+In [<span class="hljs-number">152</span>]: a = a[<span class="hljs-number">1</span>:]
+
+In [<span class="hljs-number">153</span>]: a
+Out[<span class="hljs-number">153</span>]: <span class="hljs-string">'bcdefg'</span>
+
+In [<span class="hljs-number">154</span>]: a = (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">155</span>]: a = a[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]
+
+In [<span class="hljs-number">156</span>]: a
+Out[<span class="hljs-number">156</span>]: (<span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>)</code></pre>
+
+
+
+<h4 id="拆包"><a href="#拆包" class="headerlink" title="拆包"></a>拆包</h4><blockquote>
+<p>元组拆包可以应用到任何迭代对象上， 唯一的要求是， 被可迭代对象中的元素数量必须要和这些元素的元组的空档数一致， 除非我们用* 来表示忽略多余的元素。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">157</span>]: a = (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">158</span>]: x,*y,z = a
+
+In [<span class="hljs-number">159</span>]: x
+Out[<span class="hljs-number">159</span>]: <span class="hljs-string">'a'</span>
+
+In [<span class="hljs-number">160</span>]: z
+Out[<span class="hljs-number">160</span>]: <span class="hljs-string">'d'</span>
+
+In [<span class="hljs-number">161</span>]: y
+Out[<span class="hljs-number">161</span>]: [<span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>]
+In [<span class="hljs-number">162</span>]: x,y,z = a
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-162</span><span class="hljs-number">-57</span>ae45ef0060&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; 1 x,y,z = a
+
+ValueError: too many values to unpack (expected <span class="hljs-number">3</span>)</code></pre>
+
+<blockquote>
+<p><code>x</code> 接收第一个元素，<code>z</code> 接收最后一个元素，由于<code>y</code>前面有<code>*</code>号，所以剩余的元素由<code>y</code>接收</p>
+<p>总结：有多少个元素就需要多少个变量来接收，除非有<code>*</code>号，不然就会报错。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">163</span>]: x,y,z = a,a,a
+
+In [<span class="hljs-number">164</span>]: x
+Out[<span class="hljs-number">164</span>]: (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">165</span>]: y
+Out[<span class="hljs-number">165</span>]: (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)
+
+In [<span class="hljs-number">166</span>]: z
+Out[<span class="hljs-number">166</span>]: (<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>)</code></pre>
+
+
+
+<h4 id="变量的赋值"><a href="#变量的赋值" class="headerlink" title="变量的赋值"></a>变量的赋值</h4><blockquote>
+<p>变量的保存都是保存在内存中</p>
+<p>注意：<code>变量</code>是没有类型的，有类型的是他所<code>指向的数据</code></p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">167</span>]: a = <span class="hljs-number">123</span>
+
+In [<span class="hljs-number">168</span>]: id(a)
+Out[<span class="hljs-number">168</span>]: <span class="hljs-number">10923232</span>
+
+In [<span class="hljs-number">169</span>]: b = <span class="hljs-string">'abc'</span>
+
+In [<span class="hljs-number">170</span>]: id(b)
+Out[<span class="hljs-number">170</span>]: <span class="hljs-number">140343125492152</span>
+
+In [<span class="hljs-number">171</span>]: a = <span class="hljs-string">'111'</span>
+
+In [<span class="hljs-number">172</span>]: id(a)
+Out[<span class="hljs-number">172</span>]: <span class="hljs-number">140342939172344</span></code></pre>
+
+<blockquote>
+<p><code>id()</code>：查看数据的地址</p>
+<p>总结：赋值给变量是保存在内存中，重新赋值后，变量指向新的地址</p>
+</blockquote>
+<h4 id="变量的引用-成员运算"><a href="#变量的引用-成员运算" class="headerlink" title="变量的引用-成员运算"></a>变量的引用-成员运算</h4><blockquote>
+<p>通过<code>in</code>或者<code>not in</code> 来进行成员运算</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">173</span>]: a = <span class="hljs-string">'abcd123'</span>
+
+In [<span class="hljs-number">174</span>]: <span class="hljs-string">'c'</span> <span class="hljs-keyword">in</span> a
+Out[<span class="hljs-number">174</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">175</span>]: <span class="hljs-string">'8'</span> <span class="hljs-keyword">in</span> a
+Out[<span class="hljs-number">175</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">176</span>]: <span class="hljs-string">'a'</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> a
+Out[<span class="hljs-number">176</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">177</span>]: <span class="hljs-string">'q'</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> a
+Out[<span class="hljs-number">177</span>]: <span class="hljs-literal">True</span></code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B/">数值类型</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B/">序列类型</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-sequence/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第二话之序列类型方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/11/anaconda-ubuntu/">
+                        <span class="hidden-mobile">Anaconda python3.6及pycharm安装和简单使用--Ubuntu16.04</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第一话之数值类型和序列类型&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

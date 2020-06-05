@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>神经网络之递归神经网络 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-27 10:00">
+      2018年8月27日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="递归神经网络"><a href="#递归神经网络" class="headerlink" title="递归神经网络"></a>递归神经网络</h3><p><strong>递归神经网络（Recurrent Neural Networks，RNN）</strong>是两种人工神经网络的总称：</p>
+<ul>
+<li><p><strong>时间递归神经网络（recurrent neural network）</strong>：时间递归神经网络的神经元间连接构成有向图</p>
+</li>
+<li><p><strong>结构递归神经网络（recursive neural network)</strong>：结构递归神经网络利用相似的神经网络结构递归构造更为复杂的深度网络。</p>
+</li>
+</ul>
+<p><strong>递归神经网络（RNN）</strong>(也叫循环神经网络）是一类神经网络，包括一层内的加权连接，与传统前馈神经网络相比，加权连接仅反馈到后续层。因为<strong>RNN</strong>包含循环，所以<strong>RNN</strong>就可以在<strong>处理输入信息的时候同时储存信息</strong>。这种记忆使得<strong>RNN</strong>非常适合处理必须考虑事先输入的任务（比如时序数据）。所以循环神经网络在自然语言处理领域非常适合。</p>
+<p><strong>RNN</strong>一般指代<strong>时间递归神经网络</strong>。单纯递归神经网络因为无法处理随着递归，<strong>权重指数级爆炸或消失的问题（Vanishing gradient problem）</strong>，难以捕捉长期时间关联；而结合不同的LSTM可以很好解决这个问题。时间递归神经网络可以描述动态时间行为，因为和前馈神经网络（feedforward neural network）接受较特定结构的输入不同，RNN将状态在自身网络中循环传递，因此可以接受更广泛的时间序列结构输入。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182341.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="语言模型"><a href="#语言模型" class="headerlink" title="语言模型"></a>语言模型</h3><p>RNN是在<strong>自然语言处理</strong>领域中最先被用起来的，比如，RNN可以为<strong>语言模型</strong>来建模。</p>
+<p>我们小时候都做过语文的填空题吧</p>
+<pre><code class="hljs plain">饿死了，我要吃__。</code></pre>
+
+<p>如果是我，肯定是填<code>肉</code>。哈哈</p>
+<p>但是我不是今天的主角，如果这个问题我们让计算机来回答呢？</p>
+<p>我们给计算机展示这段话，让计算机给出答案。而这个答案最有可能的就是<code>饭</code>，而太可能是<code>睡觉</code>或者<code>做作业</code>.</p>
+<p><strong>语言模型</strong>就是这样的东西：给定一个一句话前面的部分，预测接下来最有可能的一个词是什么。</p>
+<p><strong>语言模型</strong>是对一种语言的特征进行建模，它有很多很多用处。比如在语音转文本(STT)的应用中，声学模型输出的结果，往往是若干个可能的候选词，这时候就需要<strong>语言模型</strong>来从这些候选词中选择一个最可能的。当然，它同样也可以用在图像到文本的识别中(OCR)。</p>
+<p>使用RNN之前，语言模型主要是采用N-Gram。N可以是一个自然数，比如2或者3。它的含义是，假设一个词出现的概率只与前面N个词相关。我们以2-Gram为例。首先，对前面的一句话进行切词：</p>
+<pre><code class="hljs plain">饿死了，我要____。</code></pre>
+
+<p>如果用2-Gram进行建模，那么电脑在预测的时候，只会看到前面的『要』，然后，电脑会在语料库中，搜索『要』后面最可能的一个词。不管最后电脑选的是不是『饭』，我们都知道这个模型是不靠谱的，因为『要』前面说了那么一大堆实际上是没有用到的。如果是3-Gram模型呢，会搜索『我要吃』后面最可能的词，感觉上比2-Gram靠谱了不少，但还是远远不够的。因为这句话最关键的信息『饿』，远在5个词之前！</p>
+<p>现在读者可能会想，可以提升继续提升N的值呀，比如4-Gram、5-Gram…….。实际上，这个想法是没有实用性的。因为我们想处理任意长度的句子，N设为多少都不合适；另外，模型的大小和N的关系是指数级的，4-Gram模型就会占用海量的存储空间。</p>
+<p>所以，我们的RNN就出场了，RNN理论上<strong>可以往前看(往后看)任意多个词</strong>。</p>
+<h3 id="基本递归神经网络"><a href="#基本递归神经网络" class="headerlink" title="基本递归神经网络"></a>基本递归神经网络</h3><p>下图是一个简单的递归神经网络，它是由输入层、一个隐层和一个输出层组成的。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182342.png" srcset="/img/loading.gif" alt="images"></p>
+<p>由图可知：</p>
+<ul>
+<li><code>x</code>：输入层的值</li>
+<li><code>U</code>：输入层到隐层的权重参数</li>
+<li><code>s</code>：隐层的值</li>
+<li><code>v</code>：隐层到输出层的权重参数</li>
+<li><code>o</code>：输出层的值</li>
+<li><code>W</code>：<strong>递归神经网络</strong>的<strong>隐藏层</strong>的值<code>s</code>不仅仅取决于当前这次的输入<code>x</code>，还取决于上一次<strong>隐藏层</strong>的值<code>s</code>。<strong>权重参数</strong><code>W</code>就是<strong>隐藏层</strong>上一次的值作为这一次的输入的权重。</li>
+</ul>
+<p>现在我们把上面的图展开，<strong>递归神经网络</strong>也可以画出这个结构：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182343.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从上图中，我们可以很直观的看出，这个网络在<code>t</code>时刻接收到$X_t$后，隐层的值是$S_t$，输出值是$O_t$。</p>
+<p><code>关键点</code>：$S_t$的值不仅仅取决于$X_t$，还取决于$S_{t-1}$(就是上一状态的隐层的值)。</p>
+<p><code>公式</code>：循环神经网络的计算公式：</p>
+<ul>
+<li><h4 id="O-t-f-V-cdot-S-t-quad-1"><a href="#O-t-f-V-cdot-S-t-quad-1" class="headerlink" title="$O_t=f(V \cdot S_t) \quad (1)$"></a><strong>$O_t=f(V \cdot S_t) \quad (1)$</strong></h4><ul>
+<li><code>输出层</code>的计算公式，由于输出层是一个<strong>全连接层</strong>，所以说它每个节点都和隐层的节点相连。<code>V</code>是输出层的权重参数，<code>f</code>是激活函数。</li>
+</ul>
+</li>
+<li><h4 id="S-t-f-U-cdot-X-t-W-cdot-S-t-1-quad-2"><a href="#S-t-f-U-cdot-X-t-W-cdot-S-t-1-quad-2" class="headerlink" title="$S_t=f(U \cdot X_t+W \cdot S_{t-1}) \quad (2)$"></a><strong>$S_t=f(U \cdot X_t+W \cdot S_{t-1}) \quad (2)$</strong></h4><ul>
+<li><code>隐层</code>的计算公式，它是一个<code>循环层</code>，<code>U</code>是输入<code>x</code>的权重参数，<code>W</code>是上一次的值<strong>$S_{t-1}$</strong>作为这一次输入的权重参数，<code>f</code>是激活函数。</li>
+</ul>
+</li>
+</ul>
+<p><code>总结</code>：从上面的公式中，我们可以看出，<strong>循环层</strong>和<strong>全连接层</strong>的区别就是<strong>循环层</strong>多了一个<strong>权重参数</strong><code>w</code>。</p>
+<p><code>扩展</code>：如果反复的把（1）式带入 （2）式：</p>
+<h4 id="o-t-f-V-cdot-S-t"><a href="#o-t-f-V-cdot-S-t" class="headerlink" title="${o}_t=f(V\cdot{S}_t) $"></a>${o}_t=f(V\cdot{S}_t) $</h4><p>$ = V \cdot f(U \cdot X_t + W \cdot S_{t-1}) $</p>
+<p>$= V \cdot f(U \cdot X_t+W \cdot f(U \cdot X_{t-1}+W \cdot S_{t-2}))$</p>
+<p>$= V \cdot f(U \cdot X_t+W \cdot f(U \cdot X_{t-1}+W \cdot f(U \cdot X_{t-2}+W \cdot S_{t-3}))) $</p>
+<p>$= V \cdot f(U \cdot X_t+W \cdot f(U \cdot X_{t-1}+W \cdot f(U \cdot X_{t-2}+W \cdot f(U \cdot X_{t-3}+…))))$</p>
+<p><code>总结</code>：从上面可以看出，<strong>递归神经网络</strong>的输出值$o_t$，是受前面几次输入值$X_t、X_{t-1}、X_{t-2}、X_{t-3}$…影响的，这也就是为什么<strong>递归神经网络</strong>可以往前看任意多个<strong>输入值</strong>的原因。</p>
+<h3 id="双向递归神经网络"><a href="#双向递归神经网络" class="headerlink" title="双向递归神经网络"></a>双向递归神经网络</h3><p><code>介绍</code>：它们只是两个堆叠在一起的RNN。然后基于两个RNN的隐藏状态计算输出。</p>
+<p>对于<strong>语言模型</strong>来说，很多时候光看前面的词是不够的，比如下面这句话：</p>
+<pre><code class="hljs plain">肚子好饿啊。我打算___一份外卖。</code></pre>
+
+<p>可以想象，如果我们只是看横线前面的词，肚子好饿啊，我打算做饭，去吃饭还是什么什么的。这些都是无法确定的。但是如果我也先看横线后面的词【一份外卖】，那么横线上填【点】的概率就大多了。</p>
+<p>但是我们前面所讲的<strong>基本递归神经网络</strong>是无法解决这个问题的，这时我们就需要<strong>双向递归神经网络</strong>，如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182344.png" srcset="/img/loading.gif" alt="images"></p>
+<p>呃~~，有点复杂，我们先尝试分析一个特殊的场景，然后再总结规律。我们先看看上图的$y_2$的计算：</p>
+<p>从上图可以看出，<strong>双向递归神经网络</strong>的隐层是需要保持两个值：</p>
+<ul>
+<li>$A$：参与正向计算</li>
+<li>$A’$：参与反向计算</li>
+</ul>
+<p>所以$y_2$的值就取决于$A_2$和$A_2’$。计算方法：</p>
+<ul>
+<li><h4 id="y-2-f-V-cdot-A-2-V’-cdot-A-2’"><a href="#y-2-f-V-cdot-A-2-V’-cdot-A-2’" class="headerlink" title="$y_2=f(V \cdot A_2+V’ \cdot A_2’)$"></a>$y_2=f(V \cdot A_2+V’ \cdot A_2’)$</h4></li>
+</ul>
+<p>$A_2$和$A_2’$则分别计算：</p>
+<ul>
+<li><h4 id="A-2-f-W-cdot-A-1-U-cdot-X-2"><a href="#A-2-f-W-cdot-A-1-U-cdot-X-2" class="headerlink" title="$A_2 = f(W \cdot A_1+U \cdot X_2)$"></a>$A_2 = f(W \cdot A_1+U \cdot X_2)$</h4></li>
+<li><h4 id="A-2’-f-W’-cdot-A-3’-U’-cdot-X-2"><a href="#A-2’-f-W’-cdot-A-3’-U’-cdot-X-2" class="headerlink" title="$A_2’=f(W’ \cdot A_3’+U’ \cdot X_2)$"></a>$A_2’=f(W’ \cdot A_3’+U’ \cdot X_2)$</h4></li>
+</ul>
+<p><code>总结</code>：</p>
+<ul>
+<li>正向计算时：隐层的值$S_t$和$S_{t-1}$有关。</li>
+<li>反向计算时：隐层的值$S_t’$和$S_{t-1}’$有关。</li>
+<li>最终的输出取决于正向和反向计算的<strong>加和</strong>。</li>
+</ul>
+<p><code>扩展</code>：我们仿照（1）和（2）那种方式：</p>
+<h4 id="o-t-f-V-cdot-S-t-V’-cdot-S-t’"><a href="#o-t-f-V-cdot-S-t-V’-cdot-S-t’" class="headerlink" title="$o_t =f(V \cdot S_t+V’ \cdot S_t’) $"></a>$o_t =f(V \cdot S_t+V’ \cdot S_t’) $</h4><h4 id="S-t-f-U-cdot-X-t-W-cdot-S-t-1"><a href="#S-t-f-U-cdot-X-t-W-cdot-S-t-1" class="headerlink" title="$S_t =f(U \cdot X_t+W \cdot S_{t-1}) $"></a>$S_t =f(U \cdot X_t+W \cdot S_{t-1}) $</h4><h4 id="S-t’-f-U’-cdot-X-t-W’-cdot-S-t-1-’"><a href="#S-t’-f-U’-cdot-X-t-W’-cdot-S-t-1-’" class="headerlink" title="$ S_t’=f(U’ \cdot X_t+W’ \cdot S_{t+1}’)$"></a>$ S_t’=f(U’ \cdot X_t+W’ \cdot S_{t+1}’)$</h4><p><code>注意</code>：从上面三个公式我们可以看到，正向计算和反向计算<strong>不共享权重</strong>，也就是说U和U’、W和W’、V和V’都是不同的<strong>权重矩阵</strong>。</p>
+<h3 id="深度递归神经网络"><a href="#深度递归神经网络" class="headerlink" title="深度递归神经网络"></a>深度递归神经网络</h3><p>前面我们介绍的<strong>递归神经网络</strong>只有一个隐藏层，我们当然也可以堆叠两个以上的隐藏层，这样就得到了<strong>深度递归神经网络</strong>。如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182345.png" srcset="/img/loading.gif" alt="images"></p>
+<p>我们把第$i$个隐层的值表示为$S_t^{(i)}、S_t’^{(i)}$  ,则<strong>深度递归神经网络</strong>的计算方式就可以表示为：</p>
+<ul>
+<li><h4 id="o-t-f-cdot-V-i-cdot-S-t-i-V’-i-cdot-S-t’-i"><a href="#o-t-f-cdot-V-i-cdot-S-t-i-V’-i-cdot-S-t’-i" class="headerlink" title="${o}_t=f \cdot (V^{(i)} \cdot S_t^{(i)}+V’^{(i)} \cdot S_t’^{(i)})$"></a>${o}_t=f \cdot (V^{(i)} \cdot S_t^{(i)}+V’^{(i)} \cdot S_t’^{(i)})$</h4></li>
+<li><h4 id="S-t-i-f-U-i-cdot-S-t-i-1-W-i-cdot-S-t-1"><a href="#S-t-i-f-U-i-cdot-S-t-i-1-W-i-cdot-S-t-1" class="headerlink" title="$S_t^{(i)}=f(U^{(i)}\cdot S_t^{(i-1)}+W^{(i)}\cdot S_{t-1})$"></a>$S_t^{(i)}=f(U^{(i)}\cdot S_t^{(i-1)}+W^{(i)}\cdot S_{t-1})$</h4></li>
+<li><h4 id="S-t’-i-f-U’-i-cdot-S-t’-i-1-W’-i-cdot-S-t-1-’"><a href="#S-t’-i-f-U’-i-cdot-S-t’-i-1-W’-i-cdot-S-t-1-’" class="headerlink" title="$S_t’^{(i)}=f(U’^{(i)}\cdot S_t’^{(i-1)}+W’^{(i)}\cdot S_{t+1}’)$"></a>$S_t’^{(i)}=f(U’^{(i)}\cdot S_t’^{(i-1)}+W’^{(i)}\cdot S_{t+1}’)$</h4></li>
+<li><p>$…$</p>
+</li>
+<li><h4 id="S-t-1-f-U-1-cdot-X-t-W-1-cdot-S-t-1"><a href="#S-t-1-f-U-1-cdot-X-t-W-1-cdot-S-t-1" class="headerlink" title="$S_t^{(1)}=f(U^{(1)} \cdot X_t+W^{(1)}\cdot S_{t-1})$"></a>$S_t^{(1)}=f(U^{(1)} \cdot X_t+W^{(1)}\cdot S_{t-1})$</h4></li>
+<li><h4 id="S-t’-1-f-U’-1-cdot-X-t-W’-1-cdot-S-t-1-’"><a href="#S-t’-1-f-U’-1-cdot-X-t-W’-1-cdot-S-t-1-’" class="headerlink" title="$S_t’^{(1)}=f(U’^{(1)}\cdot X_t+W’^{(1)}\cdot S_{t+1}’)$"></a>$S_t’^{(1)}=f(U’^{(1)}\cdot X_t+W’^{(1)}\cdot S_{t+1}’)$</h4></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>递归神经网络的形式很自由：不同的递归神经网络可以实现不同的功能</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182346.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从上图我们可以总结出：</p>
+<ul>
+<li><code>one to one</code>：一个输入（单一标签）对应一个输出（单一标签）</li>
+<li><code>one to many</code>：一个输入对应多个输出，即这个架构多用于图片的对象识别，即输入一个图片，输出一个文本序列。</li>
+<li><code>many to one</code>：  多个输入对应一个输出，多用于文本分类或视频分类，即输入一段文本或视频片段，输出类别。</li>
+<li><code>many to many</code>：这种结构广泛的用于机器翻译，输入一个文本，输出另一种语言的文本。</li>
+<li><code>many to many</code>：这种广泛的用于序列标注。</li>
+</ul>
+<p>在众多的深度学习网络中，RNN由于能够接收序列输入，也能得到序列输出，在自然语言处理中取得了巨大的成功，并得到广泛的应用。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/LSTM/">LSTM</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">循环神经网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/DL-RNN-hand/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">递归神经网络之python实现RNN算法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/TensorFlow-keras/">
+                        <span class="hidden-mobile">TensorFlow-keras之CNN实现手写数字识别</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络之递归神经网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

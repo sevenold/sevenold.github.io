@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>递归神经网络之LSTM - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-30 10:00">
+      2018年8月30日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="LSTM模型"><a href="#LSTM模型" class="headerlink" title="LSTM模型"></a>LSTM模型</h3><p>由于RNN也有梯度消失的问题，因此很难处理长序列的数据，大牛们对RNN做了改进，得到了RNN的特例LSTM（Long Short-Term Memory），它可以避免常规RNN的梯度消失，因此在工业界得到了广泛的应用。</p>
+<h3 id="从RNN到LSTM"><a href="#从RNN到LSTM" class="headerlink" title="从RNN到LSTM"></a>从RNN到LSTM</h3><p>在RNN模型中，我们总结了RNN具有如下结构：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182445.png" srcset="/img/loading.gif" alt="images"></p>
+<p>RNN的模型可以简化成如下图的形式，所有 RNN 都具有一种重复神经网络模块的链式的形式。在标准的 RNN 中，这个重复的模块只有一个非常简单的结构，例如一个 tanh 层：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182446.png" srcset="/img/loading.gif" alt="images"></p>
+<p>由于RNN梯度消失的问题，大牛们对于序列索引位置t的隐藏结构做了改进，可以说通过一些技巧让隐藏结构复杂了起来，来避免梯度消失的问题，这样的特殊RNN就是我们的LSTM。由于LSTM有很多的变种，这里我们以最常见的LSTM为例讲述。LSTM的结构如下图：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182447.png" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182448.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="LSTM模型结构剖析"><a href="#LSTM模型结构剖析" class="headerlink" title="LSTM模型结构剖析"></a>LSTM模型结构剖析</h3><p>上面我们给出了LSTM的模型结构，下面我们就一点点的剖析LSTM模型在每个序列索引位置t时刻的内部结构。</p>
+<h3 id="LSTM关键–：“细胞状态”"><a href="#LSTM关键–：“细胞状态”" class="headerlink" title="LSTM关键–：“细胞状态”"></a>LSTM关键–：“细胞状态”</h3><p>细胞状态类似于传送带。直接在整个链上运行，只有一些少量的线性交互。信息在上面流传会很容易保持不变。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182449.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="LSTM控制“细胞状态”的方式："><a href="#LSTM控制“细胞状态”的方式：" class="headerlink" title="LSTM控制“细胞状态”的方式："></a><strong>LSTM</strong>控制“细胞状态”的方式：</h4><ul>
+<li>通过“门”让信息选择性通过，来去除或者增加信息到细胞状态。</li>
+<li>包含一个<code>SIGMOD</code>神经元层和一个<code>pointwise</code>乘法操作。</li>
+<li><code>SIGMOD</code>层输出0到1之间的概率值，描述每个部分有多少量可以通过。0代表“不许任何量通过”，1就表示“允许任意量通过”。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182450.png" srcset="/img/loading.gif" alt="images"></p>
+<p>除了细胞状态，LSTM图中还有了很多奇怪的结构，这些结构一般称之为门控结构(Gate)。</p>
+<p>LSTM在在每个序列索引位置t的门一般包括<strong>遗忘门</strong>，<strong>输入门</strong>和<strong>输出门</strong>三种。</p>
+<h3 id="LSTM之遗忘门"><a href="#LSTM之遗忘门" class="headerlink" title="LSTM之遗忘门"></a>LSTM之遗忘门</h3><p>遗忘门（forget gate）顾名思义，是控制是否遗忘的，在LSTM中即以一定的概率控制是否遗忘上一层的隐藏细胞状态。遗忘门子结构如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182451.png" srcset="/img/loading.gif" alt="images"></p>
+<p>图中输入的有上一序列的隐藏状态$h(t-1)$和本序列数据$x_{(t)}$，通过一个激活函数，一般情况下是<code>SIGMOD</code>，得到遗忘门的输出$f(t)$。由于SIGMOD的输出$f(t)$在[0,1]之间，因此这里的输出$f(t)$代表了遗忘上一层隐藏细胞的概率。</p>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="f-t-sigma-W-fh-t-1-U-fx-t-b-f"><a href="#f-t-sigma-W-fh-t-1-U-fx-t-b-f" class="headerlink" title="$f(t)=\sigma(W_fh(t-1)+U_fx(t)+b_f)$"></a>$f(t)=\sigma(W_fh(t-1)+U_fx(t)+b_f)$</h4><p>其中：$W_f、U_f、b_f$为线性关系的权重项和偏置项，$\sigma$为SIGMOD激活函数。</p>
+<h3 id="LSTM之输入门"><a href="#LSTM之输入门" class="headerlink" title="LSTM之输入门"></a>LSTM之输入门</h3><p>输入门（input gate）负责处理当前序列位置的输入，它的子结构如下图：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182452.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从图中可以看到输入门由两部分组成，第一部分使用了sigmoid激活函数，输出为$i_{(t)}$,第二部分使用了tanh激活函数，输出为$\tilde c_{(t)}$, 两者的结果后面会相乘再去更新细胞状态。</p>
+<ul>
+<li>SIGMOD层决定什么值需要更新。</li>
+<li>Tanh层创建一个新的候选值向量$\tilde c_{(t)}$</li>
+<li>第二步还是为状态更新做准备。</li>
+</ul>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="i-t-sigma-W-ih-t-1-U-ix-t-b-i"><a href="#i-t-sigma-W-ih-t-1-U-ix-t-b-i" class="headerlink" title="$i{(t)} = \sigma(W_ih{(t-1)} + U_ix^{(t)} + b_i)$"></a>$i{(t)} = \sigma(W_ih{(t-1)} + U_ix^{(t)} + b_i)$</h4><h4 id="tilde-c-t-tanh-W-ah-t-1-U-ax-t-b-a"><a href="#tilde-c-t-tanh-W-ah-t-1-U-ax-t-b-a" class="headerlink" title="$\tilde c{(t)} =tanh(W_ah{(t-1)} + U_ax^{(t)} + b_a)$"></a>$\tilde c{(t)} =tanh(W_ah{(t-1)} + U_ax^{(t)} + b_a)$</h4><p>其中$W_i, U_i, b_i, W_a, U_a, b_a$，为线性关系的权重项和偏置项，$\sigma$为SIGMOD激活函数。</p>
+<h3 id="LSTM之更新“细胞状态”"><a href="#LSTM之更新“细胞状态”" class="headerlink" title="LSTM之更新“细胞状态”"></a>LSTM之更新“细胞状态”</h3><p>在研究LSTM输出门之前，我们要先看看LSTM之细胞状态。前面的遗忘门和输入门的结果都会作用于细胞状态 $C_{(t)}$，我们来看看细胞如何从$C_{(t-1)}$到$C_{(t)}$:</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182453.png" srcset="/img/loading.gif" alt="images"></p>
+<p>由图可知：细胞状态$C_{(t)}$由两部分组成；第一部分是$C_{(t-1)}$和遗忘门输出$f(t)$的乘积，第二部分是输入门的$i_{(t)}$和$\tilde c_{(t)}$的乘积，总结为如下三点：</p>
+<ul>
+<li>更新$C_{(t-1)}$为$C_{(t)}$。</li>
+<li>把就状态和$f(t)$相乘，丢弃掉我们确定需要丢弃的信息。</li>
+<li>加上$i(t) * \tilde c_{(t)}$。最后得到新的候选值，根据我们决定更新每个状态的程度进行变化。</li>
+</ul>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="C-t-C-t-1-odot-f-t-i-t-odot-tilde-c-t"><a href="#C-t-C-t-1-odot-f-t-i-t-odot-tilde-c-t" class="headerlink" title="$C_{(t)} = C_{(t-1)} \odot f{(t)} + i_{(t)} \odot \tilde c_{(t)}$"></a>$C_{(t)} = C_{(t-1)} \odot f{(t)} + i_{(t)} \odot \tilde c_{(t)}$</h4><p>其中，$\bigodot$为Hadamard积.</p>
+<h3 id="LSTM之输出门"><a href="#LSTM之输出门" class="headerlink" title="LSTM之输出门"></a>LSTM之输出门</h3><p>有了新的隐藏细胞状态$C_{(t)}$，我们就可以来看输出门了，子结构如下：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182454.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从图中可以看出：隐藏状态$h(t)$的更新由两个部分组成：第一部分是$o_{(t)}$，它是由上一序列的隐藏状态$h_{(t-1)}$和本序列的$x_{(t)}$，以及激活函数SIGMOD得到的，第二部分是由隐藏状态$C_{(t)}$和$Tanh$激活函数组成，即：</p>
+<ul>
+<li>最开始先运行一个SIGMOD层来确定细胞状态的那个部分将输出。</li>
+<li>接着用tanh处理细胞状态（得到一个-1到1之间的值），再讲它和SIGMOD门的输出相乘。输出我们确定输出的那部分值。</li>
+</ul>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="o-t-sigma-W-o-h-t-1-x-t-b-o"><a href="#o-t-sigma-W-o-h-t-1-x-t-b-o" class="headerlink" title="$o_t=\sigma(W_o[h_{t-1},x_t]+b_o)$"></a>$o_t=\sigma(W_o[h_{t-1},x_t]+b_o)$</h4><h4 id="h-t-o-t-tanh-C-t"><a href="#h-t-o-t-tanh-C-t" class="headerlink" title="$h_t=o_t*tanh(C_t)$"></a>$h_t=o_t*tanh(C_t)$</h4><h3 id="LSTM的变体"><a href="#LSTM的变体" class="headerlink" title="LSTM的变体"></a>LSTM的变体</h3><ul>
+<li>增加<code>peephole connection</code></li>
+<li>让门层也会接受细胞状态的输入。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182455.png" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="f-t-sigma-W-f-cdot-C-t-1-h-t-1-x-t-b-f"><a href="#f-t-sigma-W-f-cdot-C-t-1-h-t-1-x-t-b-f" class="headerlink" title="$f_t=\sigma(W_f \cdot[C_{t-1}, h_{t-1},x_t]+b_f)$"></a>$f_t=\sigma(W_f \cdot[C_{t-1}, h_{t-1},x_t]+b_f)$</h4><h4 id="i-t-sigma-W-i-cdot-C-t-1-h-t-1-x-t-b-i"><a href="#i-t-sigma-W-i-cdot-C-t-1-h-t-1-x-t-b-i" class="headerlink" title="$i_t=\sigma(W_i \cdot[C_{t-1}, h_{t-1},x_t]+b_i)$"></a>$i_t=\sigma(W_i \cdot[C_{t-1}, h_{t-1},x_t]+b_i)$</h4><h4 id="o-t-sigma-W-o-cdot-C-t-1-h-t-1-x-t-b-o"><a href="#o-t-sigma-W-o-cdot-C-t-1-h-t-1-x-t-b-o" class="headerlink" title="$o_t=\sigma(W_o \cdot[C_{t-1}, h_{t-1},x_t]+b_o)$"></a>$o_t=\sigma(W_o \cdot[C_{t-1}, h_{t-1},x_t]+b_o)$</h4><ul>
+<li>通过使用<code>coupled</code>忘记和输入门</li>
+<li>之前是分开确定需要忘记和添加的信息，然后一同做出决定。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182456.png" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="C-t-f-t-C-t-1-1-f-t-tilde-C-t"><a href="#C-t-f-t-C-t-1-1-f-t-tilde-C-t" class="headerlink" title="$C_t=f_t * C_{t-1}+(1-f_t)  *  \tilde C_t$"></a>$C_t=f_t * C_{t-1}+(1-f_t)  *  \tilde C_t$</h4><h3 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h3><p><strong>Gatad Reacurrent Unit (GRU)</strong>，2014年提出。</p>
+<ul>
+<li>将忘记门和输入门合成了一个单一的<strong>更新门</strong></li>
+<li>混合了细胞状态和隐藏状态</li>
+<li>比标准的LSTM简单</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182457.png" srcset="/img/loading.gif" alt="images"></p>
+<p><strong>数学表达式</strong>：</p>
+<h4 id="z-t-sigma-W-z-cdot-h-t-1-x-t"><a href="#z-t-sigma-W-z-cdot-h-t-1-x-t" class="headerlink" title="$z_t=\sigma(W_z \cdot [h_{t-1},x_t])$"></a>$z_t=\sigma(W_z \cdot [h_{t-1},x_t])$</h4><h4 id="r-t-sigma-W-r-cdot-h-t-1-x-t"><a href="#r-t-sigma-W-r-cdot-h-t-1-x-t" class="headerlink" title="$r_t=\sigma(W_r \cdot [h_{t-1},x_t])$"></a>$r_t=\sigma(W_r \cdot [h_{t-1},x_t])$</h4><h4 id="tilde-h-t-tanh-W-cdot-r-t-h-t-1-x-t"><a href="#tilde-h-t-tanh-W-cdot-r-t-h-t-1-x-t" class="headerlink" title="$\tilde h_t= tanh(W \cdot [r_t*h_{t-1},x_t])$"></a>$\tilde h_t= tanh(W \cdot [r_t*h_{t-1},x_t])$</h4><h4 id="h-t-1-z-t-h-t-1-z-t-tilde-h-t"><a href="#h-t-1-z-t-h-t-1-z-t-tilde-h-t" class="headerlink" title="$h_t=(1-z_t)  * h_{t-1} + z_t  *  \tilde h_t$"></a>$h_t=(1-z_t)  * h_{t-1} + z_t  *  \tilde h_t$</h4>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">递归神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%95%BF%E7%9F%AD%E6%97%B6%E8%AE%B0%E5%BF%86/">长短时记忆</a>
+                    
+                      <a class="hover-with-bg" href="/tags/LSTM/">LSTM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/TensorFlow-RNN/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorFlow实现简单的递归神经网络-RNN</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/DL-RNN-BPTT/">
+                        <span class="hidden-mobile">递归神经网络之BackPropagation Through Time</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "递归神经网络之LSTM&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

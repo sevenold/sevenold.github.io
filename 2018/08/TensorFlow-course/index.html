@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>TensorFlow-从入门到实践 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-13 10:00">
+      2018年8月13日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="TensorFlow-从入门到实践"><a href="#TensorFlow-从入门到实践" class="headerlink" title="TensorFlow 从入门到实践"></a>TensorFlow 从入门到实践</h3><p>导入TensorFlow模块，查看下当前模块的版本</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+
+print(tf.__version__)</code></pre>
+
+<pre><code class="hljs bash">1.4.0</code></pre>
+
+<p>tensorflow是一种图计算框架，所有的计算操作被声明为图（graph）中的节点（Node）</p>
+<p>即使只是声明一个变量或者常量，也并不执行实际的操作，而是向图中增加节点</p>
+<p>我们来看一上前面安装TensorFlow的时候的测试代码</p>
+<pre><code class="hljs python"><span class="hljs-comment"># 创建名为hello_constant的TensorFlow对象</span>
+hello_constant = tf.constant(<span class="hljs-string">'Hello World!'</span>)
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    
+    <span class="hljs-comment"># 在session中运行tf.constant 操作</span>
+    output = sess.run(hello_constant)
+    
+    print(output)</code></pre>
+
+<pre><code class="hljs plain">b&#39;Hello World!&#39;</code></pre>
+
+<h3 id="Tensor"><a href="#Tensor" class="headerlink" title="Tensor"></a>Tensor</h3><h4 id="在-TensorFlow-中，数据不是以整数，浮点数或者字符串形式存在的。"><a href="#在-TensorFlow-中，数据不是以整数，浮点数或者字符串形式存在的。" class="headerlink" title="在 TensorFlow 中，数据不是以整数，浮点数或者字符串形式存在的。"></a>在 TensorFlow 中，数据不是以整数，浮点数或者字符串形式存在的。</h4><h4 id="这些值被封装在一个叫做-tensor-的对象中。"><a href="#这些值被封装在一个叫做-tensor-的对象中。" class="headerlink" title="这些值被封装在一个叫做 tensor 的对象中。"></a>这些值被封装在一个叫做 tensor 的对象中。</h4><p>在 hello_constant = tf.constant(‘Hello World!’) 代码中，<br>hello_constant是一个 0 维度的字符串 tensor。</p>
+<h4 id="tensors-还有很多不同大小："><a href="#tensors-还有很多不同大小：" class="headerlink" title="tensors 还有很多不同大小："></a>tensors 还有很多不同大小：</h4><pre><code class="hljs python"><span class="hljs-comment"># A 是一个0维的 int32 tensor</span>
+A = tf.constant(<span class="hljs-number">1234</span>) 
+<span class="hljs-comment"># B 是一个1维的  int32 tensor</span>
+B = tf.constant([<span class="hljs-number">123</span>,<span class="hljs-number">456</span>,<span class="hljs-number">789</span>]) 
+ <span class="hljs-comment"># C 是一个2维的  int32 tensor</span>
+C = tf.constant([ [<span class="hljs-number">123</span>,<span class="hljs-number">456</span>,<span class="hljs-number">789</span>], [<span class="hljs-number">222</span>,<span class="hljs-number">333</span>,<span class="hljs-number">444</span>] ])
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    out_A = sess.run(A)
+    out_B = sess.run(B)
+    out_C = sess.run(C)
+    
+    print(<span class="hljs-string">'\n'</span>, out_A, <span class="hljs-string">'\n'</span>, <span class="hljs-string">'----------'</span>, <span class="hljs-string">'\n'</span>, out_B, <span class="hljs-string">'\n'</span>, <span class="hljs-string">'----------'</span>, <span class="hljs-string">'\n'</span>, out_C)</code></pre>
+
+<pre><code class="hljs bash">1234 
+---------- 
+[123 456 789] 
+---------- 
+[[123 456 789]
+[222 333 444]]</code></pre>
+
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><p>TensorFlow 的 api 构建在 computational graph（计算图) 的概念上，它是一种对数学运算过程进行可视化的一种方法。让我们把你刚才运行的 TensorFlow 的代码变成一个图：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182049.png" srcset="/img/loading.gif" alt="44.png"></p>
+<p>如上图所示，一个 “TensorFlow Session” 是用来运行图的环境。这个 session 负责分配 GPU(s) 和／或 CPU(s) 包括远程计算机的运算。让我们看看怎么使用它：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    output = sess.run(hello_constant)</code></pre>
+
+<p>这段代码已经从上一行创建了一个 tensor hello_constant。下一行是在session里对 tensor 求值。</p>
+<p>这段代码用 tf.Session 创建了一个sess的 session 实例。 sess.run() 函数对 tensor 求值，并返回结果。</p>
+<h3 id="constant运算"><a href="#constant运算" class="headerlink" title="constant运算"></a>constant运算</h3><p>我们先计算一个线性函数，y=wx+b</p>
+<pre><code class="hljs python">w = tf.Variable([[<span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>]])
+x = tf.Variable([[<span class="hljs-number">3.</span>], [<span class="hljs-number">4.</span>]])
+b = tf.constant(<span class="hljs-number">.9</span>)
+
+y = tf.add(tf.matmul(w, x), b)
+
+<span class="hljs-comment"># 变量必须要初始化后才能使用</span>
+init = tf.global_variables_initializer()
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    sess.run(init)
+    print(y.eval())</code></pre>
+
+<pre><code class="hljs plain">[[11.9]]</code></pre>
+
+
+
+<p>计算图中所有的数据均以tensor来存储和表达。<br>tensor是一个高阶张量，二阶张量为矩阵，一阶张量为向量，0阶张量为一个数（标量）。</p>
+<pre><code class="hljs python">a = tf.constant(<span class="hljs-number">0</span>, name=<span class="hljs-string">'B'</span>)
+b = tf.constant(<span class="hljs-number">1</span>)</code></pre>
+
+<pre><code class="hljs python">print(a)
+print(b)</code></pre>
+
+<pre><code class="hljs bash">Tensor(<span class="hljs-string">"B:0"</span>, shape=(), dtype=int32)
+Tensor(<span class="hljs-string">"Const_5:0"</span>, shape=(), dtype=int32)</code></pre>
+
+<p>其他计算操作也同样如此。 tensorflow中的大部分操作都需要通过tf.xxxxx的方式进行调用。</p>
+<pre><code class="hljs python">c = tf.add(a,b)
+print(c)</code></pre>
+
+<pre><code class="hljs bash">Tensor(<span class="hljs-string">"Add_1:0"</span>, shape=(), dtype=int32)</code></pre>
+
+<p>从加法开始， tf.add() 完成的工作与你期望的一样。它把两个数字，两个 tensor，返回他们的和。减法和乘法同样也是直接调用对应的接口函数</p>
+<pre><code class="hljs python">x = tf.subtract(<span class="hljs-number">10</span>, <span class="hljs-number">4</span>) <span class="hljs-comment"># 6</span>
+y = tf.multiply(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)  <span class="hljs-comment"># 10</span></code></pre>
+
+<h3 id="还有很多关于数学的api-你可以自己去查阅文档"><a href="#还有很多关于数学的api-你可以自己去查阅文档" class="headerlink" title="还有很多关于数学的api,你可以自己去查阅文档"></a>还有很多关于数学的api,你可以自己去查阅<a href="https://www.tensorflow.org/api_guides/python/math_ops" target="_blank" rel="noopener">文档</a></h3><pre><code class="hljs python">mat_a = tf.constant([[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>]])
+mat_b = tf.constant([[<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],[<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>]], name=<span class="hljs-string">'mat_b'</span>)</code></pre>
+
+<pre><code class="hljs python">mul_a_b = mat_a * mat_b
+tf_mul_a_b = tf.multiply(mat_a, mat_b)
+tf_matmul_a_b = tf.matmul(mat_a, tf.transpose(mat_b), name=<span class="hljs-string">'matmul_with_name'</span>)</code></pre>
+
+<pre><code class="hljs python">print(mul_a_b)
+print(tf_mul_a_b)
+print(tf_matmul_a_b)</code></pre>
+
+<pre><code class="hljs bash">Tensor(<span class="hljs-string">"mul:0"</span>, shape=(2, 3), dtype=int32)
+Tensor(<span class="hljs-string">"Mul_1:0"</span>, shape=(2, 3), dtype=int32)
+Tensor(<span class="hljs-string">"matmul_with_name:0"</span>, shape=(2, 2), dtype=int32)</code></pre>
+
+
+
+<pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    mul_value, tf_mul_value, tf_matmul_value = sess.run([mul_a_b, tf_mul_a_b, tf_matmul_a_b])</code></pre>
+
+<pre><code class="hljs python">print(mul_value)
+print(tf_mul_value)
+print(tf_matmul_value)</code></pre>
+
+<pre><code class="hljs bash">[[ 2  2  2]
+ [15 15 15]]
+[[ 2  2  2]
+ [15 15 15]]
+[[ 6 15]
+ [18 45]]</code></pre>
+
+<p>我们再举几个具体的实例来看看</p>
+<pre><code class="hljs python">a = tf.constant(<span class="hljs-number">2</span>)
+b = tf.constant(<span class="hljs-number">3</span>)
+x = tf.add(a, b)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+	writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/const_add'</span>, sess.graph)
+	print(sess.run(x))
+writer.close()</code></pre>
+
+<pre><code class="hljs plain">5</code></pre>
+
+
+
+<pre><code class="hljs python">a = tf.constant([<span class="hljs-number">2</span>, <span class="hljs-number">2</span>], name=<span class="hljs-string">'a'</span>)
+b = tf.constant([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]], name=<span class="hljs-string">'b'</span>)
+x = tf.multiply(a, b, name=<span class="hljs-string">'dot_product'</span>)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+	writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/const_mul'</span>, sess.graph) 
+	print(sess.run(x))
+writer.close()</code></pre>
+
+<pre><code class="hljs plain">[[0 2]
+ [4 6]]</code></pre>
+
+
+
+<pre><code class="hljs python">a = tf.constant([[<span class="hljs-number">2</span>, <span class="hljs-number">2</span>],[<span class="hljs-number">1</span>, <span class="hljs-number">4</span>]], name=<span class="hljs-string">'a'</span>)
+b = tf.constant([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]], name=<span class="hljs-string">'b'</span>)
+x = tf.multiply(a, b, name=<span class="hljs-string">'dot_product'</span>)
+y = tf.matmul(a, b, name=<span class="hljs-string">'mat_mul'</span>)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+	writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/const_mul_2'</span>, sess.graph) 
+	print(sess.run(x))
+	print(sess.run(y))
+writer.close()</code></pre>
+
+<pre><code class="hljs plain">[[ 0  2]
+ [ 2 12]]
+[[ 4  8]
+ [ 8 13]]</code></pre>
+
+<h3 id="各式各样的常量"><a href="#各式各样的常量" class="headerlink" title="各式各样的常量"></a>各式各样的常量</h3><pre><code class="hljs python">x = tf.zeros([<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], tf.int32)
+y = tf.zeros_like(x, optimize=<span class="hljs-literal">True</span>)</code></pre>
+
+<pre><code class="hljs python">print(y)</code></pre>
+
+<pre><code class="hljs plain">Tensor(&quot;zeros_like:0&quot;, shape&#x3D;(2, 3), dtype&#x3D;int32)</code></pre>
+
+
+
+<pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    print(sess.run(y))</code></pre>
+
+<pre><code class="hljs plain">[[0 0 0]
+ [0 0 0]]</code></pre>
+
+
+
+<pre><code class="hljs python">t_0 = <span class="hljs-number">19</span> 
+x = tf.zeros_like(t_0) <span class="hljs-comment"># ==&gt; 0</span>
+y = tf.ones_like(t_0) <span class="hljs-comment"># ==&gt; 1</span>
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    print(sess.run([x]))
+    print(sess.run([y]))</code></pre>
+
+<pre><code class="hljs plain">[0]
+[1]</code></pre>
+
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">'meh'</span>) <span class="hljs-keyword">as</span> scope:
+    a = tf.get_variable(<span class="hljs-string">'a'</span>, [<span class="hljs-number">10</span>])
+    b = tf.get_variable(<span class="hljs-string">'b'</span>, [<span class="hljs-number">100</span>])
+
+writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/test'</span>, tf.get_default_graph())
+writer.close()</code></pre>
+
+<p>例如：求导也是一个运算</p>
+<pre><code class="hljs python">x = tf.Variable(<span class="hljs-number">2.0</span>)
+y = <span class="hljs-number">2.0</span> * (x ** <span class="hljs-number">3</span>)
+z = <span class="hljs-number">3.0</span> + y ** <span class="hljs-number">2</span>
+grad_z = tf.gradients(z, y)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    sess.run(x.initializer)
+    print(sess.run(grad_z))</code></pre>
+
+<pre><code class="hljs plain">[32.0]</code></pre>
+
+<h4 id="一次性初始化所有变量"><a href="#一次性初始化所有变量" class="headerlink" title="一次性初始化所有变量"></a>一次性初始化所有变量</h4><pre><code class="hljs python">my_var = tf.Variable(<span class="hljs-number">2</span>, name=<span class="hljs-string">"my_var"</span>) 
+
+my_var_times_two = my_var.assign(<span class="hljs-number">2</span> * my_var)
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    sess.run(tf.global_variables_initializer())
+    print(sess.run(my_var_times_two))
+    print(sess.run(my_var_times_two))
+    print(sess.run(my_var_times_two))</code></pre>
+
+<pre><code class="hljs plain">4
+8
+16</code></pre>
+
+<hr>
+<p>在前面我们都是采用，先赋值再计算的方法，但是在我们的工作过程中，我会遇到先定义变量，后赋值的情况。<br>如果你想用一个非常量 non-constant 该怎么办？这就是 tf.placeholder() 和 feed_dict 派上用场的时候了。我们来看看如何向 TensorFlow 传输数据的基本知识。</p>
+<h3 id="tf-placeholder"><a href="#tf-placeholder" class="headerlink" title="tf.placeholder()"></a>tf.placeholder()</h3><p>当你你不能把数据赋值到 x 在把它传给 TensorFlow。因为后面你需要你的 TensorFlow 模型对不同的数据集采取不同的参数。这时你需要 tf.placeholder()！</p>
+<p>数据经过 tf.session.run() 函数得到的值，由 tf.placeholder() 返回成一个 tensor，这样你可以在 session 开始跑之前，设置输入。</p>
+<h4 id="Session’s-feed-dict-功能"><a href="#Session’s-feed-dict-功能" class="headerlink" title="Session’s feed_dict 功能"></a>Session’s feed_dict 功能</h4><pre><code class="hljs python">x = tf.placeholder(tf.string)
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    out = sess.run(x, feed_dict=&#123;x: <span class="hljs-string">'Hello World'</span>&#125;)
+    print(out)</code></pre>
+
+<pre><code class="hljs plain">Hello World</code></pre>
+
+<p>用 tf.session.run() 里 feed_dict 参数设置占位 tensor。上面的例子显示 tensor x 被设置成字符串 “Hello, world”。当然你也可以用 feed_dict 设置多个 tensor。</p>
+<p>placeholder是一个占位符，它通常代表着从外界输入的值。 其中None代表着尚不确定的维度。</p>
+<pre><code class="hljs python">input1 = tf.placeholder(tf.float32)
+input2 = tf.placeholder(tf.float32)
+output = tf.multiply(input1, input2)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    print(sess.run([output], feed_dict=&#123;input1:[<span class="hljs-number">7.</span>], input2:[<span class="hljs-number">2.</span>]&#125;))</code></pre>
+
+<pre><code class="hljs plain">[array([14.], dtype&#x3D;float32)]</code></pre>
+
+<h3 id="把numpy转换成Tensor"><a href="#把numpy转换成Tensor" class="headerlink" title="把numpy转换成Tensor"></a>把numpy转换成Tensor</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+a = np.zeros((<span class="hljs-number">3</span>,<span class="hljs-number">3</span>))
+print(a)
+print(<span class="hljs-string">'----------------'</span>)
+ta = tf.convert_to_tensor(a)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+     print(sess.run(ta))</code></pre>
+
+<pre><code class="hljs plain">[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+----------------
+[[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]</code></pre>
+
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>为了让特定运算能运行，有时会对类型进行转换。例如，你尝试下列代码，会报错：</p>
+<pre><code class="hljs python">tf.subtract(tf.constant(<span class="hljs-number">2.0</span>),tf.constant(<span class="hljs-number">1</span>))</code></pre>
+
+<pre><code class="hljs plain">TypeError: Input &#39;y&#39; of &#39;Sub&#39; Op has type int32 that does not match type float32 of argument &#39;x&#39;.</code></pre>
+
+<p>只是因为常量 1 是整数，但是常量 2.0 是浮点数 subtract 需要他们能相符。</p>
+<p>在这种情况下，你可以让数据都是同一类型，或者强制转换一个值到另一个类型。这里，我们可以把 2.0 转换成整数再相减，这样就能得出正确的结果：</p>
+<pre><code class="hljs python">number = tf.subtract(tf.cast(tf.constant(<span class="hljs-number">2.0</span>), tf.int32), tf.constant(<span class="hljs-number">1</span>))   
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    print(sess.run(number))</code></pre>
+
+<pre><code class="hljs plain">1</code></pre>
+
+<h3 id="tensorboard-了解图结构-可视化利器"><a href="#tensorboard-了解图结构-可视化利器" class="headerlink" title="tensorboard 了解图结构/可视化利器"></a>tensorboard 了解图结构/可视化利器</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+a = tf.constant(<span class="hljs-number">2</span>, name=<span class="hljs-string">'A'</span>)
+b = tf.constant(<span class="hljs-number">3</span>, name=<span class="hljs-string">'B'</span>)
+x = tf.add(a,b, name=<span class="hljs-string">'addAB'</span>)
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    print(sess.run(x))
+    <span class="hljs-comment">#写到日志文件里</span>
+    writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/add_test'</span>, sess.graph)
+    <span class="hljs-comment">#关闭writer</span>
+    writer.close()</code></pre>
+
+<pre><code class="hljs plain">5</code></pre>
+
+<h3 id="启动-TensorBoard"><a href="#启动-TensorBoard" class="headerlink" title="启动 TensorBoard"></a>启动 TensorBoard</h3><p>在命令端运行：tensorboard –logdir=”./graphs” –port 7007</p>
+<p>然后打开Google浏览器访问：<a href="http://localhost:7007/" target="_blank" rel="noopener">http://localhost:7007/</a></p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><h4 id="TensorFlow实现线性回归"><a href="#TensorFlow实现线性回归" class="headerlink" title="TensorFlow实现线性回归"></a>TensorFlow实现线性回归</h4><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt</code></pre>
+
+<p>设置生成的图像尺寸和去除警告</p>
+<pre><code class="hljs python">os.environ[<span class="hljs-string">'TF_CPP_MIN_LOG_LEVEL'</span>] = <span class="hljs-string">'2'</span>
+plt.rcParams[<span class="hljs-string">"figure.figsize"</span>] = (<span class="hljs-number">14</span>, <span class="hljs-number">8</span>)  <span class="hljs-comment"># 生成的图像尺寸</span></code></pre>
+
+<p>随机生成一个线性的数据，当然你可以换成读取对应的数据集</p>
+<pre><code class="hljs python">n_observations = <span class="hljs-number">100</span>
+xs = np.linspace(<span class="hljs-number">-3</span>, <span class="hljs-number">3</span>, n_observations)
+ys = <span class="hljs-number">0.8</span>*xs + <span class="hljs-number">0.1</span> + np.random.uniform(<span class="hljs-number">-0.5</span>, <span class="hljs-number">0.5</span>, n_observations)
+plt.scatter(xs, ys)
+plt.show()</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182050.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="准备好placeholder"><a href="#准备好placeholder" class="headerlink" title="准备好placeholder"></a>准备好placeholder</h3><pre><code class="hljs python">X = tf.placeholder(tf.float32, name=<span class="hljs-string">'X'</span>)
+Y = tf.placeholder(tf.float32, name=<span class="hljs-string">'Y'</span>)</code></pre>
+
+<h3 id="初始化参数-权重"><a href="#初始化参数-权重" class="headerlink" title="初始化参数/权重"></a>初始化参数/权重</h3><pre><code class="hljs python">W = tf.Variable(tf.random_normal([<span class="hljs-number">1</span>]), name=<span class="hljs-string">'weight'</span>)
+b = tf.Variable(tf.random_normal([<span class="hljs-number">1</span>]), name=<span class="hljs-string">'bias'</span>)</code></pre>
+
+<h3 id="计算预测结果"><a href="#计算预测结果" class="headerlink" title="计算预测结果"></a>计算预测结果</h3><pre><code class="hljs python">Y_pred = tf.add(tf.multiply(X, W), b)</code></pre>
+
+<h3 id="计算损失值函数"><a href="#计算损失值函数" class="headerlink" title="计算损失值函数"></a>计算损失值函数</h3><pre><code class="hljs python">loss = tf.square(Y - Y_pred, name=<span class="hljs-string">'loss'</span>)</code></pre>
+
+<h3 id="初始化optimizer"><a href="#初始化optimizer" class="headerlink" title="初始化optimizer"></a>初始化optimizer</h3><pre><code class="hljs python">learning_rate = <span class="hljs-number">0.01</span>
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</code></pre>
+
+<h3 id="指定迭代次数，并在session里执行graph"><a href="#指定迭代次数，并在session里执行graph" class="headerlink" title="指定迭代次数，并在session里执行graph"></a>指定迭代次数，并在session里执行graph</h3><pre><code class="hljs python">n_samples = xs.shape[<span class="hljs-number">0</span>]
+init = tf.global_variables_initializer()
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    <span class="hljs-comment"># 记得初始化所有变量</span>
+    sess.run(init)
+
+    writer = tf.summary.FileWriter(<span class="hljs-string">'./graphs/linear_regression'</span>, sess.graph)
+
+    <span class="hljs-comment"># 训练模型</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">50</span>):
+        total_loss = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> zip(xs, ys):
+            <span class="hljs-comment"># 通过feed_dic把数据灌进去</span>
+            _, loss_value = sess.run([optimizer, loss], feed_dict=&#123;X: x, Y: y&#125;)
+            total_loss += loss_value
+        <span class="hljs-keyword">if</span> i % <span class="hljs-number">5</span> == <span class="hljs-number">0</span>:
+            print(<span class="hljs-string">'Epoch &#123;0&#125;: &#123;1&#125;'</span>.format(i, total_loss / n_samples))
+
+    <span class="hljs-comment"># 关闭writer</span>
+    writer.close()
+
+    <span class="hljs-comment"># 取出w和b的值</span>
+    W, b = sess.run([W, b])</code></pre>
+
+<pre><code class="hljs plain">Epoch 0: [0.7908481]
+Epoch 5: [0.07929672]
+Epoch 10: [0.07929661]
+Epoch 15: [0.07929661]
+Epoch 20: [0.07929661]
+Epoch 25: [0.07929661]
+Epoch 30: [0.07929661]
+Epoch 35: [0.07929661]
+Epoch 40: [0.07929661]
+Epoch 45: [0.07929661]</code></pre>
+
+<h3 id="打印最后更新的w、b的值"><a href="#打印最后更新的w、b的值" class="headerlink" title="打印最后更新的w、b的值"></a>打印最后更新的w、b的值</h3><pre><code class="hljs python">print(W, b)
+print(<span class="hljs-string">"W:"</span>+str(W[<span class="hljs-number">0</span>]))
+print(<span class="hljs-string">"b:"</span>+str(b[<span class="hljs-number">0</span>]))</code></pre>
+
+<pre><code class="hljs plain">[0.82705235] [0.16835527]
+W:0.82705235
+b:0.16835527</code></pre>
+
+<h3 id="画出线性回归线"><a href="#画出线性回归线" class="headerlink" title="画出线性回归线"></a>画出线性回归线</h3><pre><code class="hljs python">plt.plot(xs, ys, <span class="hljs-string">'bo'</span>, label=<span class="hljs-string">'Real data'</span>)
+plt.plot(xs, xs * W + b, <span class="hljs-string">'r'</span>, label=<span class="hljs-string">'Predicted data'</span>)
+plt.legend()
+plt.show()</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182051.png" srcset="/img/loading.gif" alt="44.png"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/TensorFlow/">TensorFlow</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/TensorFlow/">TensorFlow</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/DL-method/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神经网络入门-感知器、激活函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/TensorFlow-Virtualenv/">
+                        <span class="hidden-mobile">环境搭建-使用 Virtualenv 进行安装TensorFlow</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TensorFlow-从入门到实践&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

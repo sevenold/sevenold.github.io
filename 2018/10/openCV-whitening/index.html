@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>计算机视觉-openCV图像美化 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-10-27 10:00">
+      2018年10月27日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      30
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="openCV彩色图片直方图"><a href="#openCV彩色图片直方图" class="headerlink" title="openCV彩色图片直方图"></a>openCV彩色图片直方图</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ImageHist</span><span class="hljs-params">(image,type)</span>:</span>
+    color = (<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>)
+    windowName = <span class="hljs-string">'Gray'</span>
+    <span class="hljs-keyword">if</span> type == <span class="hljs-number">31</span>:
+        color = (<span class="hljs-number">255</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+        windowName = <span class="hljs-string">'B Hist'</span>
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-number">32</span>:
+        color = (<span class="hljs-number">0</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>)
+        windowName = <span class="hljs-string">'G Hist'</span>
+    <span class="hljs-keyword">elif</span> type == <span class="hljs-number">33</span>:
+        color = (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>)
+        windowName = <span class="hljs-string">'R Hist'</span>
+    <span class="hljs-comment"># 1 image 2 [0] 3 mask None 4 256 5 0-255</span>
+    hist = cv2.calcHist([image],[<span class="hljs-number">0</span>],<span class="hljs-literal">None</span>,[<span class="hljs-number">256</span>],[<span class="hljs-number">0.0</span>,<span class="hljs-number">255.0</span>])
+    minV,maxV,minL,maxL = cv2.minMaxLoc(hist)  <span class="hljs-comment"># 获取像素的最大值和最小值以便后面归一化处理</span>
+    histImg = np.zeros([<span class="hljs-number">256</span>,<span class="hljs-number">256</span>,<span class="hljs-number">3</span>],np.uint8)
+    <span class="hljs-comment"># 数据归一化处理</span>
+    <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> range(<span class="hljs-number">256</span>):
+        intenNormal = int(hist[h]*<span class="hljs-number">256</span>/maxV)
+        cv2.line(histImg,(h,<span class="hljs-number">256</span>),(h,<span class="hljs-number">256</span>-intenNormal),color)
+    cv2.imshow(windowName,histImg)
+    <span class="hljs-keyword">return</span> histImg
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+channels = cv2.split(img)<span class="hljs-comment"># RGB - R G B</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">3</span>):
+    ImageHist(channels[i],<span class="hljs-number">31</span>+i)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183052.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="openCV直方图均衡化-灰度"><a href="#openCV直方图均衡化-灰度" class="headerlink" title="openCV直方图均衡化-灰度"></a>openCV直方图均衡化-灰度</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) <span class="hljs-comment"># 图片灰度化</span>
+cv2.imshow(<span class="hljs-string">'src'</span>,gray)
+dst = cv2.equalizeHist(gray) <span class="hljs-comment"># api 完成直方图均衡化</span>
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183053.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="openCV直方图均衡化-彩色"><a href="#openCV直方图均衡化-彩色" class="headerlink" title="openCV直方图均衡化-彩色"></a>openCV直方图均衡化-彩色</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+(b,g,r) = cv2.split(img) <span class="hljs-comment"># 通道分解</span>
+<span class="hljs-comment"># 图片单通道处理</span>
+bH = cv2.equalizeHist(b)
+gH = cv2.equalizeHist(g)
+rH = cv2.equalizeHist(r)
+result = cv2.merge((bH,gH,rH))<span class="hljs-comment"># 通道合成</span>
+cv2.imshow(<span class="hljs-string">'dst'</span>,result)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183054.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="openCV直方图均衡化-YUV"><a href="#openCV直方图均衡化-YUV" class="headerlink" title="openCV直方图均衡化-YUV"></a>openCV直方图均衡化-YUV</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+imgYUV = cv2.cvtColor(img,cv2.COLOR_BGR2YCrCb) <span class="hljs-comment">#  </span>
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+channelYUV = cv2.split(imgYUV) <span class="hljs-comment"># 图片分解</span>
+channelYUV[<span class="hljs-number">0</span>] = cv2.equalizeHist(channelYUV[<span class="hljs-number">0</span>]) <span class="hljs-comment"># 直方图均衡化</span>
+channels = cv2.merge(channelYUV) <span class="hljs-comment"># 合成</span>
+result = cv2.cvtColor(channels,cv2.COLOR_YCrCb2BGR)
+cv2.imshow(<span class="hljs-string">'dst'</span>,result)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183055.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="openCV图片修补"><a href="#openCV图片修补" class="headerlink" title="openCV图片修补"></a>openCV图片修补</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2 
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'damaged.jpg'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+paint = np.zeros((height,width,<span class="hljs-number">1</span>),np.uint8)
+<span class="hljs-comment"># 描绘图片坏的数组</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">200</span>,<span class="hljs-number">300</span>):
+    paint[i,<span class="hljs-number">200</span>] = <span class="hljs-number">255</span>
+    paint[i,<span class="hljs-number">200</span>+<span class="hljs-number">1</span>] = <span class="hljs-number">255</span>
+    paint[i,<span class="hljs-number">200</span><span class="hljs-number">-1</span>] = <span class="hljs-number">255</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">150</span>,<span class="hljs-number">250</span>):
+    paint[<span class="hljs-number">250</span>,i] = <span class="hljs-number">255</span>
+    paint[<span class="hljs-number">250</span>+<span class="hljs-number">1</span>,i] = <span class="hljs-number">255</span>
+    paint[<span class="hljs-number">250</span><span class="hljs-number">-1</span>,i] = <span class="hljs-number">255</span>
+cv2.imshow(<span class="hljs-string">'paint'</span>,paint)
+<span class="hljs-comment">#1 src 2 mask</span>
+imgDst = cv2.inpaint(img,paint,<span class="hljs-number">3</span>,cv2.INPAINT_TELEA)
+
+cv2.imshow(<span class="hljs-string">'image'</span>,imgDst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183056.png" srcset="/img/loading.gif" alt="2"></p>
+<h3 id="openCV灰度直方图"><a href="#openCV灰度直方图" class="headerlink" title="openCV灰度直方图"></a>openCV灰度直方图</h3><pre><code class="hljs python"><span class="hljs-comment"># 本质：统计每个像素灰度 出现的概率 0-255 p</span>
+<span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) <span class="hljs-comment"># 图片灰度化</span>
+count = np.zeros(<span class="hljs-number">256</span>,np.float)
+<span class="hljs-comment"># 获取灰度像素</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        pixel = gray[i,j]
+        index = int(pixel)
+        count[index] = count[index]+<span class="hljs-number">1</span>
+<span class="hljs-comment"># 灰度等级出现的概率</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>):
+    count[i] = count[i]/(height*width)
+x = np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>,<span class="hljs-number">256</span>)
+y = count
+plt.bar(x,y,<span class="hljs-number">0.9</span>,alpha=<span class="hljs-number">1</span>,color=<span class="hljs-string">'b'</span>)
+plt.show()</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183057.png" srcset="/img/loading.gif" alt="2"></p>
+<h3 id="openCV彩色直方图"><a href="#openCV彩色直方图" class="headerlink" title="openCV彩色直方图"></a>openCV彩色直方图</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+
+count_b = np.zeros(<span class="hljs-number">256</span>,np.float)
+count_g = np.zeros(<span class="hljs-number">256</span>,np.float)
+count_r = np.zeros(<span class="hljs-number">256</span>,np.float)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        (b,g,r) = img[i,j]
+        index_b = int(b)
+        index_g = int(g)
+        index_r = int(r)
+        count_b[index_b] = count_b[index_b]+<span class="hljs-number">1</span>
+        count_g[index_g] = count_g[index_g]+<span class="hljs-number">1</span>
+        count_r[index_r] = count_r[index_r]+<span class="hljs-number">1</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">256</span>):
+    count_b[i] = count_b[i]/(height*width)
+    count_g[i] = count_g[i]/(height*width)
+    count_r[i] = count_r[i]/(height*width)
+x = np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>,<span class="hljs-number">256</span>)
+y1 = count_b
+plt.figure()
+plt.bar(x,y1,<span class="hljs-number">0.9</span>,alpha=<span class="hljs-number">1</span>,color=<span class="hljs-string">'b'</span>)
+y2 = count_g
+plt.figure()
+plt.bar(x,y2,<span class="hljs-number">0.9</span>,alpha=<span class="hljs-number">1</span>,color=<span class="hljs-string">'g'</span>)
+y3 = count_r
+plt.figure()
+plt.bar(x,y3,<span class="hljs-number">0.9</span>,alpha=<span class="hljs-number">1</span>,color=<span class="hljs-string">'r'</span>)
+plt.show()</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183058.png" srcset="/img/loading.gif" alt="3"></p>
+<h3 id="openCV灰度直方图均衡化"><a href="#openCV灰度直方图均衡化" class="headerlink" title="openCV灰度直方图均衡化"></a>openCV灰度直方图均衡化</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+
+
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+cv2.imshow(<span class="hljs-string">'src'</span>,gray)
+count = np.zeros(<span class="hljs-number">256</span>,np.float)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        pixel = gray[i,j]
+        index = int(pixel)
+        count[index] = count[index]+<span class="hljs-number">1</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>):
+    count[i] = count[i]/(height*width)
+<span class="hljs-comment">#计算累计概率</span>
+sum1 = float(<span class="hljs-number">0</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">256</span>):
+    sum1 = sum1+count[i]
+    count[i] = sum1
+<span class="hljs-comment">#print(count)</span>
+<span class="hljs-comment"># 计算映射表</span>
+map1 = np.zeros(<span class="hljs-number">256</span>,np.uint16)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">256</span>):
+    map1[i] = np.uint16(count[i]*<span class="hljs-number">255</span>)
+<span class="hljs-comment"># 映射</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        pixel = gray[i,j]
+        gray[i,j] = map1[pixel]
+cv2.imshow(<span class="hljs-string">'dst'</span>,gray)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183059.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV彩色直方图均衡化"><a href="#openCV彩色直方图均衡化" class="headerlink" title="openCV彩色直方图均衡化"></a>openCV彩色直方图均衡化</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+
+count_b = np.zeros(<span class="hljs-number">256</span>,np.float)
+count_g = np.zeros(<span class="hljs-number">256</span>,np.float)
+count_r = np.zeros(<span class="hljs-number">256</span>,np.float)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        (b,g,r) = img[i,j]
+        index_b = int(b)
+        index_g = int(g)
+        index_r = int(r)
+        count_b[index_b] = count_b[index_b]+<span class="hljs-number">1</span>
+        count_g[index_g] = count_g[index_g]+<span class="hljs-number">1</span>
+        count_r[index_r] = count_r[index_r]+<span class="hljs-number">1</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">255</span>):
+    count_b[i] = count_b[i]/(height*width)
+    count_g[i] = count_g[i]/(height*width)
+    count_r[i] = count_r[i]/(height*width)
+<span class="hljs-comment">#计算累计概率</span>
+sum_b = float(<span class="hljs-number">0</span>)
+sum_g = float(<span class="hljs-number">0</span>)
+sum_r = float(<span class="hljs-number">0</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">256</span>):
+    sum_b = sum_b+count_b[i]
+    sum_g = sum_g+count_g[i]
+    sum_r = sum_r+count_r[i]
+    count_b[i] = sum_b
+    count_g[i] = sum_g
+    count_r[i] = sum_r
+<span class="hljs-comment">#print(count)</span>
+<span class="hljs-comment"># 计算映射表</span>
+map_b = np.zeros(<span class="hljs-number">256</span>,np.uint16)
+map_g = np.zeros(<span class="hljs-number">256</span>,np.uint16)
+map_r = np.zeros(<span class="hljs-number">256</span>,np.uint16)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">256</span>):
+    map_b[i] = np.uint16(count_b[i]*<span class="hljs-number">255</span>)
+    map_g[i] = np.uint16(count_g[i]*<span class="hljs-number">255</span>)
+    map_r[i] = np.uint16(count_r[i]*<span class="hljs-number">255</span>)
+<span class="hljs-comment"># 映射</span>
+dst = np.zeros((height,width,<span class="hljs-number">3</span>),np.uint8)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        (b,g,r) = img[i,j]
+        b = map_b[b]
+        g = map_g[g]
+        r = map_r[r]
+        dst[i,j] = (b,g,r)
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183100.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV亮度增强"><a href="#openCV亮度增强" class="headerlink" title="openCV亮度增强"></a>openCV亮度增强</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image0.jpg'</span>,<span class="hljs-number">1</span>)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+dst = np.zeros((height,width,<span class="hljs-number">3</span>),np.uint8)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,height):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,width):
+        (b,g,r) = img[i,j]
+        bb = int(b)+<span class="hljs-number">40</span>
+        gg = int(g)+<span class="hljs-number">40</span>
+        rr = int(r)+<span class="hljs-number">40</span>
+        <span class="hljs-keyword">if</span> bb&gt;<span class="hljs-number">255</span>:
+            bb = <span class="hljs-number">255</span>
+        <span class="hljs-keyword">if</span> gg&gt;<span class="hljs-number">255</span>:
+            gg = <span class="hljs-number">255</span>
+        <span class="hljs-keyword">if</span> rr&gt;<span class="hljs-number">255</span>:
+            rr = <span class="hljs-number">255</span>
+        dst[i,j] = (bb,gg,rr)
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183101.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV磨皮美白-双边滤波"><a href="#openCV磨皮美白-双边滤波" class="headerlink" title="openCV磨皮美白-双边滤波"></a>openCV磨皮美白-双边滤波</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+img = cv2.imread(<span class="hljs-string">'1.png'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+dst = cv2.bilateralFilter(img,<span class="hljs-number">15</span>,<span class="hljs-number">35</span>,<span class="hljs-number">35</span>) <span class="hljs-comment"># 滤波函数</span>
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183102.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV高斯滤波"><a href="#openCV高斯滤波" class="headerlink" title="openCV高斯滤波"></a>openCV高斯滤波</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image11.jpg'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+dst = cv2.GaussianBlur(img,(<span class="hljs-number">5</span>,<span class="hljs-number">5</span>),<span class="hljs-number">1.5</span>)
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183103.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV均值滤波"><a href="#openCV均值滤波" class="headerlink" title="openCV均值滤波"></a>openCV均值滤波</h3><pre><code class="hljs python"><span class="hljs-comment">#均值 6*6 1 。 * 【6*6】/36 = mean -》P</span>
+<span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image11.jpg'</span>,<span class="hljs-number">1</span>)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+dst = np.zeros((height,width,<span class="hljs-number">3</span>),np.uint8)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>,height<span class="hljs-number">-3</span>):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>,width<span class="hljs-number">-3</span>):
+        sum_b = int(<span class="hljs-number">0</span>)
+        sum_g = int(<span class="hljs-number">0</span>)
+        sum_r = int(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> range(<span class="hljs-number">-3</span>,<span class="hljs-number">3</span>):<span class="hljs-comment">#-3 -2 -1 0 1 2</span>
+            <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> range(<span class="hljs-number">-3</span>,<span class="hljs-number">3</span>):
+                (b,g,r) = img[i+m,j+n]
+                sum_b = sum_b+int(b)
+                sum_g = sum_g+int(g)
+                sum_r = sum_r+int(r)
+            
+        b = np.uint8(sum_b/<span class="hljs-number">36</span>)
+        g = np.uint8(sum_g/<span class="hljs-number">36</span>)
+        r = np.uint8(sum_r/<span class="hljs-number">36</span>)
+        dst[i,j] = (b,g,r)
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183104.png" srcset="/img/loading.gif" alt="4"></p>
+<h3 id="openCV中值滤波"><a href="#openCV中值滤波" class="headerlink" title="openCV中值滤波"></a>openCV中值滤波</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+img = cv2.imread(<span class="hljs-string">'image11.jpg'</span>,<span class="hljs-number">1</span>)
+imgInfo = img.shape
+height = imgInfo[<span class="hljs-number">0</span>]
+width = imgInfo[<span class="hljs-number">1</span>]
+img = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+cv2.imshow(<span class="hljs-string">'src'</span>,img)
+dst = np.zeros((height,width,<span class="hljs-number">3</span>),np.uint8)
+collect = np.zeros(<span class="hljs-number">9</span>,np.uint8)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,height<span class="hljs-number">-1</span>):
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,width<span class="hljs-number">-1</span>):
+        k = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> range(<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>):
+            <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> range(<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>):
+                gray = img[i+m,j+n]
+                collect[k] = gray
+                k = k+<span class="hljs-number">1</span>
+        <span class="hljs-comment"># 0 1 2 3 4 5 6 7 8</span>
+        <span class="hljs-comment">#   1 </span>
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>,<span class="hljs-number">9</span>):
+            p1 = collect[k]
+            <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> range(k+<span class="hljs-number">1</span>,<span class="hljs-number">9</span>):
+                <span class="hljs-keyword">if</span> p1&lt;collect[t]:
+                    mid = collect[t]
+                    collect[t] = p1
+                    p1 = mid
+        dst[i,j] = collect[<span class="hljs-number">4</span>]
+cv2.imshow(<span class="hljs-string">'dst'</span>,dst)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183105.png" srcset="/img/loading.gif" alt="4"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/opencv/">opencv</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+                    
+                      <a class="hover-with-bg" href="/tags/opencv/">opencv</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/10/openCV-svm/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机视觉-openCV：SVM支持向量机</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/10/openCV-install/">
+                        <span class="hidden-mobile">计算机视觉-openCV安装及入门</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "计算机视觉-openCV图像美化&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

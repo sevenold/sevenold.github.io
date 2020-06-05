@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>TensorFlow实现简单的生成对抗网络-GAN - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-09-03 10:00">
+      2018年9月3日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h4 id="示例代码："><a href="#示例代码：" class="headerlink" title="示例代码："></a><strong>示例代码</strong>：</h4><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># @Time    : 2018/9/1 16:38</span>
+<span class="hljs-comment"># @Author  : Seven</span>
+<span class="hljs-comment"># @Site    : </span>
+<span class="hljs-comment"># @File    : GAN.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 0.导入环境</span>
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">from</span> tensorflow.examples.tutorials.mnist <span class="hljs-keyword">import</span> input_data
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 1：读取数据</span>
+mnist = input_data.read_data_sets(<span class="hljs-string">'data'</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 2：初始化参数</span>
+img_size = mnist.train.images[<span class="hljs-number">0</span>].shape[<span class="hljs-number">0</span>]
+noise_size = <span class="hljs-number">100</span>
+g_units = <span class="hljs-number">128</span>
+d_units = <span class="hljs-number">128</span>
+learning_rate = <span class="hljs-number">0.001</span>
+alpha = <span class="hljs-number">0.01</span>
+
+<span class="hljs-comment"># 真实数据和噪音数据的placeholder</span>
+real_img = tf.placeholder(tf.float32, [<span class="hljs-literal">None</span>, img_size])
+noise_img = tf.placeholder(tf.float32, [<span class="hljs-literal">None</span>, noise_size])
+
+
+<span class="hljs-comment"># 显示生成的图像</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">view_samples</span><span class="hljs-params">(epoch, samples)</span>:</span>
+    fig, axes = plt.subplots(figsize=(<span class="hljs-number">7</span>, <span class="hljs-number">7</span>), nrows=<span class="hljs-number">5</span>, ncols=<span class="hljs-number">5</span>, sharey=<span class="hljs-literal">True</span>, sharex=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">for</span> ax, img <span class="hljs-keyword">in</span> zip(axes.flatten(), samples[epoch][<span class="hljs-number">1</span>]):  <span class="hljs-comment"># 这里samples[epoch][1]代表生成的图像结果，而[0]代表对应的logits</span>
+        ax.xaxis.set_visible(<span class="hljs-literal">False</span>)
+        ax.yaxis.set_visible(<span class="hljs-literal">False</span>)
+        ax.imshow(img.reshape((<span class="hljs-number">28</span>, <span class="hljs-number">28</span>)), cmap=<span class="hljs-string">'Greys_r'</span>)
+    plt.show()
+    <span class="hljs-keyword">return</span> fig, axes
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 4.生成器</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_generator</span><span class="hljs-params">(noise_img, n_units, out_dim, reuse=False, alpha=<span class="hljs-number">0.01</span>)</span>:</span>
+    <span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">"generator"</span>, reuse=reuse):
+        <span class="hljs-comment"># hidden layer</span>
+        hidden1 = tf.layers.dense(noise_img, n_units)
+        <span class="hljs-comment"># leaky ReLU</span>
+        hidden1 = tf.maximum(alpha * hidden1, hidden1)
+        <span class="hljs-comment"># dropout</span>
+        hidden1 = tf.layers.dropout(hidden1, rate=<span class="hljs-number">0.2</span>)
+
+        <span class="hljs-comment"># logits &amp; outputs</span>
+        logits = tf.layers.dense(hidden1, out_dim)
+        outputs = tf.tanh(logits)
+
+        <span class="hljs-keyword">return</span> logits, outputs
+
+
+<span class="hljs-comment"># 生成器生成数据</span>
+g_logits, g_outputs = get_generator(noise_img, g_units, img_size)
+
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 5.判别器</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_discriminator</span><span class="hljs-params">(img, n_units, reuse=False, alpha=<span class="hljs-number">0.01</span>)</span>:</span>
+    <span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">"discriminator"</span>, reuse=reuse):
+        <span class="hljs-comment"># hidden layer</span>
+        hidden1 = tf.layers.dense(img, n_units)
+        hidden1 = tf.maximum(alpha * hidden1, hidden1)
+
+        <span class="hljs-comment"># logits &amp; outputs</span>
+        logits = tf.layers.dense(hidden1, <span class="hljs-number">1</span>)
+        outputs = tf.sigmoid(logits)
+
+        <span class="hljs-keyword">return</span> logits, outputs
+
+
+<span class="hljs-comment"># 判别真实的数据</span>
+d_logits_real, d_outputs_real = get_discriminator(real_img, d_units)
+<span class="hljs-comment"># 判别生成器生成的数据</span>
+d_logits_fake, d_outputs_fake = get_discriminator(g_outputs, d_units, reuse=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> 6.损失值的计算</span>
+<span class="hljs-comment"># 判别器的损失值</span>
+<span class="hljs-comment"># 识别真实图片的损失值</span>
+d_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=d_logits_real,
+                                                                     labels=tf.ones_like(d_logits_real)))
+<span class="hljs-comment"># 识别生成的图片的损失值</span>
+d_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=d_logits_fake,
+                                                                     labels=tf.zeros_like(d_logits_fake)))
+<span class="hljs-comment"># 总体loss</span>
+d_loss = tf.add(d_loss_real, d_loss_fake)
+<span class="hljs-comment"># generator的loss</span>
+g_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=d_logits_fake,
+                                                                labels=tf.ones_like(d_logits_fake)))
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span>7.始化optimizer</span>
+train_vars = tf.trainable_variables()
+
+<span class="hljs-comment"># generator</span>
+g_vars = [var <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> train_vars <span class="hljs-keyword">if</span> var.name.startswith(<span class="hljs-string">"generator"</span>)]
+<span class="hljs-comment"># discriminator</span>
+d_vars = [var <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> train_vars <span class="hljs-keyword">if</span> var.name.startswith(<span class="hljs-string">"discriminator"</span>)]
+
+<span class="hljs-comment"># optimizer</span>
+d_train_opt = tf.train.AdamOptimizer(learning_rate).minimize(d_loss, var_list=d_vars)
+g_train_opt = tf.train.AdamOptimizer(learning_rate).minimize(g_loss, var_list=g_vars)
+
+print(<span class="hljs-string">"FUNCTION READY!!!"</span>)
+print(<span class="hljs-string">"TRAINING....."</span>)
+
+<span class="hljs-comment"># <span class="hljs-doctag">TODO:</span>8.开始训练</span>
+
+batch_size = <span class="hljs-number">64</span>
+<span class="hljs-comment"># 训练迭代轮数</span>
+epochs = <span class="hljs-number">300</span>
+<span class="hljs-comment"># 抽取样本数</span>
+n_sample = <span class="hljs-number">25</span>
+<span class="hljs-comment"># 存储测试样例</span>
+samples = []
+<span class="hljs-comment"># 存储loss</span>
+losses = []
+<span class="hljs-comment"># 初始化所有变量</span>
+init = tf.global_variables_initializer()
+
+show_imgs = []
+
+<span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
+    sess.run(init)
+    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(epochs):
+        <span class="hljs-keyword">for</span> batch_i <span class="hljs-keyword">in</span> range(mnist.train.num_examples // batch_size):
+
+            batch = mnist.train.next_batch(batch_size)
+            batch_images = batch[<span class="hljs-number">0</span>].reshape((batch_size, <span class="hljs-number">784</span>))
+
+            <span class="hljs-comment"># 对图像像素进行缩放，这是因为tanh输出的结果介于(-1,1),real和fake图片共享discriminator的参数</span>
+            batch_images = batch_images * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># generator的输入噪声</span>
+            batch_noise = np.random.uniform(<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, size=(batch_size, noise_size))
+
+            <span class="hljs-comment"># Run optimizers</span>
+            sess.run(d_train_opt, feed_dict=&#123;real_img: batch_images, noise_img: batch_noise&#125;)
+            sess.run(g_train_opt, feed_dict=&#123;noise_img: batch_noise&#125;)
+
+        <span class="hljs-keyword">if</span> (epoch+<span class="hljs-number">1</span>) % <span class="hljs-number">30</span> == <span class="hljs-number">0</span>:
+            <span class="hljs-comment"># 每一轮结束计算loss</span>
+            train_loss_d = sess.run(d_loss,
+                                    feed_dict=&#123;real_img: batch_images,
+                                               noise_img: batch_noise&#125;)
+            <span class="hljs-comment"># real img loss</span>
+            train_loss_d_real = sess.run(d_loss_real,
+                                         feed_dict=&#123;real_img: batch_images,
+                                                    noise_img: batch_noise&#125;)
+            <span class="hljs-comment"># fake img loss</span>
+            train_loss_d_fake = sess.run(d_loss_fake,
+                                         feed_dict=&#123;real_img: batch_images,
+                                                    noise_img: batch_noise&#125;)
+            <span class="hljs-comment"># generator loss</span>
+            train_loss_g = sess.run(g_loss,
+                                    feed_dict=&#123;noise_img: batch_noise&#125;)
+
+            print(<span class="hljs-string">"Epoch &#123;&#125;/&#123;&#125;...\n"</span>.format(epoch + <span class="hljs-number">1</span>, epochs),
+                  <span class="hljs-string">"判别器损失: &#123;:.4f&#125;--&gt;(判别真实的: &#123;:.4f&#125; + 判别生成的: &#123;:.4f&#125;)...\n"</span>.format(train_loss_d, train_loss_d_real,
+                                                                                train_loss_d_fake),
+                  <span class="hljs-string">"生成器损失: &#123;:.4f&#125;"</span>.format(train_loss_g))
+
+            losses.append((train_loss_d, train_loss_d_real, train_loss_d_fake, train_loss_g))
+            <span class="hljs-comment"># 抽取样本后期进行观察</span>
+            sample_noise = np.random.uniform(<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, size=(n_sample, noise_size))
+            gen_samples = sess.run(get_generator(noise_img, g_units, img_size, reuse=<span class="hljs-literal">True</span>),
+                                   feed_dict=&#123;noise_img: sample_noise&#125;)
+            samples.append(gen_samples)
+
+    <span class="hljs-comment"># 显示生成的图像</span>
+    view_samples(<span class="hljs-number">-1</span>, samples)
+
+print(<span class="hljs-string">"OPTIMIZER END"</span>)</code></pre>
+
+
+
+<h4 id="执行结果："><a href="#执行结果：" class="headerlink" title="执行结果："></a><strong>执行结果</strong>：</h4><pre><code class="hljs bash"> 判别器损失: 0.8938--&gt;(判别真实的: 0.4657 + 判别生成的: 0.4281)...
+ 生成器损失: 1.9035
+Epoch 60/300...
+ 判别器损失: 0.9623--&gt;(判别真实的: 0.5577 + 判别生成的: 0.4046)...
+ 生成器损失: 1.7722
+Epoch 90/300...
+ 判别器损失: 0.9523--&gt;(判别真实的: 0.3698 + 判别生成的: 0.5825)...
+ 生成器损失: 1.3028
+Epoch 120/300...
+ 判别器损失: 0.8671--&gt;(判别真实的: 0.3948 + 判别生成的: 0.4723)...
+ 生成器损失: 1.5518
+Epoch 150/300...
+ 判别器损失: 1.0439--&gt;(判别真实的: 0.3626 + 判别生成的: 0.6813)...
+ 生成器损失: 1.1374
+Epoch 180/300...
+ 判别器损失: 1.3034--&gt;(判别真实的: 0.6210 + 判别生成的: 0.6824)...
+ 生成器损失: 1.3377
+Epoch 210/300...
+ 判别器损失: 0.8368--&gt;(判别真实的: 0.4397 + 判别生成的: 0.3971)...
+ 生成器损失: 1.7115
+Epoch 240/300...
+ 判别器损失: 1.0776--&gt;(判别真实的: 0.5503 + 判别生成的: 0.5273)...
+ 生成器损失: 1.4761
+Epoch 270/300...
+ 判别器损失: 0.9964--&gt;(判别真实的: 0.5351 + 判别生成的: 0.4612)...
+ 生成器损失: 1.8451
+Epoch 300/300...
+ 判别器损失: 0.9810--&gt;(判别真实的: 0.5085 + 判别生成的: 0.4725)...
+ 生成器损失: 1.5440
+OPTIMIZER END</code></pre>
+
+<h4 id="生成的图像："><a href="#生成的图像：" class="headerlink" title="生成的图像："></a>生成的图像：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182536.png" srcset="/img/loading.gif" alt="images"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/TensorFlow/">TensorFlow</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AF%B9%E6%8A%97%E7%94%9F%E6%88%90%E7%BD%91%E7%BB%9C/">对抗生成网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/GAN/">GAN</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/09/TensorFlow-save-restore/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorFlow--保存神经网络参数和加载神经网络参数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/09/DL-GAN/">
+                        <span class="hidden-mobile">神经网络之生成对抗网络</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TensorFlow实现简单的生成对抗网络-GAN&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

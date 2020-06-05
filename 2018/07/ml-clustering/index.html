@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习-聚类 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-29 10:00">
+      2018年7月29日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      46
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h3><p>无监督学习是一种机器学习方法，用于<strong>发现数据中的模式</strong>。输入无监督算法的数据都没有标签，也就是只为算法提供了输入变量$(X)$而没有对应的输出变量。在无监督学习中，算法需要<strong>自行寻找数据中的结构</strong>。</p>
+<p>无监督学习问题可以有以下三种类型：</p>
+<ul>
+<li><strong>关联</strong>：发现目录中项目共现的概率。其广泛应用于“购物车分析”。例如，如果一个顾客购买了火腿，他会有80% 的概率也购买鸡蛋。</li>
+<li><strong>聚类</strong>：将样本分组，这样，同一聚类中的物体与来自另一聚类的物体相比，相互之间会更加类似。</li>
+<li><strong>降维</strong>：<strong>降维指减少一个数据集的变量数量，同时保证还能传达重要信息</strong>。降维可以通过特征抽取方法和特征选择方法完成。特征选择方法会选择初始变量的子集。特征抽取方法执行从高维度空间到低维度空间的数据转换。例如，PCA算法就是一种特征抽取方式。</li>
+</ul>
+<h3 id="聚类的概念"><a href="#聚类的概念" class="headerlink" title="聚类的概念"></a>聚类的概念</h3><p>聚类是一种无监督机器学习方法，它基于数据的内部结构寻找观察样本的自然族群（即集群），常用于新闻分类、推荐系统等。聚类的特点是训练数据没有标注，通常使用数据可视化评价结果。 </p>
+<p>聚类分析仅根据在数据中发现的描述对象及其关系的信息，将数据对象分组。其目标是，组内的对象相互之间是相似的（相关的），而不同组中的对象是不同的（不相关的）。组内的相似性（同质性）越大，组间差别越大，聚类就越好。</p>
+<h3 id="聚类的方法"><a href="#聚类的方法" class="headerlink" title="聚类的方法"></a>聚类的方法</h3><p>聚类的常用方法包括</p>
+<ul>
+<li><strong>划分聚类法</strong>，<strong>K均值</strong>:是基于原型的、划分的聚类技术。它试图发现用户指定个数K的簇（由质心代表）。</li>
+<li><strong>层次聚类。凝聚的层次聚类：</strong>开始，每个点作为一个单点簇；然后，重复地合并两个最靠近的簇，直到产生单个的、包含所有点的簇。</li>
+<li><strong>基于密度的聚类，</strong> <strong>DBSCAN</strong>是一种产生划分聚类的基于密度的聚类算法，簇的个数由算法自动地确定。低密度区域中的点被视为噪声而忽略，因此DBSCAN不产生完全聚类。</li>
+</ul>
+<h3 id="常用的聚类数据集"><a href="#常用的聚类数据集" class="headerlink" title="常用的聚类数据集"></a>常用的聚类数据集</h3><p>常用的聚类数据集包括</p>
+<ul>
+<li>scikit-learn blob: 简单聚类</li>
+<li>scikit-learn circle: 非线性可分数据集</li>
+<li>scikit-learn moon: 更复杂的数据集</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230220.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="聚类的性能度量"><a href="#聚类的性能度量" class="headerlink" title="聚类的性能度量"></a>聚类的性能度量</h3><p>我们希望聚类结果的<strong>“簇内相似度”高且“簇间相似度”低</strong>。</p>
+<p>其性能度量大致有两类：</p>
+<h4 id="一类是将聚类结果与某个“参考模型”进行比较。称为“外部指标”。"><a href="#一类是将聚类结果与某个“参考模型”进行比较。称为“外部指标”。" class="headerlink" title="一类是将聚类结果与某个“参考模型”进行比较。称为“外部指标”。"></a>一类是将聚类结果与某个“参考模型”进行比较。称为“外部指标”。</h4><h4 id="一类是直接考查聚类结果而不利于任何参考模型。称为“内部指标”。"><a href="#一类是直接考查聚类结果而不利于任何参考模型。称为“内部指标”。" class="headerlink" title="一类是直接考查聚类结果而不利于任何参考模型。称为“内部指标”。"></a>一类是直接考查聚类结果而不利于任何参考模型。称为“内部指标”。</h4><h3 id="外部指标"><a href="#外部指标" class="headerlink" title="外部指标"></a>外部指标</h3><p>对数据集$D={x_1,x_2,…,x_m}$,假定通过聚类给出额簇划分为$C=C_1,C_2,…,C_k$,参考模型给出的簇划分为$C’=C_1^T,C_2^T,…,C_s^T$。相应的，令λ与$λ^T$分别表示与C和$C^T$对应的簇标记向量。注意的是，参考模型给出的划分类别数量不一定等于通过聚类得到的数量。 </p>
+<p>样本两两配对： </p>
+<ol>
+<li>$a=\mid SS \mid ,SS={(x_i,x_j)\mid \lambda_i = \lambda_j,\lambda_i^T=\lambda_j^T,i&lt;j}$</li>
+<li>$b=\mid SS \mid ,SD={(x_i,x_j)\mid \lambda_i = \lambda_j,\lambda_i^T\neq \lambda_j^T,i&lt;j}$</li>
+<li>$c=\mid SS \mid ,DS={(x_i,x_j)\mid \lambda_i \neq \lambda_j,\lambda_i^T=\lambda_j^T,i&lt;j}$</li>
+<li>$d=\mid SS \mid ,DD={(x_i,x_j)\mid \lambda_i \neq \lambda_j,\lambda_i^T \neq \lambda_j^T,i&lt;j}$</li>
+</ol>
+<p>集合SS包含了C中隶属于相同簇且在$C’$中也隶属于相同簇的样本对，集合SD包含了在C中隶属于相同簇但在$C^T$中隶属于不同簇的样本对 .</p>
+<ol>
+<li>Jaccard系数：$JC=\frac{a}{a+b+c}$  </li>
+<li>FM指数：  $FMI=\sqrt{\frac{a}{a+b}\frac{a}{a+c}}$</li>
+<li>Rand指数：  $RI=\frac{2(a+d)}{m(m-1)}$</li>
+</ol>
+<p>上述性能度量的结果值均在[0,1]区间，值越大越好。 </p>
+<h3 id="内部指标"><a href="#内部指标" class="headerlink" title="内部指标"></a>内部指标</h3><p>考虑聚类结果的簇划分$C=C_1,C_2,…,C_k$，定义</p>
+<ol>
+<li>$avg(C)=\frac{2}{\mid C \mid(\mid C \mid -1)}\sum_{1 \leq i &lt; j \leq \mid C \mid}dist(x_i,x_j)$</li>
+<li>$diam(C)=\max_{1 \leq i &lt;j \leq \mid C \mid}dist(x_i,x_j)$</li>
+<li>$d_\min(C_i,C_j)=\min_{x_i \in C_i , x_j \in C_j} dist(x_i,x_j)$</li>
+<li>$d_cen(C_i,C_j)=dist(\mu_i,\mu_j)$</li>
+</ol>
+<p>我们在上面的式子中，dist是计算两个样本之间的距离，$u$代表簇的中心点$\mu=\frac{\sum_{1 \leq i \leq \mid C \mid x_i}}{\mid C \mid}$ ，avg(C)与簇内样本间的平均距离，diam(C)对应与簇C内样本间的最远距离，$d_min(C_i,C<em>j)对应与簇i和簇j最近样本间的距离；对应与簇i和簇j最近样本间的距离；d</em>{cen}(C_i,C_j)$对应与簇i和j中心点间的距离。 </p>
+<p>基于上面的指标，推出下面几个内部指标：</p>
+<ol>
+<li>$DBI=\frac{1}{k}\sum\limits_{i=1}^k\max\limits_{j \neq i}(\frac{avg(C_i)+avg(C_j)}{d_{cen}(\mu_i,\mu_j)})$</li>
+<li>$DI=\min\limits_{1 \leq i \leq k}{ \min\limits_{j \neq i}(\frac{d_{min}(C_i,C_j)}{\max_{1\leq l \leq k diam(C_l)}}) }$</li>
+</ol>
+<p>显然，DBI的值越小越好，DI值越大越好</p>
+<h3 id="相似度-距离度量"><a href="#相似度-距离度量" class="headerlink" title="相似度/距离度量"></a>相似度/距离度量</h3><p>“距离度量”需满足一些基本性质，如<strong>非负性、同一性、对称性和直递性</strong>。最常用的是闵可夫斯基距离、欧氏距离和曼哈顿距离（后两者其实都是闵可夫斯基距离的特例）。</p>
+<p>闵可夫斯基距离只可用于有序属性，对无序属性可采用VDM（Value Difference Metric）。</p>
+<h4 id="计算方法总结："><a href="#计算方法总结：" class="headerlink" title="计算方法总结："></a>计算方法总结：</h4><ul>
+<li><h5 id="闵可夫斯基距离Minkowski-欧式距离：-dist-X-Y-sum-i-1-n-x-i-y-i-p-frac1p"><a href="#闵可夫斯基距离Minkowski-欧式距离：-dist-X-Y-sum-i-1-n-x-i-y-i-p-frac1p" class="headerlink" title="闵可夫斯基距离Minkowski/欧式距离：$dist(X,Y)=(\sum_{i=1}^n|x_i-y_i|^p)^\frac1p$"></a>闵可夫斯基距离Minkowski/欧式距离：$dist(X,Y)=(\sum_{i=1}^n|x_i-y_i|^p)^\frac1p$</h5></li>
+<li><h5 id="杰卡德相似系数-Jaccard-J-A-B-frac-A-cap-B-A-cup-B"><a href="#杰卡德相似系数-Jaccard-J-A-B-frac-A-cap-B-A-cup-B" class="headerlink" title="杰卡德相似系数(Jaccard): $J(A,B)=\frac{|A\cap B|}{|A\cup B|}$"></a>杰卡德相似系数(Jaccard): $J(A,B)=\frac{|A\cap B|}{|A\cup B|}$</h5></li>
+<li><h5 id="余弦相似度-cosine-similarity-cos-theta-frac-a-Tb-a-cdot-b"><a href="#余弦相似度-cosine-similarity-cos-theta-frac-a-Tb-a-cdot-b" class="headerlink" title="余弦相似度(cosine similarity):$cos(\theta)=\frac{a^Tb}{|a|\cdot |b|}$"></a>余弦相似度(cosine similarity):$cos(\theta)=\frac{a^Tb}{|a|\cdot |b|}$</h5></li>
+<li><h5 id="Pearson相似系数：-rho-xy-frac-cov-X-Y-sigma-X-sigma-Y-frac-E-X-u-X-Y-u-Y-sigma-X-sigma-Y-frac-sum-i-1-n-X-i-u-X-Y-i-u-Y-sqrt-sum-i-1-n-X-i-u-X-2-sqrt-sum-i-1-n-Y-i-u-Y-2"><a href="#Pearson相似系数：-rho-xy-frac-cov-X-Y-sigma-X-sigma-Y-frac-E-X-u-X-Y-u-Y-sigma-X-sigma-Y-frac-sum-i-1-n-X-i-u-X-Y-i-u-Y-sqrt-sum-i-1-n-X-i-u-X-2-sqrt-sum-i-1-n-Y-i-u-Y-2" class="headerlink" title="Pearson相似系数：$\rho_{xy}=\frac{cov(X,Y)}{\sigma_X\sigma_Y}=\frac{E[(X-u_X)(Y-u_Y)]}{\sigma_X\sigma_Y}=\frac{\sum_{i=1}^n (X_i-u_X)(Y_i-u_Y) }{\sqrt{\sum_{i=1}^n(X_i-u_X)^2} \sqrt{\sum_{i=1}^n(Y_i-u_Y)^2}}$"></a>Pearson相似系数：$\rho_{xy}=\frac{cov(X,Y)}{\sigma_X\sigma_Y}=\frac{E[(X-u_X)(Y-u_Y)]}{\sigma_X\sigma_Y}=\frac{\sum_{i=1}^n (X_i-u_X)(Y_i-u_Y) }{\sqrt{\sum_{i=1}^n(X_i-u_X)^2} \sqrt{\sum_{i=1}^n(Y_i-u_Y)^2}}$</h5></li>
+<li><h5 id="相对熵（K-L距离）：-D-P-q-sum-xp-x-log-frac-p-x-q-x-E-p-x-log-frac-p-x-q-x"><a href="#相对熵（K-L距离）：-D-P-q-sum-xp-x-log-frac-p-x-q-x-E-p-x-log-frac-p-x-q-x" class="headerlink" title="相对熵（K-L距离）：$D(P||q)=\sum_xp(x)log\frac{p(x)}{q(x)}=E_{p(x)}log\frac{p(x)}{q(x)}$"></a>相对熵（K-L距离）：$D(P||q)=\sum_xp(x)log\frac{p(x)}{q(x)}=E_{p(x)}log\frac{p(x)}{q(x)}$</h5></li>
+<li><h5 id="Hellinger距离：-D-a-p-q-frac-2-1-a-2-1-int-p-x-frac-1-a-2-cdot-q-x-frac-1-a-2-dx"><a href="#Hellinger距离：-D-a-p-q-frac-2-1-a-2-1-int-p-x-frac-1-a-2-cdot-q-x-frac-1-a-2-dx" class="headerlink" title="Hellinger距离：$D_a(p||q)=\frac{2}{1-a^2}(1-\int (p(x)^\frac{1+a}{2}\cdot q(x)^\frac{1-a}{2}dx$"></a>Hellinger距离：$D_a(p||q)=\frac{2}{1-a^2}(1-\int (p(x)^\frac{1+a}{2}\cdot q(x)^\frac{1-a}{2}dx$</h5></li>
+</ul>
+<h3 id="聚类的基本思想"><a href="#聚类的基本思想" class="headerlink" title="聚类的基本思想"></a>聚类的基本思想</h3><p>给定一个有N个对象的数据集，构造数据的K个簇，$k\le n$,满足下列条件：</p>
+<ul>
+<li>每一个簇至少包含一个对象</li>
+<li>每一个对象属于且仅属于一个簇</li>
+<li>将满足上述条件的K个簇称作一个合理的划分</li>
+</ul>
+<p><strong>基本思想</strong>：对于给定的类别数目K，首先给出初始划分，通过迭代改变样本和簇的隶属关系，使得每一次改进之后的划分方案都比前一次好。</p>
+<h3 id="原型聚类"><a href="#原型聚类" class="headerlink" title="原型聚类"></a>原型聚类</h3><p>原型聚类亦称“基于原型的聚类”，假设聚类结构能通过一组原型（原型是指样本空间中具有代表性的点）刻画。</p>
+<p>常用的方法包括</p>
+<ul>
+<li>k均值算法</li>
+<li>学习向量化</li>
+<li>高斯混合聚类（基于概率模型）</li>
+</ul>
+<h3 id="K-Means-聚类"><a href="#K-Means-聚类" class="headerlink" title="K-Means 聚类"></a>K-Means 聚类</h3><p><strong>K-Means</strong>算法的基本思想是初始随机给定K个簇中心，按照最邻近原则把待分类样本点分到各个簇。然后按平均法重新计算各个簇的质心(这个点可以不是样本点)，从而确定新的簇心。一直迭代，直到簇心的移动距离小于某个给定的值。 </p>
+<h3 id="K-Means聚类算法步骤："><a href="#K-Means聚类算法步骤：" class="headerlink" title="K-Means聚类算法步骤："></a><strong>K-Means聚类算法步骤</strong>：</h3><p>(1)选择K个初始质心，其中K是用户指定的参数，即所期望的簇的个数。</p>
+<p>(2)每个点指派到最近的质心，而指派到一个质心的点集为一个簇。</p>
+<p>(3)根据指派到簇的点，更新每个簇的质心。</p>
+<p>(4)重复指派和更新步骤，直到簇不发生变化，或等价地，直到质心不发生变化。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230221.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="K均值算法"><a href="#K均值算法" class="headerlink" title="K均值算法"></a>K均值算法</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230222.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="k均值常用的邻近度，质心和目标函数的选择："><a href="#k均值常用的邻近度，质心和目标函数的选择：" class="headerlink" title="k均值常用的邻近度，质心和目标函数的选择："></a><strong>k均值常用的邻近度，质心和目标函数</strong>的选择：</h3><p>邻近度函数：曼哈顿距离。质心：中位数。目标函数：最小化对象到其簇质心的距离和。</p>
+<p>邻近度函数：平方欧几里德距离。质心：均值。目标函数：最小化对象到其簇质心的距离的平方和。</p>
+<p>邻近度函数：余弦。质心：均值。最大化对象与其质心的余弦相似度和。</p>
+<p>邻近度函数：Bregman散度。质心：均值。目标函数：最小化对象到其簇质心的Bregman散度和。</p>
+<p>由于基本K均值算法采取随机地选取初始质心的办法，导致最后形成的簇的质量常常很糟糕。在此基础上引出了基本K均值算法的扩充：<strong>二分K均值算法</strong>。二分K均值算法不太受初始化问题的影响。 </p>
+<h3 id="二分K均值算法"><a href="#二分K均值算法" class="headerlink" title="二分K均值算法"></a>二分K均值算法</h3><ol>
+<li><p>把所有数据作为一个cluster加入cluster list</p>
+</li>
+<li><p>repeat</p>
+</li>
+<li><p>​       从cluster list中挑选出一个SSE最大的cluster来进行划分</p>
+</li>
+<li><p>​       for i=1 to预设的循环次数</p>
+</li>
+<li><p>​                       用基本K均值算法把挑选出来的cluster划分成两个子cluster</p>
+</li>
+<li><p>​                       计算两个子cluster的SSE和。</p>
+</li>
+<li><p>​       end for</p>
+</li>
+<li><p>​      把for循环中SSE和最小的那两个子cluster加入cluster list</p>
+</li>
+<li><p><strong>until</strong>  cluster list拥有K个cluster</p>
+</li>
+</ol>
+<p>除此以外，每次划分不止执行一次基本K均值算法，而是预先设置一个ITER值，然后对这个cluster进行ITER次执行基本K均值运算。因为基本K均值每次一开始都是随机选K个质心来执行，所以i一般来说ITER次执行基本K均值，每次都会得到不同的两个cluster。那么应该选哪对cluster来作为划分以后的cluster呢？答案就是在每次循环中，每次都计算当次基本K均值划分出来的两个cluster的SSE和，最后就选SSE和最小的那对cluster作为划分以后的cluster。 </p>
+<h3 id="学习向量化"><a href="#学习向量化" class="headerlink" title="学习向量化"></a>学习向量化</h3><p>与k均值算法类似，“学习向量量化”（Learning Vector Quantization，简称LVQ）也是试图找到一组原型向量来刻画聚类结构，但与一般的聚类算法不同的是，LVQ假设数据样本带有类别标记，学习过程用样本的这些监督信息来辅助聚类。 </p>
+<h3 id="学习向量化算法"><a href="#学习向量化算法" class="headerlink" title="学习向量化算法"></a>学习向量化算法</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230223.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h3><p>高斯混合聚类使用了一个很流行的算法：GMM(Gaussian Mixture Model)。高斯混合聚类与k均值聚类类似，但是采用了<strong>概率模型</strong>来表达聚类原型。每个高斯模型（Gaussian Model）就代表了一个簇（类）。GMM是单一高斯概率密度函数的延伸，能够平滑地近似任意形状的密度分布。在高斯混合聚类中，每个GMM会由k个高斯模型分布组成，每个高斯模型被称为一个component，这些component线性加乘在一起就组成了GMM的。</p>
+<p>简单地来说，k-Means的结果是每个数据点没分配到其中某一个cluster,而GMM则给出的是这个数据点被分配到每个cluster的概率，又称为soft assignment。 </p>
+<h3 id="高斯混合模型聚类算法"><a href="#高斯混合模型聚类算法" class="headerlink" title="高斯混合模型聚类算法"></a>高斯混合模型聚类算法</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230224.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h3><p>层次聚类（hierarchical clustering）试图在不同层次对数据集进行划分，从而形成树形的聚类结构。数据集的划分可采用“自底向上”的聚合策略，也可采用“自顶向下”的分拆策略。 典型的<strong>AGNES</strong>是一种采用自底向上聚合策略的层次聚类算法。它先将数据集中的每个样本看作一个初始聚类簇，然后在算法运行的每一步中找出距离最近的两个聚类簇进行合并，该过程不断重复，直至达到预设的聚类簇个数。 </p>
+<h4 id="有两种产生层次聚类的基本方法："><a href="#有两种产生层次聚类的基本方法：" class="headerlink" title="有两种产生层次聚类的基本方法："></a>有两种产生层次聚类的基本方法：</h4><ol>
+<li>凝聚的。从点作为个体簇开始，每一步合并两个最接近的簇。这需要定义簇的临近性概念。凝聚层次聚类技术最常见。</li>
+<li>分裂的。从包含所有点的某个簇开始，每一步分裂一个簇，直到仅剩下单点簇。在这种情况下，我们需要确定每一步分裂哪个簇，以及如何分裂。</li>
+<li></li>
+</ol>
+<h3 id="层次聚类算法"><a href="#层次聚类算法" class="headerlink" title="层次聚类算法"></a>层次聚类算法</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230225.png" srcset="/img/loading.gif" alt="image"></p>
+<h4 id="基本凝聚层次聚类算法："><a href="#基本凝聚层次聚类算法：" class="headerlink" title="基本凝聚层次聚类算法："></a>基本凝聚层次聚类算法：</h4><ol>
+<li>如果需要，计算临近度矩阵</li>
+<li>repeat</li>
+<li>​        合并最接近的两个簇</li>
+<li>​        更新临近度矩阵，以反映新的簇与原来的簇之间的临近性。</li>
+<li>until 仅剩下一个簇</li>
+</ol>
+<h4 id="簇之间的临近性有3种定义方式："><a href="#簇之间的临近性有3种定义方式：" class="headerlink" title="簇之间的临近性有3种定义方式："></a>簇之间的临近性有3种定义方式：</h4><ol>
+<li>MIN（单链）。不同簇中的两个最近的点之间的距离作为临近度。</li>
+<li>MAX（全链）。不同簇中的两个最远的点之间的距离作为临近度。</li>
+<li>GROUP（组平均）。取自不同簇的所有点对距离的平均值作为临近度。</li>
+</ol>
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><ol>
+<li>簇与簇合并的原则永远是dist最小。</li>
+<li>但在计算dist值的时候，可以采用MIN, MAX, GROUP AVG 3中方式得出dist的值。</li>
+</ol>
+<h3 id="密度聚类"><a href="#密度聚类" class="headerlink" title="密度聚类"></a>密度聚类</h3><p>密度聚类亦称“基于密度的聚类”，假设聚类结构能通过样本分布的紧密程度确定。典型的代表算法为<strong>DBSCAN算法</strong>，它基于一组“领域”（neighborhood）参数来刻画样本分布的紧密程度。</p>
+<p>DBSCAN将“簇”定义为：由密度可达关系导出的最大的密度相连样本集合。</p>
+<h3 id="DBSCAN算法"><a href="#DBSCAN算法" class="headerlink" title="DBSCAN算法"></a>DBSCAN算法</h3><p>基于密度的聚类寻找被低密度区域分离的高密度区域。DBSCAN是一种简单、有效的基于密度的聚类算法。</p>
+<h4 id="DBSCAN算法："><a href="#DBSCAN算法：" class="headerlink" title="DBSCAN算法："></a>DBSCAN算法：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230226.png" srcset="/img/loading.gif" alt="image"></p>
+<ol>
+<li>将所有点标记为核心点、边界点或噪声点。</li>
+<li>删除噪声点。</li>
+<li>为距离在Eps之内的所有核心点之间连线。</li>
+<li>每组连通的核心点形成一个簇。</li>
+<li>将每个边界点指派到一个与之关联的核心点的簇中。</li>
+</ol>
+<h4 id="DBSCAN算法阐释："><a href="#DBSCAN算法阐释：" class="headerlink" title="DBSCAN算法阐释："></a>DBSCAN算法阐释：</h4><ol>
+<li>算法需要用户输入2个参数： 半径Eps; 最小（少）点值MinPts。</li>
+<li>确定Eps和MinPts需要用到K-距离的概念。K-距离就是“到第K近的点的距离”，按经验一般取值为4。并且，一般取K的值为MinPts参数的值。</li>
+<li>首先计算每个点到所有其余点的欧式距离，升序排序后，选出每个点的“K距离”。</li>
+<li>所有点的K距离形成一个集合D。对D进行升序排序，依此可以形成一个样本数据的K距离图。</li>
+<li>图中急剧变化处的值，即为Eps。</li>
+<li>根据Eps和MinPts，计算出所有的核心点。</li>
+<li>给核心点到小于Eps的另一个核心点赋予一个连线，到核心点的距离等于Eps的点被识别为边界点。最后，核心点、边界点之外的点都是噪声点。</li>
+<li>将能够连线的点和与之关联的边界点都放到一起，形成了一个簇。</li>
+</ol>
+<h3 id="几种聚类的优缺点"><a href="#几种聚类的优缺点" class="headerlink" title="几种聚类的优缺点"></a>几种聚类的优缺点</h3><h4 id="层次聚类的优缺点："><a href="#层次聚类的优缺点：" class="headerlink" title="层次聚类的优缺点："></a><strong>层次聚类的优缺点</strong>：</h4><p>优点：</p>
+<ol>
+<li>距离和规则的相似度容易定义，限制少；</li>
+<li>不需要预先指定聚类数；</li>
+<li>可以发现类的层次关系；</li>
+<li>可以聚类成其他形状。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>计算复杂度太高；</li>
+<li>奇异值也能产生很大影响；</li>
+<li>算法很可能聚类成链状。</li>
+</ol>
+<h4 id="DBSCAN的优缺点："><a href="#DBSCAN的优缺点：" class="headerlink" title="DBSCAN的优缺点："></a><strong>DBSCAN的优缺点</strong>：</h4><p>优点：</p>
+<ol>
+<li>不需要事先知道要形成的簇的数量。</li>
+<li>可以发现任意形状的簇类。</li>
+<li>对噪声点不敏感。</li>
+<li>对样本点的顺序不敏感。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>簇的密度变化太大时，DBSCAN会有麻烦。</li>
+<li>对于高维数据，密度定义困难，DBSCAN也有问题。</li>
+</ol>
+<p>注意：</p>
+<ol>
+<li>K均值对于圆形区域聚类的效果很好，DBSCAN基于密度，对于集中区域效果很好。</li>
+<li>对于不规则形状，K均值完全无法使用。DBSCAN可以起到很好的效果。</li>
+</ol>
+<h4 id="K均值的优缺点："><a href="#K均值的优缺点：" class="headerlink" title="K均值的优缺点："></a><strong>K均值的优缺点</strong>：</h4><p>优点：</p>
+<ol>
+<li>简单，易于理解和实现。</li>
+<li>时间复杂度低。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>要手工输入K值，对初始值的设置很敏感。</li>
+<li>对噪声和离群点很敏感。</li>
+<li>只用于数值型数据，不适用于categorical类型的数据。</li>
+<li>不能解决非凸数据。</li>
+<li>主要发现圆形或者球形簇，不能识别非球形的簇。</li>
+</ol>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">无监督学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%81%9A%E7%B1%BB/">聚类</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/ml-em/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习-EM</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/ml-svm-L1/">
+                        <span class="hidden-mobile">机器学习-支持向量机软间隔和正则化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习-聚类&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

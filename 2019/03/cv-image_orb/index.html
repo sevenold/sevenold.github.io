@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【十二】ORB角点检测 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-03-12 10:00">
+      2019年3月12日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="ORB角点检测"><a href="#ORB角点检测" class="headerlink" title="ORB角点检测"></a>ORB角点检测</h3><h4 id="【简介】"><a href="#【简介】" class="headerlink" title="【简介】"></a>【简介】</h4><blockquote>
+<ul>
+<li>ORB（Oriented FAST and Rotated BRIEF）是一种快速特征点提取和描述的算法。</li>
+<li>这个算法是由Ethan Rublee, Vincent Rabaud, Kurt Konolige以及Gary R.Bradski在2011年一篇名为“ORB：An Efficient Alternative to SIFT or SURF”的文章中提出。</li>
+<li>ORB算法分为两部分，分别是特征点提取和特征点描述。特征提取是由FAST（Features from Accelerated Segment Test）算法发展来的，特征点描述是根据BRIEF（Binary Robust Independent Elementary Features）特征描述算法改进的。</li>
+<li>ORB = oFast + rBRIEF。据称ORB算法的速度是sift的100倍，是surf的10倍。</li>
+<li>ORB算子在SLAM及无人机视觉等领域得到广泛应用</li>
+</ul>
+</blockquote>
+<h4 id="【oFAST特征提取】"><a href="#【oFAST特征提取】" class="headerlink" title="【oFAST特征提取】"></a>【oFAST特征提取】</h4><blockquote>
+<ul>
+<li>ORB算法的特征提取是由FAST算法改进的，这里称为oFAST（FAST keypoint Orientation）。</li>
+<li>在使用FAST提取出特征点之后，给其定义一个特征点方向，以此来实现特征点的旋转不变性。</li>
+</ul>
+</blockquote>
+<h5 id="粗提取"><a href="#粗提取" class="headerlink" title="粗提取"></a><code>粗提取</code></h5><blockquote>
+<ul>
+<li>判断特征点：从图像中选取一点P，以P为圆心画一个半径为3像素的圆。圆周上如果有连续N个像素点的灰度值比P点的灰度值大戒小，则认为P为特征点。这就是大家经常说的FAST-N。有FAST-9、FAST-10、FAST-11、FAST-12，大家使用比较多的是FAST-9和FAST-12。</li>
+<li>快速算法：为了加快特征点的提取，快速排出非特征点，首先检测1、5、9、13位置上的灰度值，如果P是特征点，那么这四个位置上有3个或3个以上的的像素值都大于或者小于P点的灰度值。如果不满足，则直接排出此点。</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120215840.png" srcset="/img/loading.gif" alt="粗提取"></p>
+<h5 id="筛选最优特征点"><a href="#筛选最优特征点" class="headerlink" title="筛选最优特征点"></a><code>筛选最优特征点</code></h5><p>机器学习的方法筛选最优特征点。简单来说就是使用ID3算法训练一个决策树，将特征点圆周上的16个像素输入决策树中，以此来筛选出最优的FAST特征点。具体步骤如下：</p>
+<blockquote>
+<ol>
+<li>选取进行角点提取的应用场景下的一组训练图像。</li>
+<li>使用FAST角点检测算法找出训练图像上的所有角点。</li>
+<li>对于每一个角点，将其周围的16个像素存储成一个向量。对所有图像都这样做构建一个特征向量。</li>
+<li>每一个角点的16像素点都属于下列三类中的一种，像素点因此被分成三个子集:$P_d、P_s、P_b$</li>
+</ol>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120220130.png" srcset="/img/loading.gif" alt="子集"></p>
+<ol start="5">
+<li>定义一个新的布尔变量Kp ，如果是角点就设置为True，否则就设置为False。</li>
+<li>使用ID3算法来查询每一个子集。</li>
+<li>递归计算所有的子集直到它的熵为0。</li>
+</ol>
+<p>注意：被构建好的决策树可用于其它图像的FAST检测。</p>
+</blockquote>
+<h5 id="使用非极大值抑制算法去除临近位置多个特征点"><a href="#使用非极大值抑制算法去除临近位置多个特征点" class="headerlink" title="使用非极大值抑制算法去除临近位置多个特征点"></a><code>使用非极大值抑制算法去除临近位置多个特征点</code></h5><blockquote>
+<ol>
+<li>计算特征点出的FAST得分值s（像素点不周围16个像素点差值的绝对值之和）</li>
+<li>以特征点p为中心的一个邻域（如3x3或5x5）内，若有多个特征点，则判断每个特征点的s值</li>
+<li>若p是邻域所有特征点中响应值最大的，则保留；否则，抑制。若邻域内只有一个特征点，则保留。得分计算公式如下（公式中用V表示得分，t表示阈值）：</li>
+</ol>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120220601.png" srcset="/img/loading.gif" alt="抑制"></p>
+</blockquote>
+<h5 id="建立金字塔以实现特征点多尺度不变性"><a href="#建立金字塔以实现特征点多尺度不变性" class="headerlink" title="建立金字塔以实现特征点多尺度不变性"></a><code>建立金字塔以实现特征点多尺度不变性</code></h5><blockquote>
+<ul>
+<li>设置一个比例因子scaleFactor（opencv默认为1.2）和金字塔的层数nlevels（Opencv默认为8）。</li>
+<li>将原图像按比例因子缩小成nlevels幅图像。</li>
+<li>缩放后的图像为：I’= I/scaleFactork(k=1,2,…, nlevels)。nlevels幅不同比例的图像提取特征点总和作为这幅图像的oFAST特征点。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120220736.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>特征点的旋转不变性。ORB算法提出使用矩（moment）法来确定FAST特征点的方向。也就是说通过矩来计算特征点以r为半径范围内的质心，特征点坐标到质心形成一个向量作为该特征点的方向。矩定义如下:$m_{pq}=\Sigma_{x,y} x^p y^q I(x,y), x,y \in [-r,r]$</li>
+<li>其中，I(x,y)为图像灰度表达式。该矩的质心为：$C = ( \dfrac{m_{10}}{m_{00}}, \dfrac{m_{01}}{m_{00}})$</li>
+<li>假设角点坐标为O，则向量的角度即为该特征点的方向。计算公式如下：$\theta = arctan(m_{01}/m_{10})$</li>
+</ul>
+</blockquote>
+<h5 id="算法特点"><a href="#算法特点" class="headerlink" title="算法特点"></a><code>算法特点</code></h5><blockquote>
+<ul>
+<li>FAST算法比其他角点检测算法要快</li>
+<li>受图像噪声以及设定阈值影响较大</li>
+<li>当设置n&lt;12n&lt;12时，不能用快速方法过滤非角点</li>
+<li>FAST不产生多尺度特征，不具备旋转不变性，而且检测到的角点不是最优</li>
+</ul>
+</blockquote>
+<h4 id="【rBRIEF】"><a href="#【rBRIEF】" class="headerlink" title="【rBRIEF】"></a>【rBRIEF】</h4><blockquote>
+<p>ORB算法的特征描述是由BRIEF算法改进的，这里称为rBRIEF（Rotation-Aware Brief）。也就是说，在BRIEF特征描述的基础上加入旋转因子从而改进BRIEF算法。</p>
+</blockquote>
+<h5 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a><code>算法描述</code></h5><blockquote>
+<p>得到特征点后我们需要以某种方式描述这些特征点的属性。这些属性的输出我们称之为该特征点的描述子（Feature Descritors）.ORB采用BRIEF算法来计算一个特征点的描述子。BRIEF算法的<strong>核心思想</strong>是在关键点P的周围以一定模式选取N个点对，把这N个点对的比较结果组合起来作为描述子。</p>
+<ul>
+<li>BRIEF算法计算出来的是一个二进制串的特征描述符。它是在一个特征点的邻域内，选择n对像素点$p_i、q_i（i=1,2,…,n）$。</li>
+<li>比较每个点对的灰度值的大小，如果$I(p_i)&gt; I(q_i)$，则生成二进制串中的1，否则为0。</li>
+<li>所有的点对都进行比较，则生成长度为n的二进制串。一般n取128、256戒512，opencv默认为256。</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120221620.png" srcset="/img/loading.gif" alt=""></p>
+<h5 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a><code>算法步骤</code></h5><blockquote>
+<ul>
+<li>以关键点P为圆心，以d为半径做圆O。</li>
+<li>在圆O内某一模式选取N个点对。这里为方便说明，N=4，实际应用中N可以取512.</li>
+</ul>
+<p>假设当前选取的4个点对如上图所示分别标记为：<img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120221752.png" srcset="/img/loading.gif" alt="1"></p>
+<ul>
+<li>定义T：</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120221847.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>分别对已选取的点对进行T操作，将得到的结果进行组合。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120221906.png" srcset="/img/loading.gif" alt="1"></p>
+<ul>
+<li>则最终的描述子为：1011</li>
+</ul>
+</blockquote>
+<h5 id="具有旋转不变性的BRIEF"><a href="#具有旋转不变性的BRIEF" class="headerlink" title="具有旋转不变性的BRIEF"></a><code>具有旋转不变性的BRIEF</code></h5><p>​    ORB并没有解决<strong>尺度一致性</strong>问题，在OpenCV的ORB实现中采用了图像金字塔来改善这方面的性能。ORB主要解决BRIEF描述子不具备<strong>旋转不变性</strong>的问题。</p>
+<blockquote>
+<p>steered BRIEF（旋转不变性改进）</p>
+<ul>
+<li>在使用oFast算法计算出的特征点中包括了特征点的方向角度。假设原始的BRIEF算法在特征点SxS（一般S取31）邻域内选取n对点集。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120222241.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>经过旋转角度θ旋转，得到新的点对$D_\theta=R_\theta D$</li>
+<li>在新的点集位置上比较点对的大小形成二进制串的描述符。</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120222336.png" srcset="/img/loading.gif" alt=""></p>
+<h5 id="描述子的区分性"><a href="#描述子的区分性" class="headerlink" title="描述子的区分性"></a><code>描述子的区分性</code></h5><p>  通过上述方法得到的特征描述子具有旋转不变性，称为steered BRIEF(sBRIEF)，但匹配效果却不如原始BRIEF算法，因为可区分性减弱了。特征描述子的一个要求就是要尽可能地表达特征点的独特性，便于区分不同的特征点。如下图所示，为几种特征描述子的均值分布，横轴为均值与0.5之间的距离，纵轴为相应均值下特征点的统计数量。可以看出，BRIEF描述子所有比特位的均值接近于0.5，且方差很大；方差越大表明可区分性越好。不同特征点的描述子表现出较大的差异性，不易造成无匹配。但steered BRIEF进行了坐标旋转，损失了这个特性，导致可区分性减弱，相关性变强，不利于匹配。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190120222445.png" srcset="/img/loading.gif" alt=""></p>
+<p>为了解决steered BRIEF可区分性降低的问题，ORB使用了一种基于学习的方法来选择一定数量的随机点对。</p>
+<blockquote>
+<ul>
+<li>首先建立一个大约300k特征点的数据集(特征点来源于PASCAL2006中的图像)，对每个特征点，考虑其31×31的邻域Patch，为了去除噪声的干扰，选择5×5的子窗口的灰度均值代替单个像素的灰度，这样每个Patch内就有N=(31−5+1)×(31−5+1)=27×27=729个子窗口，从中随机选取2个非重复的子窗口，一共有$M=C_N^2$中方法。</li>
+<li>这样，每个特征点便可提取出一个长度为M的二进制串，所有特征点可构成一个300k×M的二进制矩阵Q，矩阵中每个元素取值为0或1。现在需要从M个点对中选取256个<code>相关性最小、可区分性最大的点对，作为最终的二进制编码</code>。筛选方法如下：<ul>
+<li>对矩阵Q的每一列求取均值，并根据均值与0.5之间的距离从小到大的顺序，依次对所有列向量进行重新排序，得到矩阵T</li>
+<li>将T中的第一列向量放到结果矩阵R中</li>
+<li>取出T中的下一列向量，计算其与矩阵R中所有列向量的相关性，如果相关系数小于给定阈值，则将T中的该列向量移至矩阵R中，否则丢弃</li>
+<li>循环执行上一步，直到R中有256个列向量；如果遍历T中所有列，R中向量列数还不满256，则增大阈值，重复以上步骤。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>这样，最后得到的就是相关性最小的256对随机点，该方法称为<code>rBRIEF</code>。</p>
+<h4 id="【总结】"><a href="#【总结】" class="headerlink" title="【总结】"></a>【总结】</h4><blockquote>
+<ol>
+<li>ORB = oFAST + rBRIEF</li>
+<li>oFAST是一类快速角点检测算法，并具备旋转不变性</li>
+<li>rBRIEF是一类角点描述(编码算法)，并且编码具有良好的可区分性</li>
+</ol>
+</blockquote>
+<h3 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h3><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-comment"># @Time    : 2019/1/19 13:30</span>
+<span class="hljs-comment"># @Author  : Seven</span>
+<span class="hljs-comment"># @File    : ORBDemo.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+img1 = cv2.imread(<span class="hljs-string">'csdn.png'</span>)
+img2 = np.rot90(img1)
+
+orb = cv2.ORB_create(<span class="hljs-number">50</span>)
+<span class="hljs-comment"># 特征点检测和提取特征点描述子</span>
+kp1, des1 = orb.detectAndCompute(img1, <span class="hljs-literal">None</span>)
+kp2, des2 = orb.detectAndCompute(img2, <span class="hljs-literal">None</span>)
+
+<span class="hljs-comment"># 创建 BFMatcher 对象</span>
+bf = cv2.BFMatcher(cv2.NORM_L2)
+<span class="hljs-comment"># 根据描述子匹配特征点.</span>
+matches = bf.match(des1, des2)
+<span class="hljs-comment"># 画出50个匹配点</span>
+img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:<span class="hljs-number">50</span>], <span class="hljs-literal">None</span>, flags=<span class="hljs-number">2</span>)
+
+cv2.imshow(<span class="hljs-string">"ORB"</span>, img3)
+
+cv2.waitKey(<span class="hljs-number">0</span>)</code></pre>
+
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190322220304.png" srcset="/img/loading.gif" alt=""></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/ORB/">ORB</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_background/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【十三】背景建模</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_sift/">
+                        <span class="hidden-mobile">【十一】SIFT角点检测</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【十二】ORB角点检测&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

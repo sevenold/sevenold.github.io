@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第五话之控制流程 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-12 10:00">
+      2018年12月12日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h3><p>逻辑值包含了两个值：<br><code>True</code>：表示非空的量(比如：string,tuple.list.set,dictonary等) ，所有非零数 。<br><code>False</code>：表示0,None,空的量等<br><code>作用</code>：主要用于判断语句中，用来判断</p>
+<ul>
+<li>一个字符串是否为空</li>
+<li>一个运算结果是否为零</li>
+<li>一个表达式是否可用</li>
+</ul>
+<h3 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h3><p>条件语句是根据条件来设置程序接下来的走向。</p>
+<p>条件语句的关键字有<code>if，elif，else</code>。</p>
+<h4 id="基本形式："><a href="#基本形式：" class="headerlink" title="基本形式："></a>基本形式：</h4><blockquote>
+<p>if 判断条件:</p>
+<p>执行语句</p>
+<p>else:</p>
+<p>执行语句</p>
+</blockquote>
+<p>判断条件后面和else这个关键字后面都必须加冒号，冒号后面缩进的语句是子语句，多个子语句组成了语句块，如果是单个语句可以与条件写在同一行直接跟在冒号的后面，如果是语句块则一行一条语句，每一行都必须缩进。注意冒号和缩进都是语法的一部分，缩进一般为四个空格。</p>
+<h4 id="单个条件"><a href="#单个条件" class="headerlink" title="单个条件"></a>单个条件</h4><p>这个是针对只有一个判断条件时的，条件满足时就执行缩进的子语句，else就是表示其余的情况，只要条件不满足则执行else后面子语句。判断语句一般是返回值为bool类型的表达式，值为True则是条件满足，值为False则是条件不满足。</p>
+<h4 id="演示"><a href="#演示" class="headerlink" title="演示"></a><strong>演示</strong></h4><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = <span class="hljs-string">'天晴'</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> a==<span class="hljs-string">'天晴'</span>:
+	print(<span class="hljs-string">'天气好，出去玩吧！'</span>)
+<span class="hljs-keyword">else</span>:
+	print(<span class="hljs-string">'天气不好，呆在家吧。。'</span>)
+
+天气好，出去玩吧！</code></pre>
+
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = <span class="hljs-string">'下雨'</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> a==<span class="hljs-string">'天晴'</span>:
+	print(<span class="hljs-string">'天气好，出去玩吧！'</span>)
+<span class="hljs-keyword">else</span>:
+	print(<span class="hljs-string">'天气不好，呆在家吧。。'</span>)
+
+天气不好，呆在家吧。。</code></pre>
+
+
+
+<h4 id="多个条件"><a href="#多个条件" class="headerlink" title="多个条件"></a>多个条件</h4><p>如果判断需要多个条件需同时判断时，可以使用 or （或），表示两个条件有一个成立时判断条件成功；使用 and （与）时，表示只有两个条件同时成立的情况下，判断条件才成功。</p>
+<h4 id="演示："><a href="#演示：" class="headerlink" title="演示："></a>演示：</h4><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = <span class="hljs-string">"天晴"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>t = <span class="hljs-string">"有空"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> a==<span class="hljs-string">"天晴"</span> <span class="hljs-keyword">and</span> t==<span class="hljs-string">"有空"</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">"天气真好，咱们出去玩！！"</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">"天气不好，呆在家吧！！"</span>)
+<span class="hljs-meta">... </span>
+天气真好，咱们出去玩！！</code></pre>
+
+<p>对于多条件分支的判断使用elif关键字来用来条件分支的.</p>
+<h4 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式"></a>基本形式</h4><blockquote>
+<p>if 判断条件1:</p>
+<p>执行语句1</p>
+<p>elif 判断条件2:</p>
+<p>执行语句2</p>
+<p>elif 判断条件n:</p>
+<p>执行语句n</p>
+<p>else:</p>
+<p>执行语句x</p>
+</blockquote>
+<p>写多条件分支时，同一个条件中只能有一个if一个else，对elif的个数没有限制但必须是写在if后面，else放在最后表示以上条件都不满足的情况。满足哪个判断条件就执行这个判断条件对应的执行语句，如果列出的条件都不满足则执行else的子语句，语句的执行顺序是从上到下，遇到满足的条件则直接进入它的子语句块，其他剩余判断条件和子语句将不再进行判断和执行。</p>
+<h4 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a>演示</h4><pre><code class="hljs python">print(<span class="hljs-string">'分数等级测试'</span>)
+score = input(<span class="hljs-string">'请输入你的分数'</span>)
+<span class="hljs-keyword">if</span> <span class="hljs-number">90</span>&lt;=int(score)&lt;=<span class="hljs-number">100</span>:
+    print(<span class="hljs-string">'你的等级是A'</span>)
+<span class="hljs-keyword">elif</span> <span class="hljs-number">75</span>&lt;=int(score)&lt;<span class="hljs-number">90</span>:
+    print(<span class="hljs-string">'你的等级是B'</span>)
+<span class="hljs-keyword">elif</span> <span class="hljs-number">60</span>&lt;=int(score)&lt;<span class="hljs-number">75</span>:
+    print(<span class="hljs-string">'你的等级是C'</span>)
+<span class="hljs-keyword">elif</span> <span class="hljs-number">0</span>&lt;=int(score)&lt;<span class="hljs-number">60</span>:
+    print(<span class="hljs-string">'你的等级是D'</span>)
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">'输入有误!'</span>)</code></pre>
+
+<pre><code class="hljs python">运行结果（python shell中显示）：
+分数等级测试
+请输入你的分数<span class="hljs-number">98</span>
+你的等级是A</code></pre>
+
+<p>这里使用了内置的函数input()获取键盘的输入，这里会把键盘的输入以字符串的形式赋值给score这个名字，同类型的才可以进行比较，所以后面在进行条件判断时要把score转换成int类型再进行比较。</p>
+<h3 id="三目运算"><a href="#三目运算" class="headerlink" title="三目运算"></a>三目运算</h3><h4 id="演示：-1"><a href="#演示：-1" class="headerlink" title="演示："></a>演示：</h4><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>a = <span class="hljs-number">3</span> 
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> a&gt;<span class="hljs-number">5</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-literal">True</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-literal">False</span>)
+<span class="hljs-meta">... </span>
+<span class="hljs-literal">False</span></code></pre>
+
+<p>更简单的写法呢？</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-literal">True</span>) <span class="hljs-keyword">if</span> a&gt;<span class="hljs-number">5</span> <span class="hljs-keyword">else</span> print(<span class="hljs-literal">False</span>) 
+<span class="hljs-literal">False</span></code></pre>
+
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="条件循环"><a href="#条件循环" class="headerlink" title="条件循环"></a>条件循环</h3><h4 id="while"><a href="#while" class="headerlink" title="while"></a><code>while</code></h4><blockquote>
+<p>语法规则：</p>
+<p> while  判断语句：</p>
+<p>​    循环体</p>
+<p>注意：注意缩进</p>
+</blockquote>
+<h4 id="演示：-2"><a href="#演示：-2" class="headerlink" title="演示："></a>演示：</h4><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>i = <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">while</span> i &lt; len(li):
+<span class="hljs-meta">... </span>    print(<span class="hljs-literal">True</span>) <span class="hljs-keyword">if</span> li[i]&gt;<span class="hljs-number">5</span> <span class="hljs-keyword">else</span> print(<span class="hljs-literal">False</span>) 
+<span class="hljs-meta">... </span>    i += <span class="hljs-number">1</span>
+<span class="hljs-meta">... </span>
+<span class="hljs-literal">False</span>
+<span class="hljs-literal">False</span>
+<span class="hljs-literal">False</span>
+<span class="hljs-literal">True</span>
+<span class="hljs-literal">True</span></code></pre>
+
+
+
+<p>对于刚才值大于5的三目运算，如果是判断一个列表中数字该怎么做呢？</p>
+<h4 id="break"><a href="#break" class="headerlink" title="break"></a>break</h4><blockquote>
+<p>跳出循环</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+i = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> i &lt; len(li):
+	<span class="hljs-keyword">if</span> li[i] &gt; <span class="hljs-number">5</span>:
+	    <span class="hljs-keyword">break</span>
+	print(li[i])
+	i += <span class="hljs-number">1</span></code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">5</span></code></pre>
+
+<h4 id="continue"><a href="#continue" class="headerlink" title="continue"></a>continue</h4><blockquote>
+<p>跳过此次循环</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+i = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> i &lt; len(li):
+    print(li[i])
+	<span class="hljs-keyword">if</span> li[i] == <span class="hljs-number">5</span>:
+	    <span class="hljs-keyword">continue</span>
+	i += <span class="hljs-number">1</span></code></pre>
+
+<p>大家猜测下执行结果。。。。。</p>
+<p>解决上面的问题</p>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+i = <span class="hljs-number">-1</span>
+<span class="hljs-keyword">while</span> i &lt; len(li)<span class="hljs-number">-1</span>:
+    print(li[i])
+    i += <span class="hljs-number">1</span>
+	<span class="hljs-keyword">if</span> li[i] == <span class="hljs-number">5</span>:
+	    <span class="hljs-keyword">continue</span></code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">9</span></code></pre>
+
+<h4 id="else"><a href="#else" class="headerlink" title="else"></a>else</h4><blockquote>
+<p>当while的条件不满足时，运行。</p>
+<p>注意：break时，不运行</p>
+</blockquote>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+i = <span class="hljs-number">-1</span>
+<span class="hljs-keyword">while</span> i &lt; len(li)<span class="hljs-number">-1</span>:
+	i += <span class="hljs-number">1</span>
+	<span class="hljs-keyword">if</span> li[i] == <span class="hljs-number">5</span>:
+	    <span class="hljs-keyword">continue</span>
+	print(li[i])
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">'ok'</span>)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">9</span>
+ok</code></pre>
+
+<p><strong>演示</strong></p>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+i = <span class="hljs-number">-1</span>
+<span class="hljs-keyword">while</span> i &lt; len(li)<span class="hljs-number">-1</span>:
+	i += <span class="hljs-number">1</span>
+	<span class="hljs-keyword">if</span> li[i] == <span class="hljs-number">5</span>:
+        <span class="hljs-comment"># continue</span>
+		<span class="hljs-keyword">break</span>
+	print(li[i])
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">'ok'</span>)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">3</span></code></pre>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h4><blockquote>
+<p>循环可以被终止：</p>
+<ul>
+<li>判断语句可以返回  False</li>
+<li>通过break终止循环 </li>
+</ul>
+<p>else的执行条件：</p>
+<p>只有在循环不是被break终止的情况下才会执行else中的内容</p>
+</blockquote>
+<h3 id="迭代循环"><a href="#迭代循环" class="headerlink" title="迭代循环"></a>迭代循环</h3><h4 id="for"><a href="#for" class="headerlink" title="for"></a><strong>for</strong></h4><blockquote>
+<p>只要是可迭代对象，都可以使用for循环遍历。</p>
+</blockquote>
+<h4 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h4><blockquote>
+<p>for  i  in  obj：</p>
+<p>​     循环体</p>
+<p>注意：注意缩进</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python">li = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> li:
+    print(i)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">9</span></code></pre>
+
+
+
+<h4 id="range"><a href="#range" class="headerlink" title="range"></a><strong>range</strong></h4><p><strong>演示</strong></p>
+<pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">21</span>):
+	print(i)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">6</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">9</span>
+<span class="hljs-number">10</span>
+<span class="hljs-number">11</span>
+<span class="hljs-number">12</span>
+<span class="hljs-number">13</span>
+<span class="hljs-number">14</span>
+<span class="hljs-number">15</span>
+<span class="hljs-number">16</span>
+<span class="hljs-number">17</span>
+<span class="hljs-number">18</span>
+<span class="hljs-number">19</span>
+<span class="hljs-number">20</span></code></pre>
+
+<blockquote>
+<p>内置函数，表示一个范围，不包含结尾值。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">3</span>]: list(range(<span class="hljs-number">21</span>))
+Out[<span class="hljs-number">3</span>]: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>, <span class="hljs-number">17</span>, <span class="hljs-number">18</span>, <span class="hljs-number">19</span>, <span class="hljs-number">20</span>]
+    
+In [<span class="hljs-number">4</span>]: list(range(<span class="hljs-number">2</span>, <span class="hljs-number">21</span>))
+Out[<span class="hljs-number">4</span>]: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>, <span class="hljs-number">17</span>, <span class="hljs-number">18</span>, <span class="hljs-number">19</span>, <span class="hljs-number">20</span>]
+
+In [<span class="hljs-number">5</span>]: list(range(<span class="hljs-number">1</span>, <span class="hljs-number">21</span>, <span class="hljs-number">2</span>))
+Out[<span class="hljs-number">5</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">15</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>]</code></pre>
+
+
+
+<h4 id="continue-1"><a href="#continue-1" class="headerlink" title="continue"></a><strong>continue</strong></h4><blockquote>
+<p>跳出当前循环</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">21</span>):
+	<span class="hljs-keyword">if</span> i%<span class="hljs-number">5</span> == <span class="hljs-number">0</span>:
+	    <span class="hljs-keyword">continue</span>
+	print(i)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">6</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">9</span>
+<span class="hljs-number">11</span>
+<span class="hljs-number">12</span>
+<span class="hljs-number">13</span>
+<span class="hljs-number">14</span>
+<span class="hljs-number">16</span>
+<span class="hljs-number">17</span>
+<span class="hljs-number">18</span>
+<span class="hljs-number">19</span></code></pre>
+
+<h4 id="break-1"><a href="#break-1" class="headerlink" title="break"></a>break</h4><blockquote>
+<p>跳出循环</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">21</span>):
+	<span class="hljs-keyword">if</span> i%<span class="hljs-number">5</span> == <span class="hljs-number">0</span>:
+	    <span class="hljs-keyword">break</span>
+	print(i)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span></code></pre>
+
+<h4 id="else-1"><a href="#else-1" class="headerlink" title="else"></a><strong>else</strong></h4><blockquote>
+<p>当for循环结束时，运行。</p>
+<p>注意：break时，不运行</p>
+</blockquote>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, <span class="hljs-number">21</span>):
+	<span class="hljs-keyword">if</span> i%<span class="hljs-number">5</span> == <span class="hljs-number">0</span>:
+	    <span class="hljs-keyword">continue</span>
+	print(i)
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">'end...'</span>)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">6</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">9</span>
+<span class="hljs-number">11</span>
+<span class="hljs-number">12</span>
+<span class="hljs-number">13</span>
+<span class="hljs-number">14</span>
+<span class="hljs-number">16</span>
+<span class="hljs-number">17</span>
+<span class="hljs-number">18</span>
+<span class="hljs-number">19</span>
+end...</code></pre>
+
+
+
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a><strong>总结</strong></h4><blockquote>
+<p>for 后面需要接上可迭代对象</p>
+<p>for会依次取出可迭代对象中的元素</p>
+<p>continue的用法：</p>
+<p>continue和break类似，但是continue不会终止循环，而是结束本次循环，跳到下次循环</p>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8E%A7%E5%88%B6%E6%B5%81%E7%A8%8B/">控制流程</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-main/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第六话之函数基础和函数参数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-dict-set/">
+                        <span class="hidden-mobile">python第四话之散列类型、运算优先级和逻辑运算</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第五话之控制流程&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

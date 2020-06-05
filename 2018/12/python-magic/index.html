@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第九话之多继承和魔法方法 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-16 10:00">
+      2018年12月16日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="多继承和魔法方法"><a href="#多继承和魔法方法" class="headerlink" title="多继承和魔法方法"></a>多继承和魔法方法</h3><p>在上一节中，我们讲了类的定义，属性和方法，那么我们这个节课来看看<code>多继承</code>和<code>魔法方法</code>。</p>
+<h3 id="多继承"><a href="#多继承" class="headerlink" title="多继承"></a>多继承</h3><p>在上节我们讲到了继承，一个类可以继承一个类，继承之后可以把父类所有的方法和属性都直接继承过来，那一个类可以继承多个类呢？</p>
+<p>如果可以继承多个类的话，那如果两个父类中有一样的方法的情况下，子类继承哪一个呢？</p>
+<h4 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h4><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is Base'</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is A'</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is B'</span>
+ 
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span><span class="hljs-params">(A,B)</span>:</span>
+    <span class="hljs-keyword">pass</span>
+
+c = C()
+print(c.play())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">this <span class="hljs-keyword">is</span> A</code></pre>
+
+<blockquote>
+<p>首先类是可以多继承的</p>
+<p>优先使用第一个类里面的方法。</p>
+</blockquote>
+<p><strong>总结</strong></p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/99683112.jpg" srcset="/img/loading.gif" alt="1"></p>
+<blockquote>
+<p>通过C类实例的方法调用来看</p>
+<p>当继承多个父类时，如果父类中有相同的方法，那么子类会优先使用最先被继承的方法.</p>
+</blockquote>
+<h4 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h4><p>在上面的例子中，如果不想继承父类的方法怎么办呢？</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is Base'</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is A'</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is B'</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span><span class="hljs-params">(A, B)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'this is C'</span>
+
+
+c = C()
+print(c.play())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">this <span class="hljs-keyword">is</span> C</code></pre>
+
+<blockquote>
+<p>当子类继承父类之后，如果子类不想使用父类的方法，可以通过重写来覆盖父类的方法.</p>
+</blockquote>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>重写父类方法之后，如果又需要使用父类的方法呢？</p>
+<h5 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h5><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is Base'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is A'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is B'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span><span class="hljs-params">(A, B)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        A.play(self)
+        print(<span class="hljs-string">'这是C'</span>)
+
+
+demo = C()
+demo.play()</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">this <span class="hljs-keyword">is</span> A
+这是C</code></pre>
+
+
+
+<h5 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h5><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is Base'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is A'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is B'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span><span class="hljs-params">(A, B)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        super().play()
+        print(<span class="hljs-string">'这是C'</span>)
+
+
+demo = C()
+demo.play()</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">this <span class="hljs-keyword">is</span> A
+这是C</code></pre>
+
+<h4 id="super"><a href="#super" class="headerlink" title="super"></a>super</h4><blockquote>
+<p> super函数可以调用父类的方法</p>
+</blockquote>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        print(<span class="hljs-string">'this is Base'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        super().play()
+        print(<span class="hljs-string">'this is A'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span><span class="hljs-params">(Base)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        super().play()
+        print(<span class="hljs-string">'this is B'</span>)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span><span class="hljs-params">(A, B)</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span><span class="hljs-params">(self)</span>:</span>
+        super().play()
+        print(<span class="hljs-string">'这是C'</span>)
+
+
+demo = C()
+demo.play()</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">this <span class="hljs-keyword">is</span> Base
+this <span class="hljs-keyword">is</span> B
+this <span class="hljs-keyword">is</span> A
+这是C</code></pre>
+
+<p>那为什么是这个顺序输出呢？</p>
+<pre><code class="hljs python">print(C.mro())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">[&lt;class '__main__.C'&gt;, &lt;class '__main__.A'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.Base'&gt;, &lt;class 'object'&gt;]</code></pre>
+
+<h4 id="继承顺序："><a href="#继承顺序：" class="headerlink" title="继承顺序："></a>继承顺序：</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/86231356.jpg" srcset="/img/loading.gif" alt="2"></p>
+<blockquote>
+<p>在python3中，类被创建时会自动创建方法解析顺序mro</p>
+<p>object是所有类的父类</p>
+</blockquote>
+<h4 id="Mixin开发模式"><a href="#Mixin开发模式" class="headerlink" title="Mixin开发模式"></a>Mixin开发模式</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/85222178.jpg" srcset="/img/loading.gif" alt="3"></p>
+<blockquote>
+<p>Mixin是一种开发模式，一般规范上，Mixin类是继承的终点，即不再被继承</p>
+<p>Mixin的优点就是不需要过多考虑继承关系，不会出现各父类之间有相同方法的情况</p>
+</blockquote>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>mro: 类在生成时会自动生成方法解析顺序，可以通过  类名.mro()来查看</p>
+<p>super: super函数可以来调用父类的方法，使用super的好处在于即使父类改变了，那么也不需要更改类中的代码</p>
+<p>Mixin: Mixin是一种开发模式，给大家在今后的开发中提供一种思路.</p>
+</blockquote>
+<h3 id="魔法方法"><a href="#魔法方法" class="headerlink" title="魔法方法"></a>魔法方法</h3><p>在讲字符串拼接的时候，字符串可以直接相加，那我们自定义的类可以实现吗？</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rectangle</span>:</span>
+
+    <span class="hljs-comment"># 传入长和宽</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, length, width)</span>:</span>
+        self.length = length
+        self.width = width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">area</span><span class="hljs-params">(self)</span>:</span>
+        area = self.width * self.length
+        <span class="hljs-keyword">return</span> area
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        add_length = self.length + other.length
+        add_width = self.width + other.width
+        <span class="hljs-keyword">return</span> add_length,add_width
+
+a = Rectangle(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)
+b = Rectangle(<span class="hljs-number">5</span>,<span class="hljs-number">6</span>)
+print(a+b)</code></pre>
+
+<p><strong>输出</strong></p>
+<blockquote>
+<p>(8, 10)</p>
+</blockquote>
+<h4 id="运算方法"><a href="#运算方法" class="headerlink" title="运算方法"></a>运算方法</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/78302936.jpg" srcset="/img/loading.gif" alt="4"></p>
+<blockquote>
+<p>运算方法大家了解下就行，在实际运用中用不并不多。</p>
+</blockquote>
+<h5 id="add和radd原理"><a href="#add和radd原理" class="headerlink" title="add和radd原理"></a>add和radd原理</h5><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span>:</span>
+    <span class="hljs-keyword">pass</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span>:</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        print(<span class="hljs-string">'__add__'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__radd__</span><span class="hljs-params">(self, other)</span>:</span>
+        print(<span class="hljs-string">'__radd__'</span>)
+
+a = A()
+b = B()
+a+b</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">__radd__</code></pre>
+
+<blockquote>
+<p>优先在两类里找add方法，没有就自动调用radd方法。</p>
+</blockquote>
+<p><strong>演示</strong></p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self,name,age)</span>:</span>
+        self.name =  name
+        self.age = age
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self,age)</span>:</span>
+        self.age = age
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        print(<span class="hljs-string">'__add__'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__radd__</span><span class="hljs-params">(self, other)</span>:</span>
+        <span class="hljs-keyword">return</span> other.age + self.age
+
+a = A(<span class="hljs-string">'age'</span>,<span class="hljs-number">123</span>)
+b = B(<span class="hljs-number">123</span>)
+print(a+b)</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python"><span class="hljs-number">246</span></code></pre>
+
+
+
+<h4 id="str和repr原理"><a href="#str和repr原理" class="headerlink" title="str和repr原理"></a>str和repr原理</h4><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rectangle</span>:</span>
+
+    <span class="hljs-comment"># 传入长和宽</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, length, width)</span>:</span>
+        self.length = length
+        self.width = width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">area</span><span class="hljs-params">(self)</span>:</span>
+        area = self.width * self.length
+        <span class="hljs-keyword">return</span> area
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        add_length = self.length + other.length
+        add_width = self.width + other.width
+        <span class="hljs-keyword">return</span> add_length, add_width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__radd__</span><span class="hljs-params">(self, other)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"Rectangle radd"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'length is %s, width is %s '</span> % (self.length, self.width)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'area  is %s'</span> % self.area()
+
+
+a = Rectangle(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)
+b = Rectangle(<span class="hljs-number">5</span>,<span class="hljs-number">6</span>)
+print(a+b)
+print(a.__add__(b))
+
+print(a)</code></pre>
+
+<p><strong>输出</strong>：</p>
+<pre><code class="hljs python"><span class="hljs-comment"># 有str</span>
+(<span class="hljs-number">8</span>, <span class="hljs-number">10</span>)
+(<span class="hljs-number">8</span>, <span class="hljs-number">10</span>)
+length <span class="hljs-keyword">is</span> <span class="hljs-number">3</span>, width <span class="hljs-keyword">is</span> <span class="hljs-number">4</span> 
+<span class="hljs-comment"># 无str</span>
+(<span class="hljs-number">8</span>, <span class="hljs-number">10</span>)
+(<span class="hljs-number">8</span>, <span class="hljs-number">10</span>)
+area  <span class="hljs-keyword">is</span> <span class="hljs-number">12</span></code></pre>
+
+<blockquote>
+<p>优先在两类里找str方法，没有就自动调用repr方法。</p>
+<p>在python中，str和repr方法在处理对象的时候，分别调用的是对象的<strong>str</strong>和<strong>repr</strong>方法</p>
+<p>print也是如此，调用str函数来处理输出的对象，如果对象没有定义<strong>str</strong>方法，则调用repr处理</p>
+</blockquote>
+<h4 id="call方法"><a href="#call方法" class="headerlink" title="call方法"></a>call方法</h4><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rectangle</span>:</span>
+
+    <span class="hljs-comment"># 传入长和宽</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, length, width)</span>:</span>
+        self.length = length
+        self.width = width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">area</span><span class="hljs-params">(self)</span>:</span>
+        area = self.width * self.length
+        <span class="hljs-keyword">return</span> area
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        add_length = self.length + other.length
+        add_width = self.width + other.width
+        <span class="hljs-keyword">return</span> add_length, add_width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__radd__</span><span class="hljs-params">(self, other)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"Rectangle radd"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'length is %s, width is %s '</span> % (self.length, self.width)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'area  is %s'</span> % self.area()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Rectangle called'</span>
+
+
+a = Rectangle(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)
+b = Rectangle(<span class="hljs-number">5</span>,<span class="hljs-number">6</span>)
+print(a())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">Rectangle called</code></pre>
+
+<blockquote>
+<p>正常情况下，实例是不能像函数一样被调用的，要想实例能够被调用，就需要定义 <strong>call</strong>  方法</p>
+</blockquote>
+<h4 id="其他魔法方法"><a href="#其他魔法方法" class="headerlink" title="其他魔法方法"></a>其他魔法方法</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-13/42006401.jpg" srcset="/img/loading.gif" alt="5"></p>
+<p><strong>演示</strong>：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rectangle</span>:</span>
+
+    <span class="hljs-comment"># 传入长和宽</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, length, width)</span>:</span>
+        self.length = length
+        self.width = width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">area</span><span class="hljs-params">(self)</span>:</span>
+        area = self.width * self.length
+        <span class="hljs-keyword">return</span> area
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__add__</span><span class="hljs-params">(self, other)</span>:</span>
+        add_length = self.length + other.length
+        add_width = self.width + other.width
+        <span class="hljs-keyword">return</span> add_length, add_width
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__radd__</span><span class="hljs-params">(self, other)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"Rectangle radd"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'length is %s, width is %s '</span> % (self.length, self.width)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'area  is %s'</span> % self.area()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Rectangle called'</span>
+
+
+a = Rectangle(<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)
+
+print(a.__class__)
+print(a.__class__.__base__)
+print(a.__class__.__bases__)
+print(a.__dict__)   <span class="hljs-comment"># 所有属性，键值对返回</span>
+print(a.__doc__)
+print(a.__dir__())</code></pre>
+
+<p><strong>输出</strong></p>
+<pre><code class="hljs python">&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">__main__</span>.<span class="hljs-title">Rectangle</span>'&gt;</span>
+<span class="hljs-class">&lt;<span class="hljs-title">class</span> '<span class="hljs-title">object</span>'&gt;</span>
+<span class="hljs-class"><span class="hljs-params">(&lt;class <span class="hljs-string">'object'</span>&gt;,)</span></span>
+&#123;'length': 3, 'width': 4&#125;
+<span class="hljs-literal">None</span>
+[<span class="hljs-string">'length'</span>, <span class="hljs-string">'width'</span>, <span class="hljs-string">'__module__'</span>, <span class="hljs-string">'__init__'</span>, <span class="hljs-string">'area'</span>, <span class="hljs-string">'__add__'</span>, <span class="hljs-string">'__radd__'</span>, <span class="hljs-string">'__str__'</span>, <span class="hljs-string">'__repr__'</span>, <span class="hljs-string">'__call__'</span>, <span class="hljs-string">'__dict__'</span>, <span class="hljs-string">'__weakref__'</span>, <span class="hljs-string">'__doc__'</span>, <span class="hljs-string">'__hash__'</span>, <span class="hljs-string">'__getattribute__'</span>, <span class="hljs-string">'__setattr__'</span>, <span class="hljs-string">'__delattr__'</span>, <span class="hljs-string">'__lt__'</span>, <span class="hljs-string">'__le__'</span>, <span class="hljs-string">'__eq__'</span>, <span class="hljs-string">'__ne__'</span>, <span class="hljs-string">'__gt__'</span>, <span class="hljs-string">'__ge__'</span>, <span class="hljs-string">'__new__'</span>, <span class="hljs-string">'__reduce_ex__'</span>, <span class="hljs-string">'__reduce__'</span>, <span class="hljs-string">'__subclasshook__'</span>, <span class="hljs-string">'__init_subclass__'</span>, <span class="hljs-string">'__format__'</span>, <span class="hljs-string">'__sizeof__'</span>, <span class="hljs-string">'__dir__'</span>, <span class="hljs-string">'__class__'</span>]</code></pre>
+
+<blockquote>
+<p>简单了解。</p>
+</blockquote>
+<h4 id="魔法方法应用场景"><a href="#魔法方法应用场景" class="headerlink" title="魔法方法应用场景"></a><strong>魔法方法应用场景</strong></h4><blockquote>
+<p><strong>str</strong>和<strong>repr</strong>: str和repr都是分别调用这两个魔术方法来实现的</p>
+<p>原理：在类中，很多事情其实调用的魔术方法来实现的</p>
+<p>作用：通过合理的利用魔术方法，可以让我们更加方便的展示我们的数据</p>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%A4%9A%E7%BB%A7%E6%89%BF/">多继承</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95%E6%89%BF/">魔法方法承</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-@/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第十话之描述器和装饰器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-class/">
+                        <span class="hidden-mobile">python第八话之类定义、属性和继承</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第九话之多继承和魔法方法&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

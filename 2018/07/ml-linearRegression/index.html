@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习之线性回归 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-20 10:00">
+      2018年7月20日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="线性回归–-y-wx-b"><a href="#线性回归–-y-wx-b" class="headerlink" title="线性回归–$y=wx+b$"></a><strong>线性回归</strong>–$y=wx+b$</h1><p><strong>回归</strong>，统计学术语，表示变量之间的某种数量依存关系，并由此引出回归方程，回归系数。</p>
+<h3 id="线性回归（Linear-Regression）"><a href="#线性回归（Linear-Regression）" class="headerlink" title="线性回归（Linear Regression）"></a><strong>线性回归（Linear Regression）</strong></h3><p>数理统计中回归分析，用来确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法，其表达形式为$y = wx+e$，e为误差服从均值为0的正态分布，其中只有一个自变量的情况称为简单回归，多个自变量的情况叫多元回归。</p>
+<p>注意，统计学中的回归并如线性回归非与严格直线函数完全能拟合，所以我们统计中称之为回归用以与其直线函数区别。 </p>
+<p>我们先来看下这个图 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530222940.png" srcset="/img/loading.gif" alt="image"></p>
+<p> 这个是近期比较火的现金贷产品的贷款额度。这个表格表示的是<code>可贷款的金额</code>与 <code>工资</code>和 <code>房屋面积</code>之间的关系，其中 <strong>工资</strong> 和 <strong>房屋面积</strong> 为 特征，<strong>可贷款金额</strong>为目标函数值。  那么根据线性函数可得到以下公式。 </p>
+<p>$h_\theta(x)=\theta_{1}x_{1}+\theta_{2}x_{2} $                                           </p>
+<p>上面的这个式子是当一个模型只有两个特征$(x_1,x_2)$的时候的线性回归式子。  正常情况下，现金贷中可贷款的额度和用户的很多特征相关联，并不只是简单的这两个特征。所以我们需要把这个式子进行通用化。  假如有n个特征的话，那么式子就会变成下面的样子  </p>
+<p>$h_\theta(x)=\theta_{1}x_{1}+\theta_{2}x_{2} + \cdot \cdot \cdot \cdot \cdot+\theta_{n}x_{n} = \sum_{i=1}^{n}\theta_{i}x_{i}$    </p>
+<h3 id="利用矩阵的知识对线性公式进行整合。"><a href="#利用矩阵的知识对线性公式进行整合。" class="headerlink" title="利用矩阵的知识对线性公式进行整合。"></a>利用矩阵的知识对线性公式进行整合。</h3><p> 因为机器学习中基本上都是用矩阵的方式来表示参数的，也就是说我们需要把这个多项求和的式子用矩阵的方式表达出来，这样才方便后续的计算。  </p>
+<p>$\theta_{i \times 1} = [\theta_1,\theta_2,\cdot\cdot\cdot\theta_i,]$     </p>
+<p>$X_{i\times1}=[x_1,x_2,\cdot \cdot \cdot x_i]$</p>
+<h3 id="把上述线性函数写成矩阵相乘的形式"><a href="#把上述线性函数写成矩阵相乘的形式" class="headerlink" title="把上述线性函数写成矩阵相乘的形式"></a>把上述线性函数写成矩阵相乘的形式</h3><p>$\theta^TX=\begin{bmatrix}  \theta_1 \\  \theta_2 \\ \cdot \\ \cdot \\ \cdot \\ \theta_i \end{bmatrix} \cdot [x_1,x_2,\cdot \cdot \cdot x_i] = \sum_{i=1}^{n}\theta_{i}x_{i} $</p>
+<p>我们把权重参数和特征参数，都看成是1行n列的矩阵(或者是行向量)。那么就可以根据矩阵乘法的相关知识，把上述多项求和的式子，转换成矩阵的乘法的表达式。  由此我们就把多项求和化简称了 。</p>
+<p>$h_\theta(x)=\theta^TX$</p>
+<h3 id="误差项的分析"><a href="#误差项的分析" class="headerlink" title="误差项的分析"></a>误差项的分析</h3><p>原式:$$y =wx+b$$ 其中$b$就是我们所说的偏移量，或者叫误差项。</p>
+<p>我们再看看下面这个图：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530222941.png" srcset="/img/loading.gif" alt="image"></p>
+<p>图中的横坐标$x_1$ 和 X$x)_2$分别代表着 两个特征(工资、房屋平米) 。纵坐标Y代表目标(可贷款的额度)。其中红点代表的就是实际的目标值(每个人可贷款的额度).而平面上和红点竖向相交的点代表着我们根据线性回归模型得到的点。也就是说实际得到的钱和预估的钱之间是有一定误差的，这个就是误差项。  因为误差项是真实值和误差值之间的一个差距。那么肯定我们希望误差项越小越好。  </p>
+<p>然后我们对应整理成线性回归函数：</p>
+<p>$h_\theta(x)=\theta^Tx+\varepsilon$</p>
+<p>我们根据实际情况，假设认为这个误差项是满足以下几个条件的。 </p>
+<ol>
+<li>误差$\varepsilon_{(i)}$是独立。</li>
+<li>具有相同的分布。</li>
+<li>服从均值为0方差为$\theta^2$的高斯分布。</li>
+</ol>
+<p>然我们回到刚开始的现金贷产品的贷款额度问题上面</p>
+<p>  1.独立：张三和李四一起使用这款产品，可贷款额互不影响  </p>
+<p>  2.同分布：张三和李四是使用的是同一款产品  </p>
+<p>  3.高斯分布：绝大多数的情况下，在一个的空间内浮动不大 </p>
+<h3 id="似然函数的理解"><a href="#似然函数的理解" class="headerlink" title="似然函数的理解"></a>似然函数的理解</h3><p>由前面两步，我们已经把线性回归模型，推导成下面的这个式子了 </p>
+<p>$y_{(i)}=\theta^Tx_i+\varepsilon_i$</p>
+<p>我们已经知道误差项是符合高斯分布的，所以误差项的概率值：</p>
+<p>$P(\varepsilon_i)=\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(\varepsilon_i)^2}{2\sigma^2})}$</p>
+<p>然后把误差值带入式子中:</p>
+<p>$P(y_i|x_i,\theta)=\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-\theta^Tx_i)^2}{2\sigma^2})}$</p>
+<p>由于是误差值，所以是越小越好，所以我们接下来就是讨论什么样的特征值和特征组合能够让误差值最小，现在就要看似然函数的作用了，似然函数的作用就是要根据样本求什么样的参数和特征的组成能够接近真实值，所以越接近真实值则误差就越小。</p>
+<p>引入似然函数(似然函数就是求能让真实值和预测值相等的那个参数的 )：</p>
+<p>$L(\theta) = \prod_{i=1}^{N} P(y_i|x_i,\theta)=\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-\theta^Tx_i)^2}{2\sigma^2})}$</p>
+<p>$\prod$表示各元素相乘的结果</p>
+<p>上面的式子是多个参数的乘积的形式，很难进行计算，所以我们又采用了对数的一个小技巧，把多个数相乘，转化成多个数相加的形式。 </p>
+<p>因为对数的性质</p>
+<p>$logA\cdot B = logA+logB$</p>
+<p>根据上面的这种换算关系，我们就把似然函数的式子换算成下面的这个。  (因为似然函数是越大越好，似然函数的值和对数似然函数的值是成正比的，对值求对数，并不会影响到最后求极限的值。所以才敢进行对数处理。)  </p>
+<p>$l(\theta) = logL(\theta) = log\prod_{i=1}^{N}\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-\theta^Tx_i)^2}{2\sigma^2})}$</p>
+<p>对上式进行整理：</p>
+<p>$l(\theta) = logL(\theta) = \sum_{i=1}^{N}log\frac{1}{\sqrt{2\pi}\sigma}e^{-(\frac{(y_i-\theta^Tx_i)^2}{2\sigma^2})}$</p>
+<p>$= \sum_{i=1}^{N}(log\frac{1}{\sqrt{2\pi}\sigma}+loge^{-(\frac{(y_i-\theta^Tx_i)^2}{2\sigma^2})})$</p>
+<p>$= Nlog\frac{1}{\sqrt{2\pi}\sigma}-\frac{1}{2\sigma^2}\sum_{i=1}^{N}(y_i-\theta^Tx_i)^2 $</p>
+<p>因为：</p>
+<p>$Nlog\frac{1}{\sqrt{2\pi}\sigma}$ 是一个定值</p>
+<p>似然函数是要越大越好</p>
+<p>所以：</p>
+<p>$-\frac{1}{2\sigma^2}(y_i-\theta^Tx_i)^2$越大越好</p>
+<p>再因为：</p>
+<p>$-\frac{1}{2\sigma^2}$也为定值</p>
+<p>最终：</p>
+<p>$l(\theta) = \sum_{i=1}^{N}(y_i-\theta^Tx_i)^2$</p>
+<p>$\sum_{i=1}^{N}(y_i-\theta^Tx_i)^2$越小越好——最小二乘法（损失函数）</p>
+<h3 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a><strong>最小二乘法</strong></h3><p>上述代价函数中使用的均方误差，其实对应了我们常用的欧几里得的距离（欧式距离，<strong>Euclidean Distance</strong>）, 基于均方误差最小化进行模型求解的方法称为“最小二乘法”（<strong>least square method</strong>），即通过最小化误差的平方和寻找数据的最佳函数匹配；</p>
+<p>当函数子变量为一维时，最小二乘法就蜕变成寻找一条直线；</p>
+<p> 然后我们把得到的损失函数推广到n维，转换成矩阵形式（参考前面利用矩阵的知识对线性公式进行整合）：</p>
+<p>$J(\theta)=\sum_{i=1}^{N}(y_i-\theta^Tx_i)^2$       损失函数</p>
+<h3 id="其对应的均方误差表示为如下矩阵"><a href="#其对应的均方误差表示为如下矩阵" class="headerlink" title="其对应的均方误差表示为如下矩阵"></a>其对应的均方误差表示为如下矩阵</h3><p>$J(\theta) = {(y-X\theta)^T(y-X\theta)}$   </p>
+<p>其中X：</p>
+<p>$X=\begin{bmatrix} 1 &amp;&amp; x_1^T  \\ 1 &amp;&amp; x_2^T  \\ \cdot \\ \cdot \\ \cdot  \\ 1 &amp;&amp; x_N^T \end{bmatrix} =\begin{bmatrix} 1 &amp;&amp;    x_{11} &amp;&amp; x_{12}  &amp;&amp; \cdot \cdot \cdot  x_{1n}  \\ 1 &amp;&amp; x_{21} &amp;&amp; x_{22} &amp;&amp; \cdot \cdot \cdot x_{2n}   \\ \cdot  \\  \cdot \\ \cdot \\ 1&amp;&amp; x_{m1} &amp;&amp; x_{m2}  &amp;&amp; \cdot \cdot \cdot x_{mn}  \end{bmatrix} $</p>
+<p> 对$\theta$求导</p>
+<p>$J(\theta) = {(y-X\theta)^T(y-X\theta)}=y^Ty-y^Tx\theta-\theta^Tx^Ty+\theta^Tx^Tx\theta$   </p>
+<p>$\frac{\partial J(\theta)}{\partial(\theta)} = \frac{\partial y^Ty}{\partial(\theta)} - \frac{\partial y^Tx\theta}{\partial(\theta)} - \frac{\partial \theta^Tx^Ty}{\partial(\theta)} + \frac{\partial \theta^Tx^Tx\theta}{\partial(\theta)} $</p>
+<p>$\frac{\partial J(\theta)}{\partial(\theta)} = 0-x^Ty-x^Ty+2x^Tx\theta$</p>
+<p>$\frac{\partial J(\theta)}{\partial(\theta)} =2x^T(x\theta-y)$</p>
+<p>根据导数的性质，该值在导数为0时为最小</p>
+<p>所以：根据微积分定理，令上式等于零，可以得到 θ 最优的闭式解。当 </p>
+<p>$2(x^Ty-x^Tx\theta)=0$时取得最小</p>
+<p>矩阵求导的知识：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530222842.png" srcset="/img/loading.gif" alt="image"></p>
+<p>最终：$\theta = (x^Tx)^{-1}x^Ty$</p>
+<p>X和Y都是已知的，那么得到了最终的参数值。 </p>
+<h3 id="那我们来看看数学原理"><a href="#那我们来看看数学原理" class="headerlink" title="那我们来看看数学原理"></a>那我们来看看<strong>数学原理</strong></h3><p><strong>微积分角度来讲</strong>，最小二乘法是采用非迭代法，针对代价函数求导数而得出全局极值，进而对所给定参数进行估算。</p>
+<p><strong>计算数学角度来讲</strong>，最小二乘法的本质上是一个线性优化问题，试图找到一个最优解。</p>
+<p><strong>线性代数角度来讲</strong>，最小二乘法是求解线性方程组，当方程个数大于未知量个数，其方程本身 无解，而最小二乘法则试图找到最优残差。</p>
+<p><strong>几何角度来讲</strong>，最小二乘法中的几何意义是高维空间中的一个向量在低维子空间的投影。</p>
+<p><strong>概率论角度来讲</strong>，如果数据的观测误差是/或者满足高斯分布，则最小二乘解就是使得观测数据出现概率最大的解，即<strong>最大似然估计-Maximum Likelihood Estimate，MLE</strong>（利用已知的样本结果，反推最有可能（最大概率）导致这样结果的参数值）。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">线性回归</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/ml-linearRegressionL1L2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习-线性回归推导总结</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习之线性回归&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

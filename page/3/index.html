@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-SIFT_feature/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="基于SIFT的特征匹配">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-SIFT_feature/">基于SIFT的特征匹配</a>
+
+      <a href="/2019/03/cv-SIFT_feature/" class="index-excerpt">
+        
+        
+          
+        
+        <div>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2019/3/2 22:26
+# @Author  : Seven
+# @File    : ImageMatching-SIFT.py
+# @Software: PyCharm
+# function : 使用SIFT进行提取特征点进行图片匹配
+import cv2
+# 加载图片
+</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-24
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SIFT/">SIFT</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-Harris_feature/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="基于Harris的特征匹配">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-Harris_feature/">基于Harris的特征匹配</a>
+
+      <a href="/2019/03/cv-Harris_feature/" class="index-excerpt">
+        
+        
+          
+        
+        <div>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2019/3/4 14:35
+# @Author  : Seven
+# @File    : ImageMatching-Harris.py
+# @Software: PyCharm
+# function : 使用Harris进行提取特征点进行图片匹配
+# 选择了一种速度、特征点数</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-23
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ORB/">ORB</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-ORB_feature/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="基于ORB的特征匹配">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-ORB_feature/">基于ORB的特征匹配</a>
+
+      <a href="/2019/03/cv-ORB_feature/" class="index-excerpt">
+        
+        
+          
+        
+        <div>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2019/3/4 12:54
+# @Author  : Seven
+# @File    : ImageMatching-ORB.py
+# @Software: PyCharm
+# function : 使用ORB进行提取特征点进行图片匹配
+import cv2
+# 加载图片
+im</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-22
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ORB/">ORB</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-fast_feature/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="基于FAST的特征匹配">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-fast_feature/">基于FAST的特征匹配</a>
+
+      <a href="/2019/03/cv-fast_feature/" class="index-excerpt">
+        
+        
+          
+        
+        <div>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2019/3/4 13:57
+# @Author  : Seven
+# @File    : ImageMatching-FAST.py
+# @Software: PyCharm
+# function : 使用FAST进行提取特征点进行图片匹配
+import cv2
+# 加载图片
+</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-21
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/FAST/">FAST</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_feature/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【二十】特征匹配">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_feature/">【二十】特征匹配</a>
+
+      <a href="/2019/03/cv-image_feature/" class="index-excerpt">
+        
+        
+          
+        
+        <div>特征匹配【基本问题】
+特征点匹配
+
+
+暴力搜索与2NN判据
+
+设两帧图像中的对应特征点集${𝑥𝑖,𝑦_𝑖}$和${𝑥_𝑖^′,𝑦_𝑖^′}$，共N个特征点 对应点 $𝐱_𝒋=(𝑥_𝑗,𝑦_𝑗)$，匹配点为距离最小点 $𝐱_𝑗^′=𝑥_𝑗^′∗,𝑦_𝑗^′∗=𝑚𝑖𝑛{𝑘=1}^𝑁||x_𝑗−𝑥_𝑘^′||$ ，对应距离$𝑑_𝑗^∗$ 进一步</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-20
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%89%B9%E5%BE%81%E5%8C%B9%E9%85%8D/">特征匹配</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_Stereo/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十九】立体视觉">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_Stereo/">【十九】立体视觉</a>
+
+      <a href="/2019/03/cv-image_Stereo/" class="index-excerpt">
+        
+        
+          
+        
+        <div>立体视觉【基本概念】
+我们在二维视角中，结构和深度是不确定的
+
+
+立体视觉：第2个照相机可以解决这种歧义性，通过三角化实现深度测量
+
+
+
+【平行双目视觉】
+假设双目完全平行
+
+
+空间点三维座标位置求解
+
+
+视差和深度成反比关系: $z_1 = \frac{bf_x}{u_1-u_2}$
+
+
+空间点三维座标位置求解：一般情况
+
+
+二摄像机坐标系与世界坐标系位姿关系已知
+
+
+
+共4个方程，三个未知数，</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-19
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AB%8B%E4%BD%93%E8%A7%86%E8%A7%89/">立体视觉</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_PolarGeometry/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十八】极线几何">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_PolarGeometry/">【十八】极线几何</a>
+
+      <a href="/2019/03/cv-image_PolarGeometry/" class="index-excerpt">
+        
+        
+          
+        
+        <div>极线几何
+
+有时候我们使用一个相机进行拍摄目标物体的时候，会 发现几个物体都重合了，但是当我们再放台相机的时候，就可以把这些物体的特征获取到。
+也就是双目视觉对应关系，同时也可用于相邻两帧间的运动估计。
+
+【基本概念】
+极线几何(Epipolar geometry)
+
+(匹配)极线约束：匹配点必须在极线上
+基线：左右像机光心连线
+极平面：空间点，两像机光心决定的平面
+极点：基线与两摄像机图像平面的</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-18
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%81%E7%BA%BF%E5%87%A0%E4%BD%95/">极线几何</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_calibration/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十七】相机标定">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_calibration/">【十七】相机标定</a>
+
+      <a href="/2019/03/cv-image_calibration/" class="index-excerpt">
+        
+        
+          
+        
+        <div>相机标定【基本问题】
+相机内外参数标定
+
+
+
+计算$m_{ij}$的解
+分解内、外参数
+考虑非线性项
+
+
+
+
+【Zhang方法】
+Zhang方法：由张正友提出，OpenCV等广泛使用
+
+
+特点：使用平面靶标摆多个pose(可未知)
+标定步骤
+对一个pose,计算单应矩阵(类似M矩阵)
+有三个以上Pose，根据各单应矩阵计算线性相机参数；
+使用非线性优化方法计算非线性参数
+
+
+
+
+
+第一步：求解单应</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-17
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A/">相机标定</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_position/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十六】相对位姿测量算法">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_position/">【十六】相对位姿测量算法</a>
+
+      <a href="/2019/03/cv-image_position/" class="index-excerpt">
+        
+        
+          
+        
+        <div>相对位姿测量算法【基于空间多点】
+相对位姿估计的基本问题
+
+
+已知：相机内参数；多个空间上的特征点(非共面)在目标坐标系(3D)和相平面坐标系(2D)坐标。
+输出：目标坐标系相对相机坐标系的位置和姿态。
+
+
+
+
+基本思想示意
+
+
+线性求解
+
+对每一个特征点，均有：
+
+
+对每一个特征点，均有：
+
+
+展开第一行
+
+
+类似展开第二、第三行：
+
+
+消去$Z_c$
+
+
+上二式右侧分母移到左边，得：
+
+
+整理</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-16
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E5%A7%BF%E6%B5%8B%E9%87%8F/">相对位姿测量</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_camera/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十五】坐标变换与摄像机模型">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_camera/">【十五】坐标变换与摄像机模型</a>
+
+      <a href="/2019/03/cv-image_camera/" class="index-excerpt">
+        
+        
+          
+        
+        <div>坐标变换与摄像机模型图像变换模型【平移变换】
+只改变图形位置，不改变图形的大小和形状.
+
+
+代码及演示
+import cv2
+import numpy as np
+
+# 加载图片
+source_image = cv2.imread('lena.jpg', 0)
+cv2.imshow('source', source_image)
+# 平移图片
+rows, cols = source_image.s</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-15
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2/">坐标变换</a>
+            
+              <a href="/tags/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B/">摄像机模型</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Self-discipline is freedom&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

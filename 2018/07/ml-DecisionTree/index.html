@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习-决策树 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-23 10:00">
+      2018年7月23日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p><strong>决策树（decision tree）</strong>是一种<strong>分类</strong>与<strong>回归</strong>方法，本文主要讨论用于<strong>分类</strong>的决策树，决策树的结构呈<strong>树形</strong>结构，在分类问题中，其代表基于特征对数据进行分类的过程，通常可以认为是if-then规则的集合，也可以认为是定义在<strong>特征空间与类空间上的条件概率分布</strong>。其主要优点是模型可读性好并且分类速度快。训练的时候，利用训练数据根据损失函数最小化的原则建立决策树模型。</p>
+<p>预测时对于新的数据，利用决策树进行分类。决策树的学习通常包括三个步骤：<strong>特征选择，生成决策树，对决策树进行剪枝</strong>。这些决策树的思想主要来自Quinlan在1986年提出的ID3算法和1993年提出的C4.5算法，以及Breiman等人在1984年提出的CART算法。 </p>
+<p>用于分类的决策树是一种对数据进行分类的树形结构。决策树主要由节点（node）和有向边（directed edge）组成。节点有两种类型：内部节点（internal node）以及叶节点（leaf node）。内部节点表示一个特征或者属性，叶节点表示一个类。其结构如图所示：  </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230056.png" srcset="/img/loading.gif" alt="image"></p>
+<p>决策树学习采用的是<strong>自顶向下</strong>的递归方法, 其基本思想是以<strong>信息熵</strong>为度量构造一棵<strong>熵值 下降最快</strong>的树,到叶子节点处的熵值为零, 此时每个叶节点中的实例都属于同一类。</p>
+<ul>
+<li>最大优点: 可以自学习。在学习的过程中,不需要使用者了解过多背景知识,只需要对训练实例进行较好的标注,就能够进行学习。</li>
+<li>显然,属于<strong>有监督学习</strong>。</li>
+</ul>
+<h3 id="决策树三种生成算法"><a href="#决策树三种生成算法" class="headerlink" title="决策树三种生成算法"></a>决策树三种生成算法</h3><ol>
+<li><h4 id="ID3-—-信息增益-最大的准则"><a href="#ID3-—-信息增益-最大的准则" class="headerlink" title="ID3 — 信息增益 最大的准则"></a>ID3 — <strong>信息增益</strong> <strong>最大</strong>的准则</h4><p>​    ID3算法的核心是在决策树各个节点上使用<strong>信息增益</strong>作为特征选择的依据，递归的构建决策树。  从根节点开始，对节点计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归的调用以上方法，构建决策树；知道所有特征的信息增益均很小或没有特征可以选择为止，得到最后一个决策树。ID3相当于用最大似然法进行概率模型的选择。 </p>
+</li>
+<li><h4 id="C4-5-—-信息增益比-最大的准则"><a href="#C4-5-—-信息增益比-最大的准则" class="headerlink" title="C4.5 — 信息增益比 最大的准则"></a>C4.5 — <strong>信息增益比</strong> 最大的准则</h4><p>​    C4.5算法使用<strong>信息增益率</strong>作为特征选择的依据，算法的流程与ID3相似。 </p>
+</li>
+<li><p>CART</p>
+<ul>
+<li>回归树: <strong>平方误差</strong> <strong>最小</strong> 的准则</li>
+<li>分类树: <strong>基尼系数</strong> <strong>最小</strong>的准则</li>
+</ul>
+<p>CART树的名字其实非常有意思，Classification And Regression Tree（分类回归树），它使用基尼系数(Gini Index)作为特征的划分依据。顾名思义，CART既可以用来做分类也可以用来做回归。它是在给定输入随机变量X条件下输出随机变量Y的条件概率分布的学习方法。  CART树假设我么的决策树是二叉树，内部节点特征的取值为是或否。</p>
+<p><strong>CART算法</strong>为：  </p>
+<pre><code>1. 决策树的生成：基于训练数据集生成决策树，生成的决策树要尽量大；</code></pre><p>​               2.决策树剪枝：用验证数据集对已经生成的巨额额数进行剪枝并选择最优子树。 </p>
+</li>
+</ol>
+<h3 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h3><h4 id="信息熵（information-entropy）-是度量样本集合纯度的最常用的一种指标。"><a href="#信息熵（information-entropy）-是度量样本集合纯度的最常用的一种指标。" class="headerlink" title="信息熵（information entropy） 是度量样本集合纯度的最常用的一种指标。"></a><strong>信息熵（information entropy）</strong> 是度量样本集合纯度的最常用的一种指标。</h4><ul>
+<li><h4 id="熵：-H-X-sum-x-in-X-p-x-y-logp-x"><a href="#熵：-H-X-sum-x-in-X-p-x-y-logp-x" class="headerlink" title="熵：$H(X)=-\sum_{x \in X} p(x,y)logp(x)$"></a>熵：$H(X)=-\sum_{x \in X} p(x,y)logp(x)$</h4></li>
+<li><h4 id="联合熵：-H-X，Y-sum-x-in-X-y-in-Y-p-x-y-logp-x-y"><a href="#联合熵：-H-X，Y-sum-x-in-X-y-in-Y-p-x-y-logp-x-y" class="headerlink" title="联合熵：$H(X，Y)=-\sum_{x \in X,y \in Y} p(x,y)logp(x,y)$"></a>联合熵：$H(X，Y)=-\sum_{x \in X,y \in Y} p(x,y)logp(x,y)$</h4></li>
+<li><h4 id="条件熵：-H-X-Y-sum-x-in-X-y-in-Y-p-x-y-logp-x-y"><a href="#条件熵：-H-X-Y-sum-x-in-X-y-in-Y-p-x-y-logp-x-y" class="headerlink" title="条件熵：$H(X|Y)=-\sum_{x \in X,y \in Y} p(x,y)logp(x|y)$"></a>条件熵：$H(X|Y)=-\sum_{x \in X,y \in Y} p(x,y)logp(x|y)$</h4></li>
+<li><h4 id="相对熵：-D-p-q-sum-x-p-x-log-frac-p-x-q-x"><a href="#相对熵：-D-p-q-sum-x-p-x-log-frac-p-x-q-x" class="headerlink" title="相对熵：$D(p||q)=\sum_x p(x)log\frac{p(x)}{q(x)}$"></a>相对熵：$D(p||q)=\sum_x p(x)log\frac{p(x)}{q(x)}$</h4></li>
+<li><h4 id="互信息：-I-x-y-sum-x-in-X-y-in-Y-p-x-y-log-frac-p-x-y-p-x-p-y"><a href="#互信息：-I-x-y-sum-x-in-X-y-in-Y-p-x-y-log-frac-p-x-y-p-x-p-y" class="headerlink" title="互信息：$I(x,y)=\sum_{x\in X, y \in Y} p(x,y )log\frac{p(x,y)}{p(x)p(y)}$"></a>互信息：$I(x,y)=\sum_{x\in X, y \in Y} p(x,y )log\frac{p(x,y)}{p(x)p(y)}$</h4></li>
+</ul>
+<h3 id="决策树学习基本算法"><a href="#决策树学习基本算法" class="headerlink" title="决策树学习基本算法"></a>决策树学习基本算法</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230057.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="信息增益—-g-D-A"><a href="#信息增益—-g-D-A" class="headerlink" title="信息增益—$g(D,A)$"></a>信息增益—$g(D,A)$</h3><p><strong>信息增益(Information Gain)</strong>：表示得知特征A的信息而使得类X的信息的不确定性减少的程度。<br>定义：特征A对训练数据集D的<strong>信息增益</strong>g(D, A)，定义为集合D的<strong>经验熵</strong>H(D)与<strong>经验条件熵</strong>H(D|A)的差值。 </p>
+<h2 id="g-D-A-H-D-−H-D-A"><a href="#g-D-A-H-D-−H-D-A" class="headerlink" title="$g(D,A)=H(D)−H(D|A)$"></a>$g(D,A)=H(D)−H(D|A)$</h2><p>而这又是互信息的定义。所以<strong>决策树中的信息增益等价于训练集中类与特征的互信息。</strong></p>
+<h4 id="总结：一般而言，信息增益g-D-A-越大，就意味着使用特征A来进行划分所获得的“纯度提升”就越大。著名的ID3决策树学习算法就是以信息增益为准则来学习划分属性的。"><a href="#总结：一般而言，信息增益g-D-A-越大，就意味着使用特征A来进行划分所获得的“纯度提升”就越大。著名的ID3决策树学习算法就是以信息增益为准则来学习划分属性的。" class="headerlink" title="总结：一般而言，信息增益g(D, A)越大，就意味着使用特征A来进行划分所获得的“纯度提升”就越大。著名的ID3决策树学习算法就是以信息增益为准则来学习划分属性的。"></a>总结：一般而言，<strong>信息增益</strong>g(D, A)越大，就意味着使用特征A来进行划分所获得的“纯度提升”就越大。著名的ID3决策树学习算法就是以信息增益为准则来学习划分属性的。</h4><h3 id="增益率"><a href="#增益率" class="headerlink" title="增益率"></a>增益率</h3><p><strong>信息率(Information Gain Ratio)</strong>：  用信息增益作为划分特征的依据时，会存在一些问题。例如，如果使用数据的ID作为特征，这样，每个数据点相当于均匀分布，所以得到的信息增益一定是最大的，但是我们都知道ID是不能作为特征的。这样如果单纯的使用信息增益作为划分特征的依据的话，会导致我们生成的树比较矮胖，容易<strong>过拟合</strong>。 </p>
+<p>定义：特征A对训练数据集D的<strong>信息增益率</strong>$$gR(D,A)$$定义为其<strong>信息增益</strong>$$g(D,A)$$与训练数据集D关于特征A的值得<strong>信息熵</strong>$$IV(D)$$之比：</p>
+<h2 id="gR-D-A-frac-g-D-A-IV-D"><a href="#gR-D-A-frac-g-D-A-IV-D" class="headerlink" title="$ gR(D,A)=\frac {g(D,A)}{IV(D)} $"></a>$ gR(D,A)=\frac {g(D,A)}{IV(D)} $</h2><h4 id="总结：信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的C4-5决策树算法就不直接使用信息增益而是使用“增益率”-。"><a href="#总结：信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的C4-5决策树算法就不直接使用信息增益而是使用“增益率”-。" class="headerlink" title="总结：信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的C4.5决策树算法就不直接使用信息增益而是使用“增益率” 。"></a>总结：信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，著名的C4.5决策树算法就不直接使用信息增益而是使用“增益率” 。</h4><h3 id="Gini系数："><a href="#Gini系数：" class="headerlink" title="Gini系数："></a>Gini系数：</h3><h4 id="数据集P的纯度可以用Gini值来度量。"><a href="#数据集P的纯度可以用Gini值来度量。" class="headerlink" title="数据集P的纯度可以用Gini值来度量。"></a>数据集P的纯度可以用Gini值来度量。</h4><h2 id="Gini-P-sum-k-1-K-p-k-1-p-k-1-sum-k-1-Kp-k-2"><a href="#Gini-P-sum-k-1-K-p-k-1-p-k-1-sum-k-1-Kp-k-2" class="headerlink" title="$Gini(P)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$"></a>$Gini(P)=\sum_{k=1}^K p_k(1-p_k)=1-\sum_{k=1}^Kp_k^2$</h2><h4 id="总结：CART决策树使用Gini指数来选择划分属性。-Gini-P-反映了从数据集D中随机抽取了两个样本，其类别标记不一致的概率，因此，-Gini（D）-越小，则数据集P的纯度就越高。"><a href="#总结：CART决策树使用Gini指数来选择划分属性。-Gini-P-反映了从数据集D中随机抽取了两个样本，其类别标记不一致的概率，因此，-Gini（D）-越小，则数据集P的纯度就越高。" class="headerlink" title="总结：CART决策树使用Gini指数来选择划分属性。$Gini(P)$反映了从数据集D中随机抽取了两个样本，其类别标记不一致的概率，因此，$Gini（D）$越小，则数据集P的纯度就越高。"></a>总结：CART决策树使用Gini指数来选择划分属性。$Gini(P)$反映了从数据集D中随机抽取了两个样本，其类别标记不一致的概率，因此，$Gini（D）$越小，则数据集P的纯度就越高。</h4><h3 id="决策树的评价-——-loss-function："><a href="#决策树的评价-——-loss-function：" class="headerlink" title="决策树的评价 —— loss function："></a>决策树的评价 —— loss function：</h3><p>  假定样本的总类别数为$K$个；树T的叶节点个数为$\mid T \mid$，t是树T的叶节点，叶节点有$N_t$个样本点，其中$k$类的样本点有$N_{ik}$个，$H_t(T)$为叶节点t上的<strong>经验熵</strong>，则决策树的loss function可以定义为：  </p>
+<h2 id="C-a-T-sum-t-in-Leaf-N-tH-t-T-a-T"><a href="#C-a-T-sum-t-in-Leaf-N-tH-t-T-a-T" class="headerlink" title="$C_a(T)=\sum_{t\in Leaf}N_tH_t(T)+a|T|$"></a>$C_a(T)=\sum_{t\in Leaf}N_tH_t(T)+a|T|$</h2><h3 id="决策树种避免过拟合的方法——剪枝"><a href="#决策树种避免过拟合的方法——剪枝" class="headerlink" title="决策树种避免过拟合的方法——剪枝"></a>决策树种避免过拟合的方法——剪枝</h3><ul>
+<li><strong>预剪枝</strong>：在决策树生成过程中，对每个结点在划分前先进行估计，如果当前的结点划分不能带来决策树泛化性能提升，则停止划分并将当前的结点标记为叶节点。</li>
+<li><strong>后剪枝</strong>：先从训练集生成一个完整的决策树，然后自底向上的对非叶节点进行考察，若将该结点对应的子树替换为叶节点能带来决策树泛化能力性能提升，则就把该子树替换为叶结点。</li>
+</ul>
+<h4 id="在上面决策树的评价指标loss-function-：-C-a-T-sum-t-in-Leaf-N-tH-t-T-a-T-中，"><a href="#在上面决策树的评价指标loss-function-：-C-a-T-sum-t-in-Leaf-N-tH-t-T-a-T-中，" class="headerlink" title="在上面决策树的评价指标loss function ：$C_a(T)=\sum_{t\in Leaf}N_tH_t(T)+a|T|$中，"></a>在上面决策树的评价指标loss function ：$C_a(T)=\sum_{t\in Leaf}N_tH_t(T)+a|T|$中，</h4><ul>
+<li><p>C(T)表示模型对训练数据集的预测误差，即模型与训练数据的拟合程度，</p>
+</li>
+<li><p>$\mid T \mid$表示模型复杂度，由参数α控制两者之间的影响。 </p>
+</li>
+</ul>
+<h4 id="当α确定时："><a href="#当α确定时：" class="headerlink" title="当α确定时："></a>当α确定时：</h4><ul>
+<li>子树越大，与训练集的拟合越好，但模型的复杂度就越高；</li>
+<li>子树越小，模型简单，但与训练集的拟合度不好。</li>
+</ul>
+<h4 id="决策树生成学习局部的模型，而剪枝学习整体的模型"><a href="#决策树生成学习局部的模型，而剪枝学习整体的模型" class="headerlink" title="决策树生成学习局部的模型，而剪枝学习整体的模型!"></a>决策树生成学习局部的模型，而剪枝学习整体的模型!</h4><h4 id="剪枝的过程为："><a href="#剪枝的过程为：" class="headerlink" title="剪枝的过程为："></a>剪枝的过程为：</h4><ul>
+<li>计算每个节点的经验熵；</li>
+<li>递归的从树的叶节点向上回缩，设一组叶节点回缩到其父节点之前和之后的整体树分别为$T_B$和$T_A$，对应的损失函数值分别为$C_α(T_B)$和$C_α(T_A),$如果$C_α(T_A)&lt;=C_α(T_B)$，则进行剪枝。</li>
+</ul>
+<h3 id="决策树的优缺点"><a href="#决策树的优缺点" class="headerlink" title="决策树的优缺点"></a>决策树的优缺点</h3><ul>
+<li>优点: 决策树对训练属于有很好的分类能力</li>
+<li>缺点: 但对未知的测试数据未必有好的分类能力,泛化 能力弱,即可能发生过拟合现象。 </li>
+</ul>
+<h3 id="Bagging（套袋法）"><a href="#Bagging（套袋法）" class="headerlink" title="Bagging（套袋法）"></a>Bagging（套袋法）</h3><p>bagging的算法过程如下：</p>
+<ol>
+<li>从原始样本集中使用Bootstraping方法随机抽取n个训练样本，共进行k轮抽取，得到k个训练集。（k个训练集之间相互独立，元素可以有重复）</li>
+<li>对于k个训练集，我们训练k个模型（这k个模型可以根据具体问题而定，比如决策树，knn等）</li>
+<li>对于分类问题：由投票表决产生分类结果；对于回归问题：由k个模型预测结果的均值作为最后预测结果。（所有模型的重要性相同）</li>
+</ol>
+<h3 id="Boosting（提升法）"><a href="#Boosting（提升法）" class="headerlink" title="Boosting（提升法）"></a>Boosting（提升法）</h3><p>boosting的算法过程如下：</p>
+<ol>
+<li>对于训练集中的每个样本建立权值wi，表示对每个样本的关注度。当某个样本被误分类的概率很高时，需要加大对该样本的权值。</li>
+<li>进行迭代的过程中，每一步迭代都是一个弱分类器。我们需要用某种策略将其组合，作为最终模型。（例如AdaBoost给每个弱分类器一个权值，将其线性组合最为最终分类器。误差越小的弱分类器，权值越大）</li>
+</ol>
+<h3 id="Bagging，Boosting的主要区别"><a href="#Bagging，Boosting的主要区别" class="headerlink" title="Bagging，Boosting的主要区别"></a>Bagging，Boosting的主要区别</h3><ol>
+<li><p>样本选择上：</p>
+<p>Bagging采用的是Bootstrap随机有放回抽样；</p>
+<p>Boosting每一轮的训练集是不变的，改变的只是每一个样本的权重。</p>
+</li>
+<li><p>样本权重：</p>
+<p>Bagging使用的是均匀取样，每个样本权重相等；</p>
+<p>Boosting根据错误率调整样本权重，错误率越大的样本权重越大。</p>
+</li>
+<li><p>预测函数：</p>
+<p>Bagging所有的预测函数的权重相等；</p>
+<p>Boosting中误差越小的预测函数其权重越大。</p>
+</li>
+<li><p>并行计算：</p>
+<p>Bagging各个预测函数可以并行生成；</p>
+<p>Boosting各个预测函数必须按顺序迭代生成。</p>
+</li>
+</ol>
+<h3 id="决策树与这些算法框架进行结合所得到的新的算法："><a href="#决策树与这些算法框架进行结合所得到的新的算法：" class="headerlink" title="决策树与这些算法框架进行结合所得到的新的算法："></a>决策树与这些算法框架进行结合所得到的新的算法：</h3><p>1）Bagging + 决策树 = 随机森林</p>
+<p>2）AdaBoost + 决策树 = 提升树</p>
+<p>3）Gradient Boosting + 决策树 = GBDT</p>
+<h3 id="随机森林（Random-Forests）"><a href="#随机森林（Random-Forests）" class="headerlink" title="随机森林（Random Forests）"></a>随机森林（Random Forests）</h3><p>随机森林是一种重要的基于Bagging的集成学习方法，可以用来做分类、回归等问题。</p>
+<h3 id="随机森林有许多优点："><a href="#随机森林有许多优点：" class="headerlink" title="随机森林有许多优点："></a>随机森林有许多优点：</h3><ul>
+<li>具有极高的准确率</li>
+<li>随机性的引入，使得随机森林不容易过拟合</li>
+<li>随机性的引入，使得随机森林有很好的抗噪声能力</li>
+<li>能处理很高维度的数据，并且不用做特征选择</li>
+<li>既能处理离散型数据，也能处理连续型数据，数据集无需规范化</li>
+<li>训练速度快，可以得到变量重要性排序</li>
+<li>容易实现并行化</li>
+</ul>
+<h3 id="随机森林的缺点："><a href="#随机森林的缺点：" class="headerlink" title="随机森林的缺点："></a>随机森林的缺点：</h3><ul>
+<li>当随机森林中的决策树个数很多时，训练时需要的空间和时间会较大</li>
+<li>随机森林模型还有许多不好解释的地方，有点算个黑盒模型</li>
+</ul>
+<h3 id="随机森林构建过程"><a href="#随机森林构建过程" class="headerlink" title="随机森林构建过程"></a>随机森林构建过程</h3><h4 id="与上面介绍的Bagging过程相似，随机森林的构建过程大致如下："><a href="#与上面介绍的Bagging过程相似，随机森林的构建过程大致如下：" class="headerlink" title="与上面介绍的Bagging过程相似，随机森林的构建过程大致如下："></a>与上面介绍的Bagging过程相似，随机森林的构建过程大致如下：</h4><ol>
+<li>从原始训练集中使用Bootstraping方法随机有放回采样选出m个样本，共进行n_tree次采样，生成n_tree个训练集</li>
+<li>对于n_tree个训练集，我们分别训练n_tree个决策树模型</li>
+<li>对于单个决策树模型，假设训练样本特征的个数为n，那么每次分裂时根据信息增益/信息增益比/基尼指数选择最好的特征进行分裂</li>
+<li>每棵树都一直这样分裂下去，直到该节点的所有训练样例都属于同一类。在决策树的分裂过程中不需要剪枝</li>
+<li>将生成的多棵决策树组成随机森林。对于分类问题，按多棵树分类器投票决定最终分类结果；对于回归问题，由多棵树预测值的均值决定最终预测结果</li>
+</ol>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/arithmetic-gradientDescent/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习-梯度下降</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/ml-logisticRegression/">
+                        <span class="hidden-mobile">机器学习-逻辑回归</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习-决策树&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

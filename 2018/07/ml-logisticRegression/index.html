@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习-逻辑回归 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-23 10:00">
+      2018年7月23日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h2><h3 id="逻辑回归的概念"><a href="#逻辑回归的概念" class="headerlink" title="逻辑回归的概念"></a>逻辑回归的概念</h3><p><strong>Logistic Regression</strong> 在《机器学习》-周志华一书中又叫<strong>对数几率回归</strong>。逻辑回归和多重线性回归实际上有很多的相同之处，除了它们的因变量（函数）不同外，其他的基本差不多，所以逻辑回归和线性回归又统属于<strong>广义线性模型</strong>（generalizedlinear  model）。</p>
+<p>广义线性模型的形式其实都差不多，不同的就是因变量（函数）的不同。</p>
+<ul>
+<li>如果是<strong>连续</strong>的，就是<strong>多重线性回归</strong></li>
+<li>如果是<strong>二项分布</strong>，就是<strong>Logistic回归</strong></li>
+<li>如果是<strong>Poisson分布</strong>，就是<strong>Poisson分布</strong></li>
+<li>如果是<strong>负二项分布</strong>，就是<strong>负二项回归</strong></li>
+</ul>
+<p>Logistic回归的因变量可以是二分类的，也可以是多分类的，但是二分类的更为常用，也更加容易解释。所以实际中最常用的就是二分类的Logistic回归。 </p>
+<h3 id="线性回归-Logistic回归"><a href="#线性回归-Logistic回归" class="headerlink" title="线性回归-Logistic回归"></a>线性回归-Logistic回归</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230108.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="Logistic回归的主要用途："><a href="#Logistic回归的主要用途：" class="headerlink" title="Logistic回归的主要用途："></a>Logistic回归的<strong>主要用途</strong>：</h3><ul>
+<li>寻找危险因素：寻找某一疾病的危险因素等；</li>
+<li>预测：根据模型，预测在不同的自变量情况下，发生某病或某种情况的概率有多大；</li>
+<li>判别：实际上跟预测有些类似，也是根据模型，判断某人属于某病或属于某种情况的概率有多大，也就是看一下这个人有多大的可能性是属于某病。</li>
+</ul>
+<p>Logistic回归主要在<strong>流行病学</strong>中应用较多，比较常用的情形是探索某疾病的危险因素，根据危险因素预测某疾病发生的概率，等等。例如，想探讨胃癌发生的危险因素，可以选择两组人群，一组是胃癌组，一组是非胃癌组，两组人群肯定有不同的体征和生活方式等。这里的因变量就是是否胃癌，即“是”或“否”，自变量就可以包括很多了，例如年龄、性别、饮食习惯、幽门螺杆菌感染等。自变量既可以是连续的，也可以是分类的。 </p>
+<h3 id="常规步骤"><a href="#常规步骤" class="headerlink" title="常规步骤"></a><strong>常规步骤</strong></h3><p>Regression问题的常规步骤为：</p>
+<ol>
+<li>寻找<strong>h</strong>函数（即hypothesis）；</li>
+<li>构造<strong>J</strong>函数（损失函数）；</li>
+<li>想办法使得J<strong>函数最小</strong>并求得回归参数（θ）</li>
+</ol>
+<h3 id="构造预测函数（hypothesis）"><a href="#构造预测函数（hypothesis）" class="headerlink" title="构造预测函数（hypothesis）"></a>构造预测函数（hypothesis）</h3><p>Logistic回归虽然名字里带“回归”，但是它实际上是一种分类方法，主要用于两分类问题（即输出只有两种，分别代表两个类别），所以利用了Logistic函数（或称为<strong>Sigmoid函数</strong>），函数形式为：</p>
+<h2 id="g-z-frac-1-1-e-z"><a href="#g-z-frac-1-1-e-z" class="headerlink" title="$g(z)=\frac{1}{1+e^{-z}}$"></a>$g(z)=\frac{1}{1+e^{-z}}$</h2><p>为了方便后面使用我们求出$g(z)$的导数：</p>
+<h2 id="g-‘-z-frac1-1-e-z-cdot-1-frac1-1-e-z-g-z-1-g-z"><a href="#g-‘-z-frac1-1-e-z-cdot-1-frac1-1-e-z-g-z-1-g-z" class="headerlink" title="$g^{‘}(z)=\frac1{1+e^{-z} } \cdot (1- \frac1{1+e^{-z} })=g(z)(1-g(z))$"></a>$g^{‘}(z)=\frac1{1+e^{-z} } \cdot (1- \frac1{1+e^{-z} })=g(z)(1-g(z))$</h2><p>Sigmoid 函数在有个很漂亮的“S”形，如下图所示 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230109.png" srcset="/img/loading.gif" alt="image"></p>
+<h3 id="构建预测函数"><a href="#构建预测函数" class="headerlink" title="构建预测函数"></a>构建预测函数</h3><p><strong>决策边界</strong>又分为<strong>线性的决策边界</strong>和<strong>非线性的决策边界</strong></p>
+<p>线性的决策边界：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230110.png" srcset="/img/loading.gif" alt="1"></p>
+<p>非线性的决策边界：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230111.png" srcset="/img/loading.gif" alt="2"></p>
+<p>对于线性边界的情况，边界形式如下：</p>
+<h2 id="theta-0-theta-1x-1-cdot-cdot-cdot-theta-nx-n-sum-i-1-n-theta-ix-i-theta-Tx"><a href="#theta-0-theta-1x-1-cdot-cdot-cdot-theta-nx-n-sum-i-1-n-theta-ix-i-theta-Tx" class="headerlink" title="$\theta_0+\theta_1x_1+\cdot \cdot \cdot + \theta_nx_n=\sum_{i=1}^n \theta_ix_i = \theta^Tx$"></a>$\theta_0+\theta_1x_1+\cdot \cdot \cdot + \theta_nx_n=\sum_{i=1}^n \theta_ix_i = \theta^Tx$</h2><p>构建的预测函数为：</p>
+<h2 id="h-theta-x-g-theta-Tx-frac1-1-e-theta-Tx"><a href="#h-theta-x-g-theta-Tx-frac1-1-e-theta-Tx" class="headerlink" title="$h_\theta(x)=g(\theta^Tx)=\frac1{1+e^{-\theta^Tx}}$"></a>$h_\theta(x)=g(\theta^Tx)=\frac1{1+e^{-\theta^Tx}}$</h2><h3 id="构建损失函数"><a href="#构建损失函数" class="headerlink" title="构建损失函数"></a>构建损失函数</h3><p>由于是二项分布，函数<strong>$h_ \theta(x)$</strong>的值就有特殊的含义，它所表示的是结果取1的概率，因此对于输入x的分类结果就判别为类别1和类别0的概率分别为：</p>
+<h2 id="P-y-1-x-theta-h-theta-x-P-y-0-x-theta-1-h-theta-x"><a href="#P-y-1-x-theta-h-theta-x-P-y-0-x-theta-1-h-theta-x" class="headerlink" title="$P(y=1|x;\theta)=h_\theta(x) \\ P(y=0|x;\theta)=1-h_\theta(x)$"></a>$P(y=1|x;\theta)=h_\theta(x) \\ P(y=0|x;\theta)=1-h_\theta(x)$</h2><p>所以：</p>
+<h2 id="P-y-x-theta-h-theta-x-y-1-h-theta-x-1-y"><a href="#P-y-x-theta-h-theta-x-y-1-h-theta-x-1-y" class="headerlink" title="$P(y|x;\theta) = {h_\theta(x) }^y{(1-h_\theta(x)) }^{1-y}$"></a>$P(y|x;\theta) = {h_\theta(x) }^y{(1-h_\theta(x)) }^{1-y}$</h2><h3 id="构建似然函数"><a href="#构建似然函数" class="headerlink" title="构建似然函数"></a>构建似然函数</h3><h2 id="L-theta-prod-i-1-n-P-y-i-x-i-theta-prod-i-1-n-h-theta-x-i-y-i-1-h-theta-x-i-1-y-i"><a href="#L-theta-prod-i-1-n-P-y-i-x-i-theta-prod-i-1-n-h-theta-x-i-y-i-1-h-theta-x-i-1-y-i" class="headerlink" title="$L(\theta)=\prod_{i=1}^n P(y_i|x_i;\theta) =\prod_{i=1}^n {h_\theta(x_i) }^{y_i}{(1-h_\theta(x_i)) }^{1-y_i}$"></a>$L(\theta)=\prod_{i=1}^n P(y_i|x_i;\theta) =\prod_{i=1}^n {h_\theta(x_i) }^{y_i}{(1-h_\theta(x_i)) }^{1-y_i}$</h2><h3 id="对数似然函数"><a href="#对数似然函数" class="headerlink" title="对数似然函数"></a>对数似然函数</h3><h2 id="l-theta-logL-theta-sum-i-1-n-y-ilogh-theta-x-i-1-y-i-log-1-h-theta-x-i"><a href="#l-theta-logL-theta-sum-i-1-n-y-ilogh-theta-x-i-1-y-i-log-1-h-theta-x-i" class="headerlink" title="$l(\theta)=logL(\theta)=\sum_{i=1}^n(y_ilogh_\theta(x_i)+(1-y_i)log(1-h_\theta(x_i)))$"></a>$l(\theta)=logL(\theta)=\sum_{i=1}^n(y_ilogh_\theta(x_i)+(1-y_i)log(1-h_\theta(x_i)))$</h2><p>最大似然估计就是求使<strong>$l(\theta)$</strong>取最大值时的θ，其实这里可以使用梯度上升法求解，求得的θ就是要求的最佳参数。</p>
+<h3 id="梯度下降法求的最小值"><a href="#梯度下降法求的最小值" class="headerlink" title="梯度下降法求的最小值"></a><strong>梯度下降法求的最小值</strong></h3><h4 id="θ更新过程："><a href="#θ更新过程：" class="headerlink" title="θ更新过程："></a>θ更新过程：</h4><h2 id="theta-j-theta-j-a-frac-partial-l-theta-partial-theta-j"><a href="#theta-j-theta-j-a-frac-partial-l-theta-partial-theta-j" class="headerlink" title="$\theta_j :=\theta_j-a(\frac{\partial l(\theta)}{\partial \theta_j})$"></a><strong><em>$\theta_j :=\theta_j-a(\frac{\partial l(\theta)}{\partial \theta_j})$</em></strong></h2><h4 id="对-theta-求偏导"><a href="#对-theta-求偏导" class="headerlink" title="对$\theta$求偏导"></a>对$\theta$求偏导</h4><h2 id="frac-partial-l-theta-partial-theta-j-frac-partial-g-theta-Tx-partial-theta-j-frac-y-g-theta-Tx-frac-1-y-g-theta-Tx"><a href="#frac-partial-l-theta-partial-theta-j-frac-partial-g-theta-Tx-partial-theta-j-frac-y-g-theta-Tx-frac-1-y-g-theta-Tx" class="headerlink" title="$\frac{\partial l(\theta)}{\partial \theta_j}=\frac{\partial g(\theta^Tx)}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$"></a>$\frac{\partial l(\theta)}{\partial \theta_j}=\frac{\partial g(\theta^Tx)}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$</h2><h2 id="g-theta-Tx-1-g-theta-Tx-frac-partial-theta-Tx-partial-theta-j-frac-y-g-theta-Tx-frac-1-y-g-theta-Tx"><a href="#g-theta-Tx-1-g-theta-Tx-frac-partial-theta-Tx-partial-theta-j-frac-y-g-theta-Tx-frac-1-y-g-theta-Tx" class="headerlink" title="$=g(\theta^Tx)(1-g(\theta^Tx)) \frac{\partial\theta^Tx}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$"></a>$=g(\theta^Tx)(1-g(\theta^Tx)) \frac{\partial\theta^Tx}{\partial \theta_j}(\frac{y}{g(\theta^Tx)}-\frac{1-y}{g(\theta^Tx)})$</h2><h2 id="y-1-g-theta-Tx-1-y-g-theta-Tx-x-j"><a href="#y-1-g-theta-Tx-1-y-g-theta-Tx-x-j" class="headerlink" title="$=(y(1-g(\theta^Tx))-(1-y)g(\theta^Tx))x_j$"></a>$=(y(1-g(\theta^Tx))-(1-y)g(\theta^Tx))x_j$</h2><h2 id="y-h-theta-x-x-j"><a href="#y-h-theta-x-x-j" class="headerlink" title="$=(y-h_\theta(x))x_j$"></a>$=(y-h_\theta(x))x_j$</h2><h4 id="θ更新过程就可以写为："><a href="#θ更新过程就可以写为：" class="headerlink" title="θ更新过程就可以写为："></a>θ更新过程就可以写为：</h4><h2 id="theta-j-theta-j-a-sum-i-1-n-y-i-h-theta-x-i-x-i-j"><a href="#theta-j-theta-j-a-sum-i-1-n-y-i-h-theta-x-i-x-i-j" class="headerlink" title="$\theta_j :=\theta_j-a\sum_{i=1}^n (y_i-h_\theta(x_i))x_i^j$"></a>$\theta_j :=\theta_j-a\sum_{i=1}^n (y_i-h_\theta(x_i))x_i^j$</h2><h4 id="但是在在Andrew-Ng的课程中将-J-theta-取为下式，即："><a href="#但是在在Andrew-Ng的课程中将-J-theta-取为下式，即：" class="headerlink" title="但是在在Andrew Ng的课程中将 $J(\theta)$取为下式，即："></a>但是在在Andrew Ng的课程中将 $J(\theta)$取为下式，即：</h4><h2 id="J-theta-frac-1-m-l-theta"><a href="#J-theta-frac-1-m-l-theta" class="headerlink" title="$J(\theta)=-\frac{1}{m}l(\theta)$"></a>$J(\theta)=-\frac{1}{m}l(\theta)$</h2><h4 id="因为乘了一个负的系数-1-m，所以取-J-theta-最小值时的θ为要求的最佳参数。"><a href="#因为乘了一个负的系数-1-m，所以取-J-theta-最小值时的θ为要求的最佳参数。" class="headerlink" title="因为乘了一个负的系数-1/m，所以取 $J(\theta)$最小值时的θ为要求的最佳参数。"></a>因为乘了一个负的系数-1/m，所以取 $J(\theta)$最小值时的θ为要求的最佳参数。</h4><h2 id="frac-partial-l-theta-partial-theta-j-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j"><a href="#frac-partial-l-theta-partial-theta-j-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j" class="headerlink" title="$\frac{\partial l(\theta)}{\partial \theta_j}=\frac 1 m \sum_{i=1}^n(h_\theta(x_i)-y_i)x_i^j$"></a>$\frac{\partial l(\theta)}{\partial \theta_j}=\frac 1 m \sum_{i=1}^n(h_\theta(x_i)-y_i)x_i^j$</h2><h4 id="相应的-theta"><a href="#相应的-theta" class="headerlink" title="相应的$\theta$:"></a>相应的$\theta$:</h4><h2 id="theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j"><a href="#theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j" class="headerlink" title="$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j$"></a>$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j$</h2><h3 id="向量化（Vectorization-）"><a href="#向量化（Vectorization-）" class="headerlink" title="向量化（Vectorization ）"></a>向量化（<strong>Vectorization</strong> ）</h3><p>Vectorization是使用矩阵计算来代替for循环，以简化计算过程，提高效率。</p>
+<p>如上式，Σ(…)是一个求和的过程，显然需要一个for语句循环m次，所以根本没有完全的实现vectorization。</p>
+<h4 id="下面介绍向量化的过程："><a href="#下面介绍向量化的过程：" class="headerlink" title="下面介绍向量化的过程："></a>下面介绍向量化的过程：</h4><p>约定训练数据的矩阵形式如下，x的每一行为一条训练样本，而每一列为不同的特称取值：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230112.png" srcset="/img/loading.gif" alt="image"></p>
+<h5 id="g-A-的参数A为一列向量，所以实现g函数时要支持列向量作为参数，并返回列向量。由上式可知-h-theta-x-y-可以由-g-A-y-一次求得"><a href="#g-A-的参数A为一列向量，所以实现g函数时要支持列向量作为参数，并返回列向量。由上式可知-h-theta-x-y-可以由-g-A-y-一次求得" class="headerlink" title="g(A)的参数A为一列向量，所以实现g函数时要支持列向量作为参数，并返回列向量。由上式可知 $h_\theta(x)-y$可以由$g(A)-y$一次求得"></a>g(A)的参数A为一列向量，所以实现g函数时要支持列向量作为参数，并返回列向量。由上式可知 $h_\theta(x)-y$可以由$g(A)-y$一次求得</h5><h4 id="θ更新过程可以改为"><a href="#θ更新过程可以改为" class="headerlink" title="θ更新过程可以改为"></a>θ更新过程可以改为</h4><h2 id="theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j-theta-j-a-frac-1-m-sum-i-1-n-e-ix-i-j-theta-j-a-frac1-m-x-TE"><a href="#theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j-theta-j-a-frac-1-m-sum-i-1-n-e-ix-i-j-theta-j-a-frac1-m-x-TE" class="headerlink" title="$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j=\theta_j-a \frac 1 m \sum_{i=1}^n e_ix_i^j=\theta_j-a \frac1 m x^TE$"></a>$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j=\theta_j-a \frac 1 m \sum_{i=1}^n e_ix_i^j=\theta_j-a \frac1 m x^TE$</h2><h4 id="综上所述，Vectorization后θ更新的步骤如下："><a href="#综上所述，Vectorization后θ更新的步骤如下：" class="headerlink" title="综上所述，Vectorization后θ更新的步骤如下："></a>综上所述，Vectorization后θ更新的步骤如下：</h4><hr>
+<ol>
+<li><h4 id="求-A-x-cdot-theta"><a href="#求-A-x-cdot-theta" class="headerlink" title="求:$A=x \cdot \theta$"></a>求:$A=x \cdot \theta$</h4></li>
+<li><h4 id="求-E-g-A-y"><a href="#求-E-g-A-y" class="headerlink" title="求$E=g(A)-y$"></a>求$E=g(A)-y$</h4></li>
+<li><h4 id="求-theta-theta-ax-TE"><a href="#求-theta-theta-ax-TE" class="headerlink" title="求$\theta:=\theta-ax^TE$"></a>求$\theta:=\theta-ax^TE$</h4></li>
+</ol>
+<hr>
+<h3 id="正则化Regularization"><a href="#正则化Regularization" class="headerlink" title="正则化Regularization"></a><strong>正则化Regularization</strong></h3><p>同样逻辑回归也有<strong>欠拟合、适合拟合、过拟合问题</strong></p>
+<p>对于线性回归或逻辑回归的损失函数构成的模型，可能会有些权重很大，有些权重很小，导致过拟合（就是过分拟合了训练数据），使得模型的复杂度提高，泛化能力较差（对未知数据的预测能力）。</p>
+<p>下面左图即为欠拟合，中图为合适的拟合，右图为过拟合。</p>
+<p>​             <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230113.png" srcset="/img/loading.gif" alt="image"></p>
+<p>过拟合问题往往源自过多的特征。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a><strong>解决方法</strong></h4><p>1）减少特征数量（减少特征会失去一些信息，即使特征选的很好）</p>
+<ul>
+<li>可用人工选择要保留的特征；</li>
+<li>模型选择算法；</li>
+</ul>
+<p>2）正则化（特征较多时比较有效）</p>
+<ul>
+<li>保留所有特征，但减少θ的大小</li>
+</ul>
+<h4 id="正则化方法"><a href="#正则化方法" class="headerlink" title="正则化方法"></a><strong>正则化方法</strong></h4><p>正则化是结构风险最小化策略的实现，是在经验风险上加一个正则化项或惩罚项。正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化项就越大。</p>
+<p>在<a href="https://0520.tech/2018/07/21/2018-07-21-ml-linearRegressionL1L2/">线性回归算法的正则化问题</a>,正则项可以取不同的形式，在回归问题中取平方损失，就是参数的L2范数，也可以取L1范数。取平方损失时，模型的损失函数变为： </p>
+<h2 id="J-theta-frac1-2m-sum-i-1-n-h-theta-x-i-y-i-2-lambda-sum-j-1-n-theta-j-2"><a href="#J-theta-frac1-2m-sum-i-1-n-h-theta-x-i-y-i-2-lambda-sum-j-1-n-theta-j-2" class="headerlink" title="$J(\theta)=\frac1{2m}\sum_{i=1}^{n}(h_\theta(x_i)-y_i)^2+\lambda\sum_{j=1}^n \theta_j^2$"></a>$J(\theta)=\frac1{2m}\sum_{i=1}^{n}(h_\theta(x_i)-y_i)^2+\lambda\sum_{j=1}^n \theta_j^2$</h2><h4 id="lambda是正则项系数："><a href="#lambda是正则项系数：" class="headerlink" title="lambda是正则项系数："></a>lambda是正则项系数：</h4><ul>
+<li>如果它的值很大，说明对模型的复杂度惩罚大，对拟合数据的损失惩罚小，这样它就不会过分拟合数据，在训练数据上的偏差较大，在未知数据上的方差较小，但是可能出现欠拟合的现象；</li>
+<li>如果它的值很小，说明比较注重对训练数据的拟合，在训练数据上的偏差会小，但是可能会导致过拟合。</li>
+</ul>
+<h4 id="正则化后的梯度下降算法θ的更新变为："><a href="#正则化后的梯度下降算法θ的更新变为：" class="headerlink" title="正则化后的梯度下降算法θ的更新变为："></a>正则化后的梯度下降算法θ的更新变为：</h4><h2 id="theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j-frac-lambda-m-theta-j"><a href="#theta-j-theta-j-a-frac-1-m-sum-i-1-n-h-theta-x-i-y-i-x-i-j-frac-lambda-m-theta-j" class="headerlink" title="$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j - \frac \lambda m \theta_j$"></a>$\theta_j :=\theta_j-a \frac 1 m \sum_{i=1}^n (h_\theta(x_i)-y_i)x_i^j - \frac \lambda m \theta_j$</h2><h3 id="其他优化算法"><a href="#其他优化算法" class="headerlink" title="其他优化算法"></a><strong>其他优化算法</strong></h3><ul>
+<li>Conjugate gradient method(共轭梯度法)</li>
+<li>Quasi-Newton method(拟牛顿法)</li>
+<li>BFGS method(局部优化法)</li>
+<li>L-BFGS(Limited-memory BFGS)（有限内存局部优化法）</li>
+</ul>
+<p>后二者由拟牛顿法引申出来，与梯度下降算法相比，这些算法的优点是：</p>
+<ul>
+<li>第一，不需要手动的选择步长；</li>
+<li>第二，通常比梯度下降算法快；</li>
+</ul>
+<p>但是缺点是更复杂。</p>
+<h3 id="多类分类问题"><a href="#多类分类问题" class="headerlink" title="多类分类问题"></a>多类分类问题</h3><p>多类分类问题中,我们的训练集中有多个类(&gt;2),我们无法仅仅用一个二元变量(0或1)来做判断依据。例如我们要预测天气情况分四种类型:晴天、多云、下雨或下雪。下面是一个多类分类问题可能的情况: </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230114.png" srcset="/img/loading.gif" alt="image"></p>
+<p>一种解决这类问题的途径是采用一对多(One-vs-All)方法（可以将其看做成二类分类问题：保留其中的一类，剩下的作为另一类 ）。在一对多方法中,我们将多类分类问题转化成二元分类问题。为了能实现这样的转变,我们将多个类中的一个类标记为正向类(y=1),然后将其他所有类都标记为负向类,这个模型记作：</p>
+<h2 id="h-theta-1-x"><a href="#h-theta-1-x" class="headerlink" title="$h_\theta^{(1)}(x)$"></a>$h_\theta^{(1)}(x)$</h2><p>接着,类似地第我们选择另一个类标记为正向类(y=2),再将其它类都标记为负向类,将这个模型记作,</p>
+<h2 id="h-theta-2-x"><a href="#h-theta-2-x" class="headerlink" title="$h_\theta^{(2)}(x)$"></a>$h_\theta^{(2)}(x)$</h2><p>依此类推。最后我们得到一系列的模型简记为: </p>
+<h2 id="h-theta-i-x-p-y-i-x-theta"><a href="#h-theta-i-x-p-y-i-x-theta" class="headerlink" title="$h_\theta^{(i)}(x)=p(y=i|x;\theta)$"></a>$h_\theta^{(i)}(x)=p(y=i|x;\theta)$</h2><p>其中 i = 1,2,3,…,k步骤可以记作下图： </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230115.png" srcset="/img/loading.gif" alt="image"></p>
+<p>最后,在我们需要做预测时,我们将所有的分类机都运行一遍,然后对每一个输入变量,都选择最高可能性的输出变量。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">逻辑回归</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/ml-DecisionTree/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习-决策树</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/ml-linearRegression-python/">
+                        <span class="hidden-mobile">机器学习之线性回归python实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习-逻辑回归&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

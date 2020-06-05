@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>Anaconda python3.6及pycharm安装和简单使用--Ubuntu16.04 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-11-09 10:00">
+      2018年11月9日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      978 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="Ubuntu-安装Anaconda基于python3-6"><a href="#Ubuntu-安装Anaconda基于python3-6" class="headerlink" title="Ubuntu 安装Anaconda基于python3.6"></a>Ubuntu 安装Anaconda基于python3.6</h3><ul>
+<li><p>anaconda是python发行的包的管理工具，其中自带python的版本，还带很多python的包.安装它比安装python好。可以省掉再安装python包的时间。推荐使用Anaconda,用Anaconda安装python的包是非常便捷高效的，比如安装scrapy框架，如果用原生python的pip安装，要安装很多依赖的包，还经常报错，但是用Anaconda直接输入conda install scrapy就可以了，其他的都不用管了，就是这么方便。另外它自带了 180多个python常用的包，简直就是好得没朋友。</p>
+</li>
+<li><p>要利用 Python 进行科学计算，就需要一一安装所需的模块， 而这些模块可能又依赖于其它的软件包或库，安装和使用起来相对麻烦。Anaconda 就是将科学计算所需要的模块都编译好，然后打包以发行版的形式供用户使用的一个常用的科学计算环境。 </p>
+</li>
+</ul>
+<h4 id="它包含了众多流行的科学、数学、工程、数据分析的-Python-包。"><a href="#它包含了众多流行的科学、数学、工程、数据分析的-Python-包。" class="headerlink" title="它包含了众多流行的科学、数学、工程、数据分析的 Python 包。"></a>它包含了众多流行的科学、数学、工程、数据分析的 Python 包。</h4><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><h4 id="官网：https-www-anaconda-com"><a href="#官网：https-www-anaconda-com" class="headerlink" title="官网：https://www.anaconda.com/"></a><a href="https://www.anaconda.com/" target="_blank" rel="noopener">官网</a>：<a href="https://www.anaconda.com/" target="_blank" rel="noopener">https://www.anaconda.com/</a></h4><h4 id="最新版本下载地址：https-www-anaconda-com-download"><a href="#最新版本下载地址：https-www-anaconda-com-download" class="headerlink" title="最新版本下载地址：https://www.anaconda.com/download/"></a><a href="https://www.anaconda.com/download/" target="_blank" rel="noopener">最新版本下载地址</a>：<a href="https://www.anaconda.com/download/" target="_blank" rel="noopener">https://www.anaconda.com/download/</a></h4><h4 id="历史版本：https-repo-anaconda-com-archive"><a href="#历史版本：https-repo-anaconda-com-archive" class="headerlink" title="历史版本：https://repo.anaconda.com/archive/"></a><a href="https://repo.anaconda.com/archive/" target="_blank" rel="noopener">历史版本</a>：<a href="https://repo.anaconda.com/archive/" target="_blank" rel="noopener">https://repo.anaconda.com/archive/</a></h4><p>对应有python3.6和python2.7的版本，可自行选择。</p>
+<p>我们这里下载的是<strong><a href="https://repo.anaconda.com/archive/Anaconda3-4.4.0-Linux-x86_64.sh" target="_blank" rel="noopener">Anaconda3-4.4.0-Linux-x86_64.sh</a>(对应是64位python3.6版本)</strong></p>
+<h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><ul>
+<li><h4 id="进入文件所在路径"><a href="#进入文件所在路径" class="headerlink" title="进入文件所在路径"></a>进入文件所在路径</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183254.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="开始安装-1"><a href="#开始安装-1" class="headerlink" title="开始安装"></a>开始安装</h4><ul>
+<li><h5 id="出现欢迎信息，-阅读许可文件"><a href="#出现欢迎信息，-阅读许可文件" class="headerlink" title="出现欢迎信息， 阅读许可文件"></a>出现欢迎信息， 阅读许可文件</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183255.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="同意许可"><a href="#同意许可" class="headerlink" title="同意许可"></a>同意许可</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183256.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="选择安装目录-默认"><a href="#选择安装目录-默认" class="headerlink" title="选择安装目录-默认"></a>选择安装目录-默认</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183257.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="installing"><a href="#installing" class="headerlink" title="installing"></a>installing</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183258.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="添加系统环境"><a href="#添加系统环境" class="headerlink" title="添加系统环境"></a>添加系统环境</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183259.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="安装完成"><a href="#安装完成" class="headerlink" title="安装完成"></a>安装完成</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183300.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="使环境生效"><a href="#使环境生效" class="headerlink" title="使环境生效"></a>使环境生效</h5></li>
+</ul>
+<pre><code class="hljs shell">seven@ubuntu:~/Desktop$ source ~/.bashrc</code></pre>
+
+
+</li>
+</ul>
+<h3 id="Conda的环境管理"><a href="#Conda的环境管理" class="headerlink" title="Conda的环境管理"></a>Conda的环境管理</h3><ul>
+<li><p>创建一个名为python-seven的环境，指定Python版本是3.6（不用管是3.6.x，conda会为我们自动寻找3.6.x中的最新版本）</p>
+<pre><code class="hljs shell">seven@ubuntu:~$ conda create --name python-seven python=3.6</code></pre>
+</li>
+<li><p>安装好后，使用activate激活某个环境</p>
+<pre><code class="hljs shell">seven@ubuntu:~$ source activate python-seven
+(python-seven) seven@ubuntu:~$</code></pre>
+</li>
+<li><p>测试环境</p>
+<pre><code class="hljs shell">(python-seven) seven@ubuntu:~$ python --version
+Python 3.6.2 :: Continuum Analytics, Inc.
+(python-seven) seven@ubuntu:~$</code></pre>
+</li>
+<li><p>退出虚拟环境</p>
+<pre><code class="hljs shell">(python-seven) seven@ubuntu:~$ source deactivate python-seven
+seven@ubuntu:~$</code></pre>
+</li>
+<li><p>删除虚拟环境</p>
+<pre><code class="hljs shell">seven@ubuntu:~$ conda remove --name python-seven --all</code></pre>
+
+
+</li>
+</ul>
+<h3 id="ubuntu16-04-安装pycharm"><a href="#ubuntu16-04-安装pycharm" class="headerlink" title="ubuntu16.04 安装pycharm"></a>ubuntu16.04 安装pycharm</h3><p>PyCharm是一种Python IDE，其带有一整套可以帮助用户在使用Python语言开发时提高其效率的工具，比如， 调试、语法高亮、Project管理、代码跳转、智能提示、自动完成、单元测试、版本控制等等。此外，该IDE提供了一些高级功能，以用于支持Django框架下的专业Web开发。同时支持Google App Engine，更酷的是，PyCharm支持IronPython！这些功能在先进代码分析程序的支持下，使 PyCharm 成为 Python 专业开发人员和刚起步人员使用的有力工具。</p>
+<h3 id="下载地址-1"><a href="#下载地址-1" class="headerlink" title="下载地址"></a>下载地址</h3><p><a href="https://www.jetbrains.com/pycharm/download/#section=windows" target="_blank" rel="noopener">官网</a>：<a href="https://www.jetbrains.com/pycharm/download/#section=windows" target="_blank" rel="noopener">https://www.jetbrains.com/pycharm/download/#section=windows</a></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183301.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="开始安装-2"><a href="#开始安装-2" class="headerlink" title="开始安装"></a>开始安装</h3><ul>
+<li><h4 id="进入文件所在路径-1"><a href="#进入文件所在路径-1" class="headerlink" title="进入文件所在路径"></a>进入文件所在路径</h4><pre><code class="hljs shell">seven@ubuntu:~$ cd Desktop/
+seven@ubuntu:~/Desktop$ ls
+Anaconda3-4.4.0-Linux-x86_64.sh  Mnist  pycharm-community-2018.2.4.tar.gz</code></pre>
+</li>
+<li><h4 id="解压文件"><a href="#解压文件" class="headerlink" title="解压文件"></a>解压文件</h4><pre><code class="hljs shell">seven@ubuntu:~/Desktop$ sudo tar -zxvf pycharm-community-2018.2.4.tar.gz -C /opt/</code></pre>
+</li>
+<li><h4 id="开始安装-3"><a href="#开始安装-3" class="headerlink" title="开始安装"></a>开始安装</h4><pre><code class="hljs shell">seven@ubuntu:~/Desktop$ cd /opt/pycharm-community-2018.2.4/bin/
+seven@ubuntu:/opt/pycharm-community-2018.2.4/bin$ ./p
+printenv.py  pycharm.sh   
+seven@ubuntu:/opt/pycharm-community-2018.2.4/bin$ ./pycharm.sh</code></pre>
+
+
+
+</li>
+</ul>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><ul>
+<li><h4 id="是否导入设置"><a href="#是否导入设置" class="headerlink" title="是否导入设置"></a>是否导入设置</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183302.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="查看并接受协议"><a href="#查看并接受协议" class="headerlink" title="查看并接受协议"></a>查看并接受协议</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183303.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="选择主题"><a href="#选择主题" class="headerlink" title="选择主题"></a>选择主题</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183304.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="创建项目保存路径"><a href="#创建项目保存路径" class="headerlink" title="创建项目保存路径"></a>创建项目保存路径</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183305.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="选择是否下载插件"><a href="#选择是否下载插件" class="headerlink" title="选择是否下载插件"></a>选择是否下载插件</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183306.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183307.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="创建项目或打开项目"><a href="#创建项目或打开项目" class="headerlink" title="创建项目或打开项目"></a>创建项目或打开项目</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183308.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="项目保存路径及解释器路径"><a href="#项目保存路径及解释器路径" class="headerlink" title="项目保存路径及解释器路径"></a>项目保存路径及解释器路径</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183309.png" srcset="/img/loading.gif" alt="1"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183310.png" srcset="/img/loading.gif" alt="1"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183311.png" srcset="/img/loading.gif" alt="1"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183312.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="创建代码-右键项目文件"><a href="#创建代码-右键项目文件" class="headerlink" title="创建代码-右键项目文件"></a>创建代码-右键项目文件</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183313.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="编写代码并执行"><a href="#编写代码并执行" class="headerlink" title="编写代码并执行"></a>编写代码并执行</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183314.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="修改字体–依次点击File-settings"><a href="#修改字体–依次点击File-settings" class="headerlink" title="修改字体–依次点击File-settings"></a>修改字体–依次点击File-settings</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183315.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183316.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h4 id="切换python解释器"><a href="#切换python解释器" class="headerlink" title="切换python解释器"></a>切换python解释器</h4><ul>
+<li><h5 id="依次点击File-settings"><a href="#依次点击File-settings" class="headerlink" title="依次点击File-settings"></a>依次点击File-settings</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183317.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="增加解释器-add"><a href="#增加解释器-add" class="headerlink" title="增加解释器-add"></a>增加解释器-add</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183318.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="找到我们刚刚用Anaconda-新建的python-seven的虚拟环境"><a href="#找到我们刚刚用Anaconda-新建的python-seven的虚拟环境" class="headerlink" title="找到我们刚刚用Anaconda 新建的python-seven的虚拟环境"></a>找到我们刚刚用Anaconda 新建的python-seven的虚拟环境</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183319.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+<li><h5 id="保存并退出"><a href="#保存并退出" class="headerlink" title="保存并退出"></a>保存并退出</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601183320.png" srcset="/img/loading.gif" alt="1"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>上述方法是采用<strong>Anaconda</strong> 配置 的<strong>python</strong>的开发环境</p>
+<p>如果你不用，自己配置，只需要把<strong>pycharm</strong>的解释器路径设置为你自己的<strong>python路径</strong>。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Anaconda/">Anaconda</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Anaconda/">Anaconda</a>
+                    
+                      <a class="hover-with-bg" href="/tags/pycharm/">pycharm</a>
+                    
+                      <a class="hover-with-bg" href="/tags/linux/">linux</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ubuntu/">ubuntu</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-numerical-sequence/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第一话之数值类型和序列类型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/11/linux-vim/">
+                        <span class="hidden-mobile">Linux-vim及python虚拟环境</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Anaconda python3.6及pycharm安装和简单使用--Ubuntu16.04&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

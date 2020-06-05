@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>神经网络之卷积神经网络反向传播算法 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-22 10:00">
+      2018年8月22日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="回顾DNN的反向传播算法"><a href="#回顾DNN的反向传播算法" class="headerlink" title="回顾DNN的反向传播算法"></a>回顾DNN的反向传播算法</h3><p>需要在理解深度神经网络的反向传播算来做预先理解，见<a href="https://0520.tech/2018/08/15/2018-08-15-DL-back-propagation/">神经网络入门-反向传播</a>所总结的反向传播四部曲：</p>
+<h4 id="反向传播的四项基本原则："><a href="#反向传播的四项基本原则：" class="headerlink" title="反向传播的四项基本原则："></a><strong>反向传播的四项基本原则</strong>：</h4><h4 id="基本形式"><a href="#基本形式" class="headerlink" title="基本形式:"></a>基本形式:</h4><ul>
+<li><h4 id="delta-i-L-bigtriangledown-out-E-total-times-sigma-prime-net-i-L"><a href="#delta-i-L-bigtriangledown-out-E-total-times-sigma-prime-net-i-L" class="headerlink" title="$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $"></a>$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $</h4></li>
+<li><h4 id="delta-l-sum-j-delta-j-l-1-w-ji-l-1-sigma-prime-net-i-l"><a href="#delta-l-sum-j-delta-j-l-1-w-ji-l-1-sigma-prime-net-i-l" class="headerlink" title="$\delta^{(l)} = \sum_j \delta_j^{(l+1)} w_{ji}^{(l+1)}  \sigma^{\prime}(net_i^{(l)})$"></a>$\delta^{(l)} = \sum_j \delta_j^{(l+1)} w_{ji}^{(l+1)}  \sigma^{\prime}(net_i^{(l)})$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-bias-i-l-delta-i-l"><a href="#frac-partial-E-total-partial-bias-i-l-delta-i-l" class="headerlink" title="$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$"></a>$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-w-ij-l-outh-j-l-1-delta-i-l"><a href="#frac-partial-E-total-partial-w-ij-l-outh-j-l-1-delta-i-l" class="headerlink" title="$\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$"></a>$\frac{\partial E_{total}}{\partial w_{ij}^{(l)}}=outh_j^{(l-1)}\delta_i^{(l)}$</h4></li>
+</ul>
+<h4 id="矩阵形式："><a href="#矩阵形式：" class="headerlink" title="矩阵形式："></a>矩阵形式：</h4><ul>
+<li><h4 id="delta-i-L-bigtriangledown-out-E-total-bigodot-sigma-prime-net-i-L-，-bigodot-是Hadamard乘积（对应位置相乘）"><a href="#delta-i-L-bigtriangledown-out-E-total-bigodot-sigma-prime-net-i-L-，-bigodot-是Hadamard乘积（对应位置相乘）" class="headerlink" title="$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \bigodot   \sigma^{\prime}(net_i^{(L)}) $ ， $\bigodot$是Hadamard乘积（对应位置相乘）"></a>$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \bigodot   \sigma^{\prime}(net_i^{(L)}) $ ， $\bigodot$是Hadamard乘积（对应位置相乘）</h4></li>
+<li><h4 id="delta-l-w-l-1-T-delta-l-1-bigodot-sigma-prime-net-l"><a href="#delta-l-w-l-1-T-delta-l-1-bigodot-sigma-prime-net-l" class="headerlink" title="$\delta^{(l)} = (w^{(l+1)})^T \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$"></a>$\delta^{(l)} = (w^{(l+1)})^T \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-bias-l-delta-l"><a href="#frac-partial-E-total-partial-bias-l-delta-l" class="headerlink" title="$\frac{\partial E_{total}}{\partial bias^{(l)}}=\delta^{(l)}$"></a>$\frac{\partial E_{total}}{\partial bias^{(l)}}=\delta^{(l)}$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-w-l-delta-l-outh-l-1-T"><a href="#frac-partial-E-total-partial-w-l-delta-l-outh-l-1-T" class="headerlink" title="$\frac{\partial E_{total}}{\partial w^{(l)}}=\delta^{(l)}(outh^{(l-1)})^T$"></a>$\frac{\partial E_{total}}{\partial w^{(l)}}=\delta^{(l)}(outh^{(l-1)})^T$</h4></li>
+</ul>
+<p>现在我们想把同样的思想用到卷积神经网络中，但是很明显，CNN有很多不同的地方（卷积计算层，池化层），不能直接去套用DNN的反向传播公式。</p>
+<h3 id="卷积神经网络的反向传播算法"><a href="#卷积神经网络的反向传播算法" class="headerlink" title="卷积神经网络的反向传播算法"></a>卷积神经网络的反向传播算法</h3><p>卷积神经网络相比于多层感知机，增加了两种新的层次——卷积层与池化层。由于反向传播链的存在，要求出这两种层结构的梯度，仅需要解决输出对权值的梯度即可。 接下来我们根据卷积神经网络的网络结构来更新反向传播四部曲。</p>
+<p>我们在推导DNN的反向传播的时候，推导过程中使用了：</p>
+<h4 id="output-l-1-sigma-W-cdot-output-l-b"><a href="#output-l-1-sigma-W-cdot-output-l-b" class="headerlink" title="$output^{(l+1)}=\sigma(W \cdot output^{(l)}+b)$"></a>$output^{(l+1)}=\sigma(W \cdot output^{(l)}+b)$</h4><p>而对于卷积神经网络，我们使用卷积和池化的公式进行重新推导：</p>
+<h4 id="卷积层：-output-l-1-sigma-output-l-W-b"><a href="#卷积层：-output-l-1-sigma-output-l-W-b" class="headerlink" title="卷积层：$output^{(l+1)}=\sigma( output^{(l)}*W+b)$"></a>卷积层：$output^{(l+1)}=\sigma( output^{(l)}*W+b)$</h4><h4 id="池化层：-output-l-1-subsampling-output-l-b"><a href="#池化层：-output-l-1-subsampling-output-l-b" class="headerlink" title="池化层：$output^{(l+1)}=subsampling( output^{(l)}+b)$"></a>池化层：$output^{(l+1)}=subsampling( output^{(l)}+b)$</h4><h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>我们在回忆下：</p>
+<h4 id="delta-l-frac-partial-E-total-partial-net-l"><a href="#delta-l-frac-partial-E-total-partial-net-l" class="headerlink" title="$\delta^{(l)}=\frac{\partial E_{total}}{\partial net^{(l)}} $"></a>$\delta^{(l)}=\frac{\partial E_{total}}{\partial net^{(l)}} $</h4><h4 id="frac-partial-E-total-partial-net-l-1-cdot-frac-partial-net-l-1-partial-net-l"><a href="#frac-partial-E-total-partial-net-l-1-cdot-frac-partial-net-l-1-partial-net-l" class="headerlink" title="$= \frac{\partial E_{total}}{\partial net^{(l+1)}} \cdot \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$"></a>$= \frac{\partial E_{total}}{\partial net^{(l+1)}} \cdot \frac{\partial net^{(l+1)}}{\partial net^{(l)}}$</h4><h4 id="delta-l-1-times-frac-partial-（output-l-W-b）-partial-net-l"><a href="#delta-l-1-times-frac-partial-（output-l-W-b）-partial-net-l" class="headerlink" title="$= \delta^{(l+1)} \times  \frac{\partial （output^{(l)}*W+b）}{\partial net^{(l)}}$"></a>$= \delta^{(l+1)} \times  \frac{\partial （output^{(l)}*W+b）}{\partial net^{(l)}}$</h4><h4 id="delta-l-1-times-frac-partial-（output-l-W-b）-partial-out-l-times-frac-partial-out-l-partial-net-l"><a href="#delta-l-1-times-frac-partial-（output-l-W-b）-partial-out-l-times-frac-partial-out-l-partial-net-l" class="headerlink" title="$= \delta^{(l+1)} \times   \frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} \times \frac{\partial out^{(l)}}{\partial net^{(l)}}$"></a>$= \delta^{(l+1)} \times   \frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} \times \frac{\partial out^{(l)}}{\partial net^{(l)}}$</h4><h4 id="delta-l-1-cdot-frac-partial-（output-l-W-b）-partial-out-l-cdot-sigma-prime-net-i-L"><a href="#delta-l-1-cdot-frac-partial-（output-l-W-b）-partial-out-l-cdot-sigma-prime-net-i-L" class="headerlink" title="$= \delta^{(l+1)} \cdot  \frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}}  \cdot \sigma^{\prime}(net_i^{(L)})$"></a>$= \delta^{(l+1)} \cdot  \frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}}  \cdot \sigma^{\prime}(net_i^{(L)})$</h4><p>接下来，就是计算卷积运算的求导：</p>
+<h4 id="frac-partial-（output-l-W-b）-partial-out-l"><a href="#frac-partial-（output-l-W-b）-partial-out-l" class="headerlink" title="$\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}}$"></a>$\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}}$</h4><p>假如我们要处理如下的卷积操作：</p>
+<h4 id="left-begin-array-ccc-a-11-amp-a-12-amp-a-13-a-21-amp-a-22-amp-a-23-a-31-amp-a-32-amp-a-33-end-array-right-left-begin-array-ccc-w-11-amp-w-12-w-21-amp-w-22-end-array-right-left-begin-array-ccc-z-11-amp-z-12-z-21-amp-z-22-end-array-right"><a href="#left-begin-array-ccc-a-11-amp-a-12-amp-a-13-a-21-amp-a-22-amp-a-23-a-31-amp-a-32-amp-a-33-end-array-right-left-begin-array-ccc-w-11-amp-w-12-w-21-amp-w-22-end-array-right-left-begin-array-ccc-z-11-amp-z-12-z-21-amp-z-22-end-array-right" class="headerlink" title="$\left( \begin{array}{ccc} a_{11}&amp;a_{12}&amp;a_{13} \\ a_{21}&amp;a_{22}&amp;a_{23} \\ a_{31}&amp;a_{32}&amp;a_{33} \end{array} \right)    *  \left( \begin{array}{ccc} w_{11}&amp;w_{12} \\ w_{21}&amp;w_{22} \end{array} \right) = \left( \begin{array}{ccc} z_{11}&amp;z_{12} \\ z_{21}&amp;z_{22} \end{array} \right)$"></a>$\left( \begin{array}{ccc} a_{11}&amp;a_{12}&amp;a_{13} \\ a_{21}&amp;a_{22}&amp;a_{23} \\ a_{31}&amp;a_{32}&amp;a_{33} \end{array} \right)    *  \left( \begin{array}{ccc} w_{11}&amp;w_{12} \\ w_{21}&amp;w_{22} \end{array} \right) = \left( \begin{array}{ccc} z_{11}&amp;z_{12} \\ z_{21}&amp;z_{22} \end{array} \right)$</h4><p>从这步操作来看，套用DNN反向传播的思想是行不通的，所以我们需要把卷积操作表示成如下等式。</p>
+<h4 id="z-11-a-11-w-11-a-12-w-12-a-21-w-21-a-22-w-22-z-12-a-12-w-11-a-13-w-12-a-22-w-21-a-23-w-22-z-21-a-21-w-11-a-22-w-12-a-31-w-21-a-32-w-22-z-22-a-22-w-11-a-23-w-12-a-32-w-21-a-33-w-22"><a href="#z-11-a-11-w-11-a-12-w-12-a-21-w-21-a-22-w-22-z-12-a-12-w-11-a-13-w-12-a-22-w-21-a-23-w-22-z-21-a-21-w-11-a-22-w-12-a-31-w-21-a-32-w-22-z-22-a-22-w-11-a-23-w-12-a-32-w-21-a-33-w-22" class="headerlink" title="$z_{11} = a_{11}w_{11} + a_{12}w_{12} + a_{21}w_{21} +   a_{22}w_{22} \\ z_{12} = a_{12}w_{11} + a_{13}w_{12} + a_{22}w_{21} +   a_{23}w_{22} \\ z_{21} = a_{21}w_{11} + a_{22}w_{12} + a_{31}w_{21} +   a_{32}w_{22} \\ z_{22} = a_{22}w_{11} + a_{23}w_{12} + a_{32}w_{21} +   a_{33}w_{22}$"></a>$z_{11} = a_{11}w_{11} + a_{12}w_{12} + a_{21}w_{21} +   a_{22}w_{22} \\ z_{12} = a_{12}w_{11} + a_{13}w_{12} + a_{22}w_{21} +   a_{23}w_{22} \\ z_{21} = a_{21}w_{11} + a_{22}w_{12} + a_{31}w_{21} +   a_{32}w_{22} \\ z_{22} = a_{22}w_{11} + a_{23}w_{12} + a_{32}w_{21} +   a_{33}w_{22}$</h4><p>对每个元素进行求导：</p>
+<h4 id="begin-align-nabla-a-11-amp-frac-partial-C-partial-z-11-frac-partial-z-11-partial-a-11-frac-partial-C-partial-z-12-frac-partial-z-12-partial-a-11-frac-partial-C-partial-z-21-frac-partial-z-21-partial-a-11-frac-partial-C-partial-z-22-frac-partial-z-22-partial-a-11-notag-amp-w-11-notag-end-align"><a href="#begin-align-nabla-a-11-amp-frac-partial-C-partial-z-11-frac-partial-z-11-partial-a-11-frac-partial-C-partial-z-12-frac-partial-z-12-partial-a-11-frac-partial-C-partial-z-21-frac-partial-z-21-partial-a-11-frac-partial-C-partial-z-22-frac-partial-z-22-partial-a-11-notag-amp-w-11-notag-end-align" class="headerlink" title="$\begin{align} \nabla a_{11} = &amp; \frac{\partial C}{\partial z_{11}} \frac{\partial z_{11}}{\partial a_{11}}+  \frac{\partial C}{\partial z_{12}}\frac{\partial z_{12}}{\partial a_{11}}+ \frac{\partial C}{\partial z_{21}}\frac{\partial z_{21}}{\partial a_{11}} + \frac{\partial C}{\partial z_{22}}\frac{\partial z_{22}}{\partial a_{11}} \notag \\ =&amp;w_{11} \notag \end{align}$"></a>$\begin{align} \nabla a_{11} = &amp; \frac{\partial C}{\partial z_{11}} \frac{\partial z_{11}}{\partial a_{11}}+  \frac{\partial C}{\partial z_{12}}\frac{\partial z_{12}}{\partial a_{11}}+ \frac{\partial C}{\partial z_{21}}\frac{\partial z_{21}}{\partial a_{11}} + \frac{\partial C}{\partial z_{22}}\frac{\partial z_{22}}{\partial a_{11}} \notag \\ =&amp;w_{11} \notag \end{align}$</h4><h4 id="begin-align-nabla-a-12-amp-frac-partial-C-partial-z-11-frac-partial-z-11-partial-a-12-frac-partial-C-partial-z-12-frac-partial-z-12-partial-a-12-frac-partial-C-partial-z-21-frac-partial-z-21-partial-a-12-frac-partial-C-partial-z-22-frac-partial-z-22-partial-a-12-notag-amp-w-12-w-11-notag-end-align"><a href="#begin-align-nabla-a-12-amp-frac-partial-C-partial-z-11-frac-partial-z-11-partial-a-12-frac-partial-C-partial-z-12-frac-partial-z-12-partial-a-12-frac-partial-C-partial-z-21-frac-partial-z-21-partial-a-12-frac-partial-C-partial-z-22-frac-partial-z-22-partial-a-12-notag-amp-w-12-w-11-notag-end-align" class="headerlink" title="$\begin{align} \nabla a_{12} =&amp; \frac{\partial C}{\partial z_{11}}\frac{\partial z_{11}}{\partial a_{12}} + \frac{\partial C}{\partial z_{12}}\frac{\partial z_{12}}{\partial a_{12}} + \frac{\partial C}{\partial z_{21}}\frac{\partial z_{21}}{\partial a_{12}} + \frac{\partial C}{\partial z_{22}}\frac{\partial z_{22}}{\partial a_{12}} \notag \\ =&amp;w_{12} +w_{11} \notag \end{align}$"></a>$\begin{align} \nabla a_{12} =&amp; \frac{\partial C}{\partial z_{11}}\frac{\partial z_{11}}{\partial a_{12}} + \frac{\partial C}{\partial z_{12}}\frac{\partial z_{12}}{\partial a_{12}} + \frac{\partial C}{\partial z_{21}}\frac{\partial z_{21}}{\partial a_{12}} + \frac{\partial C}{\partial z_{22}}\frac{\partial z_{22}}{\partial a_{12}} \notag \\ =&amp;w_{12} +w_{11} \notag \end{align}$</h4><p>同理可得其他的$\nabla a_{ij}$，当你求出全部的结果后，你会发现我们可以用一个卷积运算来解决(实际就是把原来的卷积核做了180°的转换)：</p>
+<h4 id="left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-1-amp-1-amp-0-0-amp-1-amp-1-amp-0-0-amp-0-amp-0-amp-0-end-array-right-left-begin-array-ccc-w-22-amp-w-21-w-12-amp-w-11-end-array-right-left-begin-array-ccc-nabla-a-11-amp-nabla-a-12-amp-nabla-a-13-nabla-a-21-amp-nabla-a-22-amp-nabla-a-23-nabla-a-31-amp-nabla-a-32-amp-nabla-a-33-end-array-right"><a href="#left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-1-amp-1-amp-0-0-amp-1-amp-1-amp-0-0-amp-0-amp-0-amp-0-end-array-right-left-begin-array-ccc-w-22-amp-w-21-w-12-amp-w-11-end-array-right-left-begin-array-ccc-nabla-a-11-amp-nabla-a-12-amp-nabla-a-13-nabla-a-21-amp-nabla-a-22-amp-nabla-a-23-nabla-a-31-amp-nabla-a-32-amp-nabla-a-33-end-array-right" class="headerlink" title="$\left( \begin{array}{ccc} 0&amp;0&amp;0&amp;0 \\ 0&amp;\ 1&amp; 1&amp;0 \\ 0&amp;1 &amp;1&amp;0 \\ 0&amp;0&amp;0&amp;0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&amp;w_{21}\\ w_{12}&amp;w_{11} \end{array} \right)  = \left( \begin{array}{ccc} \nabla a_{11}&amp;\nabla a_{12}&amp;\nabla a_{13} \\ \nabla a_{21}&amp;\nabla a_{22}&amp;\nabla a_{23}\\ \nabla a_{31}&amp;\nabla a_{32}&amp;\nabla a_{33} \end{array} \right)$"></a>$\left( \begin{array}{ccc} 0&amp;0&amp;0&amp;0 \\ 0&amp;\ 1&amp; 1&amp;0 \\ 0&amp;1 &amp;1&amp;0 \\ 0&amp;0&amp;0&amp;0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&amp;w_{21}\\ w_{12}&amp;w_{11} \end{array} \right)  = \left( \begin{array}{ccc} \nabla a_{11}&amp;\nabla a_{12}&amp;\nabla a_{13} \\ \nabla a_{21}&amp;\nabla a_{22}&amp;\nabla a_{23}\\ \nabla a_{31}&amp;\nabla a_{32}&amp;\nabla a_{33} \end{array} \right)$</h4><h4 id="最终我们就可以得到："><a href="#最终我们就可以得到：" class="headerlink" title="最终我们就可以得到："></a>最终我们就可以得到：</h4><h4 id="frac-partial-（output-l-W-b）-partial-out-l-left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-1-amp-1-amp-0-0-amp-1-amp-1-amp-0-0-amp-0-amp-0-amp-0-end-array-right-left-begin-array-ccc-w-22-amp-w-21-w-12-amp-w-11-end-array-right"><a href="#frac-partial-（output-l-W-b）-partial-out-l-left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-1-amp-1-amp-0-0-amp-1-amp-1-amp-0-0-amp-0-amp-0-amp-0-end-array-right-left-begin-array-ccc-w-22-amp-w-21-w-12-amp-w-11-end-array-right" class="headerlink" title="$\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} =\left( \begin{array}{ccc} 0&amp;0&amp;0&amp;0 \\ 0&amp;\ 1&amp; 1&amp;0 \\ 0&amp;1 &amp;1&amp;0 \\ 0&amp;0&amp;0&amp;0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&amp;w_{21}\\ w_{12}&amp;w_{11} \end{array} \right)  $"></a>$\frac{\partial （output^{(l)}*W+b）}{\partial out^{(l)}} =\left( \begin{array}{ccc} 0&amp;0&amp;0&amp;0 \\ 0&amp;\ 1&amp; 1&amp;0 \\ 0&amp;1 &amp;1&amp;0 \\ 0&amp;0&amp;0&amp;0 \end{array} \right) * \left( \begin{array}{ccc} w_{22}&amp;w_{21}\\ w_{12}&amp;w_{11} \end{array} \right)  $</h4><h4 id="所以原来的-delta-l-w-l-1-delta-l-1-bigodot-sigma-prime-net-l-就变为："><a href="#所以原来的-delta-l-w-l-1-delta-l-1-bigodot-sigma-prime-net-l-就变为：" class="headerlink" title="所以原来的$\delta^{(l)} = (w^{(l+1)}) \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$就变为："></a>所以原来的$\delta^{(l)} = (w^{(l+1)}) \delta^{(l+1)} \bigodot  \sigma^{\prime}(net^{(l)})$就变为：</h4><h4 id="delta-l-w-l-1-rot180-W-bigodot-sigma-prime-net-l"><a href="#delta-l-w-l-1-rot180-W-bigodot-sigma-prime-net-l" class="headerlink" title="$\delta^{(l)} = (w^{(l+1)}) *rot180(W) \bigodot  \sigma^{\prime}(net^{(l)})$"></a>$\delta^{(l)} = (w^{(l+1)}) *rot180(W) \bigodot  \sigma^{\prime}(net^{(l)})$</h4><h4 id="对于偏置项："><a href="#对于偏置项：" class="headerlink" title="对于偏置项："></a>对于偏置项：</h4><h4 id="原来的是：-frac-partial-E-total-partial-bias-i-l-delta-i-l"><a href="#原来的是：-frac-partial-E-total-partial-bias-i-l-delta-i-l" class="headerlink" title="原来的是：$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$"></a>原来的是：$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\delta_i^{(l)}$</h4><h4 id="因为对于全连接网络：-b-delta-l-in-R-n-out-l"><a href="#因为对于全连接网络：-b-delta-l-in-R-n-out-l" class="headerlink" title="因为对于全连接网络：$b, \delta^{(l)} \in R(n_{out}^{(l)})$"></a>因为对于全连接网络：$b, \delta^{(l)} \in R(n_{out}^{(l)})$</h4><h4 id="而对于卷积神经网络：-b-in-R-n-out-l-delta-l-in-R-H-out-l-W-out-l-n-out-l"><a href="#而对于卷积神经网络：-b-in-R-n-out-l-delta-l-in-R-H-out-l-W-out-l-n-out-l" class="headerlink" title="而对于卷积神经网络：$b \in R(n_{out}^{(l)}), \delta^{(l)} \in R(H_{out}^{(l)}, W_{out}^{(l)}, n_{out}^{(l)})$"></a>而对于卷积神经网络：$b \in R(n_{out}^{(l)}), \delta^{(l)} \in R(H_{out}^{(l)}, W_{out}^{(l)}, n_{out}^{(l)})$</h4><h4 id="我们对应的处理方式就是："><a href="#我们对应的处理方式就是：" class="headerlink" title="我们对应的处理方式就是："></a>我们对应的处理方式就是：</h4><h4 id="将-delta-l-的H和W维度求和"><a href="#将-delta-l-的H和W维度求和" class="headerlink" title="将$\delta^{(l)}$的H和W维度求和"></a>将$\delta^{(l)}$的H和W维度求和</h4><h4 id="所以："><a href="#所以：" class="headerlink" title="所以："></a>所以：</h4><h4 id="frac-partial-E-total-partial-bias-i-l-sum-H-sum-W-delta-H-W-i-l"><a href="#frac-partial-E-total-partial-bias-i-l-sum-H-sum-W-delta-H-W-i-l" class="headerlink" title="$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\sum_H \sum_W \delta_{(H,W,i)}^{(l)}$"></a>$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\sum_H \sum_W \delta_{(H,W,i)}^{(l)}$</h4><h3 id="卷积神经网络反向传播的四部曲"><a href="#卷积神经网络反向传播的四部曲" class="headerlink" title="卷积神经网络反向传播的四部曲"></a>卷积神经网络反向传播的四部曲</h3><ul>
+<li><h4 id="delta-i-L-bigtriangledown-out-E-total-times-sigma-prime-net-i-L-1"><a href="#delta-i-L-bigtriangledown-out-E-total-times-sigma-prime-net-i-L-1" class="headerlink" title="$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $"></a>$\delta_i^{(L)}= \bigtriangledown_{out} E_{total} \times   \sigma^{\prime}(net_i^{(L)}) $</h4></li>
+<li><h4 id="delta-l-w-l-1-rot180-W-bigodot-sigma-prime-net-l-1"><a href="#delta-l-w-l-1-rot180-W-bigodot-sigma-prime-net-l-1" class="headerlink" title="$\delta^{(l)} = (w^{(l+1)}) *rot180(W) \bigodot  \sigma^{\prime}(net^{(l)})$"></a>$\delta^{(l)} = (w^{(l+1)}) *rot180(W) \bigodot  \sigma^{\prime}(net^{(l)})$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-bias-i-l-sum-H-sum-W-delta-H-W-i-l-1"><a href="#frac-partial-E-total-partial-bias-i-l-sum-H-sum-W-delta-H-W-i-l-1" class="headerlink" title="$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\sum_H \sum_W \delta_{(H,W,i)}^{(l)}$"></a>$\frac{\partial E_{total}}{\partial bias_i^{(l)}}=\sum_H \sum_W \delta_{(H,W,i)}^{(l)}$</h4></li>
+<li><h4 id="frac-partial-E-total-partial-w-l-rot180-delta-l-outh-l-1"><a href="#frac-partial-E-total-partial-w-l-rot180-delta-l-outh-l-1" class="headerlink" title="$\frac{\partial E_{total}}{\partial w^{(l)}}=rot180(\delta^{(l)}*(outh^{(l-1)}))$"></a>$\frac{\partial E_{total}}{\partial w^{(l)}}=rot180(\delta^{(l)}*(outh^{(l-1)}))$</h4></li>
+</ul>
+<h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>跟卷积层一样，我们先把 pooling 层也放回网络连接的形式中： </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182249.png" srcset="/img/loading.gif" alt="images"></p>
+<p>红色神经元是前一层的响应结果，一般是卷积后再用激活函数处理。绿色的神经元表示 pooling 层。</p>
+<p>很明显，pooling 主要是起到<code>降维</code>的作用，而且，由于 pooling 时没有参数需要学习，</p>
+<p>因此，当得到 pooling 层的误差项 $δ^l $后，我们只需要计算上一层的误差项 $δ^{l−1}$即可。</p>
+<p>要注意的一点是，由于 pooling 一般会降维，因此传回去的误差矩阵要调整维度，即 upsample。这样，误差传播的公式原型大概是： </p>
+<h4 id="delta-l-1-upsample-delta-l-odot-sigma’-z-l-1"><a href="#delta-l-1-upsample-delta-l-odot-sigma’-z-l-1" class="headerlink" title="$\delta^{l-1}=upsample(\delta^l) \odot \sigma’(z^{l-1})$"></a>$\delta^{l-1}=upsample(\delta^l) \odot \sigma’(z^{l-1})$</h4><p>下面以最常用的 <strong>average pooling</strong> 和 <strong>max pooling</strong> 为例，讲讲 $upsample(δ^l)$具体要怎么处理。 </p>
+<p>假设 pooling 层的区域大小为 2×22×2，pooling 这一层的误差项为： </p>
+<h4 id="delta-l-left-begin-array-ccc-2-amp-8-4-amp-6-end-array-right"><a href="#delta-l-left-begin-array-ccc-2-amp-8-4-amp-6-end-array-right" class="headerlink" title="$\delta^l= \left( \begin{array}{ccc} 2 &amp; 8 \\ 4 &amp; 6 \end{array} \right)$"></a>$\delta^l= \left( \begin{array}{ccc} 2 &amp; 8 \\ 4 &amp; 6 \end{array} \right)$</h4><p>首先，我们先把维度还原到上一层的维度： </p>
+<h4 id="left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-2-amp-8-amp-0-0-amp-4-amp-6-amp-0-0-amp-0-amp-0-amp-0-end-array-right"><a href="#left-begin-array-ccc-0-amp-0-amp-0-amp-0-0-amp-2-amp-8-amp-0-0-amp-4-amp-6-amp-0-0-amp-0-amp-0-amp-0-end-array-right" class="headerlink" title="$\left( \begin{array}{ccc} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 2 &amp; 8 &amp; 0  \\ 0 &amp; 4 &amp; 6 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0  \end{array} \right)$"></a>$\left( \begin{array}{ccc} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 2 &amp; 8 &amp; 0  \\ 0 &amp; 4 &amp; 6 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0  \end{array} \right)$</h4><p>在 average pooling 中，我们是把一个范围内的响应值取平均后，作为一个 pooling unit 的结果。可以认为是经过一个 <strong>average()</strong> 函数，即 $average(x)=\frac{1}{m}\sum_{k=1}^m x_k$ 在本例中，$m=4$。则对每个 $x_k$ 的导数均为：</p>
+<h4 id="frac-partial-average-x-partial-x-k-frac-1-m"><a href="#frac-partial-average-x-partial-x-k-frac-1-m" class="headerlink" title="$\frac{\partial average(x)}{\partial x_k}=\frac{1}{m}$"></a>$\frac{\partial average(x)}{\partial x_k}=\frac{1}{m}$</h4><p>因此，对 average pooling 来说，其误差项为： </p>
+<h4 id="begin-align-delta-l-1-amp-delta-l-frac-partial-average-partial-x-odot-sigma’-z-l-1-notag-amp-upsample-delta-l-odot-sigma’-z-l-1-amp-left-begin-array-ccc-0-5-amp-0-5-amp-2-amp-2-0-5-amp-0-5-amp-2-amp-2-1-amp-1-amp-1-5-amp-1-5-1-amp-1-amp-1-5-amp-1-5-end-array-right-odot-sigma’-z-l-1-end-align"><a href="#begin-align-delta-l-1-amp-delta-l-frac-partial-average-partial-x-odot-sigma’-z-l-1-notag-amp-upsample-delta-l-odot-sigma’-z-l-1-amp-left-begin-array-ccc-0-5-amp-0-5-amp-2-amp-2-0-5-amp-0-5-amp-2-amp-2-1-amp-1-amp-1-5-amp-1-5-1-amp-1-amp-1-5-amp-1-5-end-array-right-odot-sigma’-z-l-1-end-align" class="headerlink" title="$\begin{align} \delta^{l-1}=&amp;\delta^l \frac{\partial average}{\partial x} \odot \sigma’(z^{l-1}) \notag \\ =&amp;upsample(\delta^l) \odot \sigma’(z^{l-1})  \\  =&amp;\left( \begin{array}{ccc} 0.5&amp;0.5&amp;2&amp;2 \\ 0.5&amp;0.5&amp;2&amp;2 \\ 1&amp;1&amp;1.5&amp;1.5 \\ 1&amp;1&amp;1.5&amp;1.5 \end{array} \right)\odot \sigma’(z^{l-1})   \end{align}$"></a>$\begin{align} \delta^{l-1}=&amp;\delta^l \frac{\partial average}{\partial x} \odot \sigma’(z^{l-1}) \notag \\ =&amp;upsample(\delta^l) \odot \sigma’(z^{l-1})  \\  =&amp;\left( \begin{array}{ccc} 0.5&amp;0.5&amp;2&amp;2 \\ 0.5&amp;0.5&amp;2&amp;2 \\ 1&amp;1&amp;1.5&amp;1.5 \\ 1&amp;1&amp;1.5&amp;1.5 \end{array} \right)\odot \sigma’(z^{l-1})   \end{align}$</h4><p>在 max pooling 中，则是经过一个 <strong>max()</strong> 函数，对应的导数为： </p>
+<h4 id="frac-partial-max-x-partial-x-k-begin-cases-1-amp-if-x-k-max-x-0-amp-otherwise-end-cases"><a href="#frac-partial-max-x-partial-x-k-begin-cases-1-amp-if-x-k-max-x-0-amp-otherwise-end-cases" class="headerlink" title="$\frac{\partial \max(x)}{\partial x_k}=\begin{cases} 1 &amp; if\ x_k=max(x) \ 0 &amp; otherwise \end{cases}$"></a>$\frac{\partial \max(x)}{\partial x_k}=\begin{cases} 1 &amp; if\ x_k=max(x) \ 0 &amp; otherwise \end{cases}$</h4><p>假设前向传播时记录的最大值位置分别是左上、右下、右上、左下，则误差项为：  </p>
+<h4 id="delta-l-1-left-begin-array-ccc-2-amp-0-amp-0-amp-0-0-amp-0-amp-0-amp-8-0-amp-4-amp-0-amp-0-0-amp-0-amp-6-amp-0-end-array-right-odot-sigma’-z-l-1"><a href="#delta-l-1-left-begin-array-ccc-2-amp-0-amp-0-amp-0-0-amp-0-amp-0-amp-8-0-amp-4-amp-0-amp-0-0-amp-0-amp-6-amp-0-end-array-right-odot-sigma’-z-l-1" class="headerlink" title="$\delta^{l-1}=\left( \begin{array}{ccc} 2&amp;0&amp;0&amp;0 \\ 0&amp;0&amp; 0&amp;8 \\ 0&amp;4&amp;0&amp;0 \\ 0&amp;0&amp;6&amp;0 \end{array} \right) \odot \sigma’(z^{l-1})  $"></a>$\delta^{l-1}=\left( \begin{array}{ccc} 2&amp;0&amp;0&amp;0 \\ 0&amp;0&amp; 0&amp;8 \\ 0&amp;4&amp;0&amp;0 \\ 0&amp;0&amp;6&amp;0 \end{array} \right) \odot \sigma’(z^{l-1})  $</h4><p>总结：在遇到池化层的时间就执行upsampling的反向操作。就这样实现了池化层的反向传播。</p>
+<h4 id="这就是卷积神经网络的反向传播算法"><a href="#这就是卷积神经网络的反向传播算法" class="headerlink" title="这就是卷积神经网络的反向传播算法"></a>这就是卷积神经网络的反向传播算法</h4>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">反向传播</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/DL-CNN-python/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorFlow实现简单的卷积神经网络-CNN</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/DL-CNN/">
+                        <span class="hidden-mobile">神经网络之卷积神经网络</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络之卷积神经网络反向传播算法&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【二十】特征匹配 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-03-20 10:00">
+      2019年3月20日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="特征匹配"><a href="#特征匹配" class="headerlink" title="特征匹配"></a>特征匹配</h3><h4 id="【基本问题】"><a href="#【基本问题】" class="headerlink" title="【基本问题】"></a>【基本问题】</h4><ul>
+<li><p>特征点匹配</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302143508.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>暴力搜索与2NN判据</p>
+<blockquote>
+<p>设两帧图像中的对应特征点集${𝑥<em>𝑖,𝑦_𝑖}$和${𝑥_𝑖^′,𝑦_𝑖^′}$，共N个特征点 对应点 $𝐱_𝒋=(𝑥_𝑗,𝑦_𝑗)$，匹配点为距离最小点 $𝐱_𝑗^′=𝑥_𝑗^′∗,𝑦_𝑗^′∗=𝑚𝑖𝑛</em>{𝑘=1}^𝑁||x_𝑗−𝑥_𝑘^′||$ ，对应距离$𝑑_𝑗^∗$ 进一步得到次小点𝐱′′，对应距离$𝑑_𝑗^{∗′}$, 则匹配点满足：$𝑑_𝑗^∗&lt;𝛼∗𝑑_𝑗^{∗′}$, 认为正常匹配.</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302144003.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="【特征点匹配方法】"><a href="#【特征点匹配方法】" class="headerlink" title="【特征点匹配方法】"></a>【特征点匹配方法】</h4><ul>
+<li><p>快速搜索方式—-二叉树</p>
+<blockquote>
+<ul>
+<li>算法复杂度o(N2)。特征点数量多时，匹配效率低。</li>
+<li>二叉搜索树(BST)提供了高效搜索方式</li>
+<li>以下是一颗一维的二叉搜索树，尝试搜索和11最近的点。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302144354.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+<li><p>K-D树</p>
+<blockquote>
+<p>对于每一层，可以指定一个划分维度（轴垂直分区面axis-aligned splitting planes）。最简单的就是按照关键字轮流划分（例如：奇数层按照x轴划分，也即第一个关键字；偶数层按照y轴划分，也即第二个关键字）。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302144540.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+<li><p>K-D树的建立方式</p>
+<blockquote>
+<p>对于所有的样本点，统计它们在每个维上的方差，挑选出方差中的最大值，对应的维就是分裂域的值。数据方差最大表明沿该维度数据点分散得比较开，这个方向上进行数据分割可以获得最好的分辨率；然后再将所有样本点按其第该维的值迕行排序，位于正中间的那个数据点选为分裂结点对应域。重复上述过程直至获得所有叶子节点显示了构建返棵二叉树的所有步骤。</p>
+<p>下面以一个简单的例子来解释上述k-d tree的构建过程。</p>
+<p>假设样本集为：{(2,3), (5,4), (9,6), (4,7), (8,1), (7,2)}。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302144826.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+<li><p>K-D树最近邻查询算法</p>
+<blockquote>
+<ol>
+<li>首先通过将查找点数据根结点数据对应维 上的值相比较，按照二叉搜索的方式，顺着“搜索路径”找到最近邻的近似点，也就是 与查询点处于同一个子空间的叶子节点；</li>
+<li>为了防止漏查与查找点 跟进的距离的点，回溯搜索路径，并且判断搜索路径上节点的其他子节点空 间中是否还有距离查询点更近的数据点，如果有，则需要跳到其他子节点空间中去搜索。</li>
+<li>重复返个过程直到搜索路径为空。</li>
+</ol>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302145139.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+<li><p>BBF(Best Bin First)</p>
+<blockquote>
+<p>​    BBF的查询思路就是将“查询路径”上的节点进行排序，如按各自分割超平面（称为Bin）与查询点的距离排序,优先考虑距离小的点。BBF还设置了一个运行超时限制，当优先级队列中的所有节点都经过检查或者超出时间限制时，算法返回当前找到的最好结果作为近似的最近邻。</p>
+</blockquote>
+</li>
+<li><p>随机化K-D森林</p>
+<blockquote>
+<p>同时独立建立多个k-d树，每棵树在具有大方差的各维中(如top-5)随机选择。查询时，并行查询多个k-d树，按照BBF准侧将候选节点放在同一队列中。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302145410.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="【RANSAC】"><a href="#【RANSAC】" class="headerlink" title="【RANSAC】"></a>【RANSAC】</h4><ul>
+<li><p>稳健(robust): 对数据噪声的敏感性</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302145622.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>基本思想</p>
+<blockquote>
+<p>RANSAC通过反复选择数据中的一组随机子集来达成目标。被选取的子集被假设为局内点，并用下述方法进行验证：</p>
+<ol>
+<li>有一个模型适应于假设的局内点，即所有的未知参数都能从假设的局内点计算得出。 </li>
+<li>用1中得到的模型去测试所有的其它数据，如果某个点适用于估计的模型，认为它也是局内点。 </li>
+<li>如果有足够多的点被归类为假设的局内点，那么估计的模型就足够合理。 </li>
+<li>然后，用所有假设的局内点去重新估计模型，因为它仅仅被初始的假设局内点估计过。 </li>
+<li>最后，通过估计局内点与模型的错误率来评估模型。 </li>
+</ol>
+<p>这个过程被重复执行固定的次数，每次产生的模型要么因为局内点太少而被舍弃，要么因为比现有的模型更好而被选用</p>
+</blockquote>
+</li>
+<li><p>SIFT和RANSAC结合</p>
+<blockquote>
+<p>RANSAC算法在SIFT特征筛选中的主要流程：</p>
+<ol>
+<li>从样本集中随机抽选一个RANSAC样本，即4个匹配点对</li>
+<li>根据返4个匹配点对计算变换矩阵M</li>
+<li>根据样本集，变换矩阵M，和误差度量函数计算满足当前变换矩阵的一致集consensus，并返回一致集中元素个数</li>
+<li>根据当前一致集中元素个数判断是否最优(最大)一致集，若是则更新当前最优一致集</li>
+<li>更新当前错误概率p，若p大于允许的最小错误概率则重复(1)至(4)继续迭代，直到当前错误概率p小于最小错误概率</li>
+</ol>
+</blockquote>
+</li>
+<li><p>结果比较：2NN vs 2NN+RANSAC</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190302150106.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ul>
+<h4 id="【总结】"><a href="#【总结】" class="headerlink" title="【总结】"></a>【总结】</h4><blockquote>
+<ul>
+<li>特征匹配是立体视觉、全景视觉、由运动到结构的重要环节</li>
+<li>使用基于k-d树的特征匹配方法，能有效提高搜索效率</li>
+<li>RANSAC是一类随机稳健估计方法，可有效滤除误配点</li>
+</ul>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%89%B9%E5%BE%81%E5%8C%B9%E9%85%8D/">特征匹配</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/cv-fast_feature/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于FAST的特征匹配</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/03/cv-image_Stereo/">
+                        <span class="hidden-mobile">【十九】立体视觉</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【二十】特征匹配&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

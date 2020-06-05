@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>神经网络之卷积神经网络 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-21 10:00">
+      2018年8月21日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="卷积神经网络（Convolutional-Neural-Network-CNN）"><a href="#卷积神经网络（Convolutional-Neural-Network-CNN）" class="headerlink" title="卷积神经网络（Convolutional Neural Network, CNN）"></a>卷积神经网络（Convolutional Neural Network, CNN）</h3><p><code>卷积神经网络</code>是近年来广泛应用于模式识别、图像处理等领域的一种高效识别算法，它具有结构简单、训练参数少和适应性强等特点。</p>
+<p><code>卷积神经网络</code>是一种前馈神经网络，它的人工神经元可以响应一部分覆盖范围内的周围单元，对于大型图像处理有出色表现。</p>
+<p><code>卷积神经网络</code>由一个或多个卷积计算层和顶端的全连接层（经典神经网络）组成，同时也包括关联权重和池化层。这一结构是的卷积神经网络能够利用输入数据的二维结构。与其他神经网络结构相比，卷积神经网络在图像和语音识别方面能够给出更优的结果。相比较其他深度、前馈神经网络，卷积神经网络需要估计的参数更少，从而使之成为一种颇具吸引力的深度学习框架。</p>
+<p>我们前面所接触到的神经网络的结构是这样的：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182215.png" srcset="/img/loading.gif" alt="images"></p>
+<p>卷积神经网络依旧是层级网络，只是层的功能和形式做了变化，也可以是传统神经网络的一个改进，不同的层次有不同运算与功能，如下图中就多了很多传统神经网络中所没有的层次。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182216.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="卷积神经网络的核心思想"><a href="#卷积神经网络的核心思想" class="headerlink" title="卷积神经网络的核心思想"></a>卷积神经网络的核心思想</h3><ul>
+<li><code>局部感受野</code>：普通的多层感知器中，隐层节点会全连接到一个图像的每个像素点上；而在卷积神经网络中，每个隐层的节点只连接到图像某个足够小的像素点上，从而大大减少需要训练的权重参数。</li>
+<li><code>权值共享</code>：在卷积神经网中，同一个卷积核内，所有的神经元的权值是相同的，从而大大减少需要训练的参数。</li>
+<li><code>池化</code>：在卷积神经网络中，没有必要一定就要对原图像做处理，而是可以使用某种“压缩”方法，这就是池化，也就是每次将原图像卷积后，都通过一个下采样的过程，来减小图像的规模。 </li>
+</ul>
+<h3 id="卷积神经网络的层级结构"><a href="#卷积神经网络的层级结构" class="headerlink" title="卷积神经网络的层级结构"></a>卷积神经网络的层级结构</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182217.png" srcset="/img/loading.gif" alt="images"></p>
+<ul>
+<li><h4 id="数据输入层（Input-layer）"><a href="#数据输入层（Input-layer）" class="headerlink" title="数据输入层（Input layer）"></a><strong>数据输入层（Input layer）</strong></h4></li>
+<li><h4 id="卷积计算层（CONV-layer）"><a href="#卷积计算层（CONV-layer）" class="headerlink" title="卷积计算层（CONV layer）"></a><strong>卷积计算层（CONV layer）</strong></h4></li>
+<li><h4 id="ReLU激活层（ReLU-layer）"><a href="#ReLU激活层（ReLU-layer）" class="headerlink" title="ReLU激活层（ReLU layer）"></a><strong>ReLU激活层（ReLU layer）</strong></h4></li>
+<li><h4 id="池化层（POOling-layer）"><a href="#池化层（POOling-layer）" class="headerlink" title="池化层（POOling layer）"></a><strong>池化层（POOling layer）</strong></h4></li>
+<li><h4 id="全连接层（FC-layer）"><a href="#全连接层（FC-layer）" class="headerlink" title="全连接层（FC layer）"></a><strong>全连接层（FC layer）</strong></h4></li>
+</ul>
+<h3 id="数据输入层（Input-layer）-1"><a href="#数据输入层（Input-layer）-1" class="headerlink" title="数据输入层（Input layer）"></a><strong>数据输入层（Input layer）</strong></h3><h4 id="任务：主要是对原始图像进行预处理"><a href="#任务：主要是对原始图像进行预处理" class="headerlink" title="任务：主要是对原始图像进行预处理"></a><code>任务</code>：主要是对原始图像进行预处理</h4><ul>
+<li><h4 id="去均值：把输入数据的各个维度都中心化到0。"><a href="#去均值：把输入数据的各个维度都中心化到0。" class="headerlink" title="去均值：把输入数据的各个维度都中心化到0。"></a><code>去均值</code>：把输入数据的各个维度都中心化到0。</h4></li>
+<li><h4 id="归一化：把数据的幅度归一化到同样的范围。"><a href="#归一化：把数据的幅度归一化到同样的范围。" class="headerlink" title="归一化：把数据的幅度归一化到同样的范围。"></a><code>归一化</code>：把数据的幅度归一化到同样的范围。</h4></li>
+<li><h4 id="PCA-白化：用PCA降维、白化是对数据的每个特征轴上的幅度归一化。"><a href="#PCA-白化：用PCA降维、白化是对数据的每个特征轴上的幅度归一化。" class="headerlink" title="PCA/白化：用PCA降维、白化是对数据的每个特征轴上的幅度归一化。"></a><code>PCA/白化</code>：用PCA降维、白化是对数据的每个特征轴上的幅度归一化。</h4></li>
+</ul>
+<h4 id="举个栗子："><a href="#举个栗子：" class="headerlink" title="举个栗子："></a>举个栗子：</h4><h4 id="去均值与归一化"><a href="#去均值与归一化" class="headerlink" title="去均值与归一化"></a><code>去均值与归一化</code></h4><p>去均值的目的在于把样本的中心拉回到坐标系原点上；归一化的目的就是减少各维度数据取值范围的差异而带来的干扰。比如，我们有两个维度的特征A和B，A范围是0到10，而B范围是0到10000，如果直接使用这两个特征是有问题的，好的做法就是归一化，即A和B的数据都变为0到1的范围。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182218.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="去相关与白化"><a href="#去相关与白化" class="headerlink" title="去相关与白化"></a><code>去相关与白化</code></h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182219.gif" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="卷积计算层（CONV-layer）-1"><a href="#卷积计算层（CONV-layer）-1" class="headerlink" title="卷积计算层（CONV layer）"></a><strong>卷积计算层（CONV layer）</strong></h3><h4 id="任务：对输入的图像进行特征提取"><a href="#任务：对输入的图像进行特征提取" class="headerlink" title="任务：对输入的图像进行特征提取"></a><code>任务</code>：对输入的图像进行特征提取</h4><p>卷积计算层是卷积神经网络中最重要的一个层次，也是“卷积神经网络”的名字来源。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182220.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="举个栗子：-1"><a href="#举个栗子：-1" class="headerlink" title="举个栗子："></a>举个栗子：</h4><p>假设一张图像有 5x5 个像素，1 代表白，0 代表黑，这幅图像被视为 5x5 的单色图像。现在用一个由随机地 0 和 1 组成的 3x3 矩阵去和图像中的子区域做Hadamard乘积，每次迭代移动一个像素，这样该乘法会得到一个新的 3x3 的矩阵。下面的动图展示了这个过程。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182221.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="直观上来理解："><a href="#直观上来理解：" class="headerlink" title="直观上来理解："></a><strong>直观上来理解</strong>：</h4><ul>
+<li>用一个小的权重矩阵去覆盖输入数据，对应位置元素加权相乘，其和作为结果的一个像素点。</li>
+<li>这个权重在输入数据上滑动，形成一张新的矩阵</li>
+<li>这个权重矩阵就被称为<code>卷积核</code>（convolution kernel）</li>
+<li>其覆盖的位置称为<code>感受野</code>（receptive fileld ）</li>
+<li>生成的新矩阵叫做<code>特征图</code>（feature map）</li>
+</ul>
+<p>分解开来，就如下图所示：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182222.gif" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="其中："><a href="#其中：" class="headerlink" title="其中："></a>其中：</h4><ul>
+<li><p>滑动的像素数量就叫做<code>步长</code>（stride），步长为1，表示跳过1个像素，步长为2，就表示跳过2个像素，以此类推</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182223.gif" srcset="/img/loading.gif" alt="images"></p>
+</li>
+<li><p>以卷积核的边还是中心点作为开始/结束的依据，决定了卷积的<code>补齐</code>（padding）方式。前面我们所举的栗子是<code>valid</code>方式，而<code>same</code>方式则会在图像的边缘用0补齐，如将前面的<code>valid</code>改为<code>same</code>方式，如图所示：</p>
+</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182224.png" srcset="/img/loading.gif" alt="images"></p>
+<p>其采样方式对应变换为：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182225.gif" srcset="/img/loading.gif" alt="images"></p>
+<ul>
+<li>我们前面所提到的输入图像都是灰色的，只有一个通道，但是我们一般会遇到输入通道不只有一个，那么卷积核是三阶的，也就是说所有的通道的结果做累加。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182226.gif" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182227.gif" srcset="/img/loading.gif" alt="images"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182228.png" srcset="/img/loading.gif" alt="images"></p>
+<p>当然，最后，这里有一个术语：“<code>偏置</code>（bias）”，每个输出滤波器都有一个偏置项，偏置被添加到输出通道产生最终输出通道。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182229.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="再举个栗子："><a href="#再举个栗子：" class="headerlink" title="再举个栗子："></a>再举个栗子：</h4><p>下面蓝色矩阵周围有一圈灰色的框，那些就是上面所说到的填充值 (padding=same)的方式。这里的蓝色矩阵就是输入的图像，粉色矩阵就是卷积层的神经元，这里表示了有两个神经元（w0,w1）。绿色矩阵就是经过卷积运算后的输出矩阵，这里的步长设置为2。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182230.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="ReLU激活层（ReLU-layer）-1"><a href="#ReLU激活层（ReLU-layer）-1" class="headerlink" title="ReLU激活层（ReLU layer）"></a><strong>ReLU激活层（ReLU layer）</strong></h3><h4 id="任务：卷积后的结果压缩到某一个固定的范围做非线性映射，这样可以一直保持一层一层下去的数值范围是可控的。"><a href="#任务：卷积后的结果压缩到某一个固定的范围做非线性映射，这样可以一直保持一层一层下去的数值范围是可控的。" class="headerlink" title="任务：卷积后的结果压缩到某一个固定的范围做非线性映射，这样可以一直保持一层一层下去的数值范围是可控的。"></a><code>任务</code>：卷积后的结果压缩到某一个固定的范围做非线性映射，这样可以一直保持一层一层下去的数值范围是可控的。</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182231.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="激活函数："><a href="#激活函数：" class="headerlink" title="激活函数："></a>激活函数：</h4><ul>
+<li><code>Sigmoid</code></li>
+<li><code>Tanh</code>（双曲正切）</li>
+<li><code>ReLU</code></li>
+<li><code>Leaky ReLU</code></li>
+<li><code>ELU</code></li>
+<li><code>Maxout</code></li>
+</ul>
+<p>卷积神经网络一般采用的激活函数是ReLU(The Rectified Linear Unit/修正线性单元)，它的特点是收敛快，求梯度简单，但较脆弱，图像如下：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182232.gif" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="激励层的实践经验："><a href="#激励层的实践经验：" class="headerlink" title="激励层的实践经验： 　　"></a>激励层的实践经验： 　　</h4><ul>
+<li>不要用sigmoid！不要用sigmoid！不要用sigmoid！ 　　</li>
+<li>首先试RELU，因为快，但要小心点 　　、</li>
+<li>如果2失效，请用Leaky ReLU或者Maxout 　　</li>
+<li>某些情况下tanh倒是有不错的结果，但是很少 </li>
+</ul>
+<h3 id="池化层（POOling-layer）-1"><a href="#池化层（POOling-layer）-1" class="headerlink" title="池化层（POOling layer）"></a><strong>池化层（POOling layer）</strong></h3><h4 id="任务：对特征进行采样，即用一个数值替代一块区域，主要是为了降低网络训练参数及模型的过拟合程度。"><a href="#任务：对特征进行采样，即用一个数值替代一块区域，主要是为了降低网络训练参数及模型的过拟合程度。" class="headerlink" title="任务：对特征进行采样，即用一个数值替代一块区域，主要是为了降低网络训练参数及模型的过拟合程度。"></a><code>任务</code>：对特征进行采样，即用一个数值替代一块区域，主要是为了降低网络训练参数及模型的过拟合程度。</h4><p>通过卷积层获得了图像的特征之后，理论上我们可以直接使用这些特征训练分类器（如softmax），但是这样做将面临巨大的计算量的挑战，而且容易产生过拟合的现象。为了进一步降低网络训练参数及模型的过拟合程度，对卷积层进行池化/采样(Pooling)处理。池化/采样的方式通常有以下两种：</p>
+<ol>
+<li>最大池化（Max Pooling: 选择Pooling窗口中的最大值作为采样值；</li>
+<li>均值池化（Mean Pooling）: 将Pooling窗口中的所有值相加取平均，以平均值作为采样值</li>
+<li>高斯池化：借鉴高斯模糊的方法。不常用。</li>
+<li>可训练池化：使用一个训练函数$y=f(x)$。不常用。</li>
+</ol>
+<p>主要使用不同的函数为输入降维。通常，最大池化层（max-pooling layer）出现在卷积层之后。池化层使用 2*2 的矩阵，以卷积层相同的方式处理图像，不过它是给图像本身降维。下面分别是使用「最大池化」和「平均池化」的示例。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182233.png" srcset="/img/loading.gif" alt="images"></p>
+<p>图像经过池化后，得到的是一系列的特征图，而多层感知器接受的输入是一个向量。因此需要将这些特征图中的像素依次取出，排列成一个向量（这个过程被称为光栅化）。 </p>
+<h3 id="全连接层（FC-layer）-1"><a href="#全连接层（FC-layer）-1" class="headerlink" title="全连接层（FC layer）"></a><strong>全连接层（FC layer）</strong></h3><h4 id="任务：全连接层的每一个结点都与上一层的所有结点相连，用来把前边提取到的特征综合起来。由于其全相连的特性，一般全连接层的参数也是最多的。主要是为了分类或回归，当然也可以没有。"><a href="#任务：全连接层的每一个结点都与上一层的所有结点相连，用来把前边提取到的特征综合起来。由于其全相连的特性，一般全连接层的参数也是最多的。主要是为了分类或回归，当然也可以没有。" class="headerlink" title="任务：全连接层的每一个结点都与上一层的所有结点相连，用来把前边提取到的特征综合起来。由于其全相连的特性，一般全连接层的参数也是最多的。主要是为了分类或回归，当然也可以没有。"></a><code>任务</code>：全连接层的每一个结点都与上一层的所有结点相连，用来把前边提取到的特征综合起来。由于其全相连的特性，一般全连接层的参数也是最多的。主要是为了分类或回归，当然也可以没有。</h4><p>其原理和我们前面所推导的DNN是一样的。</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182234.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="两层之间的所有神经元都有权重连接，通常全连接层在卷积神经网络的尾部。"><a href="#两层之间的所有神经元都有权重连接，通常全连接层在卷积神经网络的尾部。" class="headerlink" title="两层之间的所有神经元都有权重连接，通常全连接层在卷积神经网络的尾部。"></a>两层之间的所有神经元都有权重连接，通常全连接层在卷积神经网络的尾部。</h4><h3 id="Dropout层（Dropout-layer）"><a href="#Dropout层（Dropout-layer）" class="headerlink" title="Dropout层（Dropout layer）"></a><strong>Dropout层（Dropout layer）</strong></h3><h4 id="任务：在模型训练时随机让网络某些隐含层节点的权重不工作，不工作的那些节点可以暂时认为不是网络结构的一部分，但是它的权重得保留下来（只是暂时不更新而已），因为下次样本输入时它可能又得工作了。主要是为了防止过拟合。"><a href="#任务：在模型训练时随机让网络某些隐含层节点的权重不工作，不工作的那些节点可以暂时认为不是网络结构的一部分，但是它的权重得保留下来（只是暂时不更新而已），因为下次样本输入时它可能又得工作了。主要是为了防止过拟合。" class="headerlink" title="任务：在模型训练时随机让网络某些隐含层节点的权重不工作，不工作的那些节点可以暂时认为不是网络结构的一部分，但是它的权重得保留下来（只是暂时不更新而已），因为下次样本输入时它可能又得工作了。主要是为了防止过拟合。"></a><code>任务</code>：在模型训练时随机让网络某些隐含层节点的权重不工作，不工作的那些节点可以暂时认为不是网络结构的一部分，但是它的权重得保留下来（只是暂时不更新而已），因为下次样本输入时它可能又得工作了。主要是为了防止过拟合。</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182235.gif" srcset="/img/loading.gif" alt="images"></p>
+<p>上图a是标准的一个全连接的神经网络，b是对a应用了dropout的结果，它会以一定的概率(dropout probability)随机的丢弃掉一些神经元。 </p>
+<h3 id="卷积神经网络之优缺点"><a href="#卷积神经网络之优缺点" class="headerlink" title="卷积神经网络之优缺点"></a><strong>卷积神经网络之优缺点</strong></h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点 　　"></a>优点 　　</h4><ul>
+<li>共享卷积核，对高维数据处理无压力 　　</li>
+<li>无需手动选取特征，训练好权重，即得特征分类效果好 </li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点 　　"></a>缺点 　　</h4><ul>
+<li>需要调参，需要大样本量，训练最好要GPU 　　</li>
+<li>物理含义不明确（也就说，我们并不知道每个卷积层到底提取到的是什么特征，而且神经网络本身就是一种难以解释的“黑箱模型”） </li>
+</ul>
+<h3 id="卷积神经网络之典型CNN"><a href="#卷积神经网络之典型CNN" class="headerlink" title="卷积神经网络之典型CNN"></a><strong>卷积神经网络之典型CNN</strong></h3><ul>
+<li><code>LeNet</code>，这是最早用于数字识别的CNN 　　</li>
+<li><code>AlexNet</code>， 2012 ILSVRC比赛远超第2名的CNN，比 LeNet更深，用多层小卷积层叠加替换单大卷积层。 </li>
+<li><code>ZF Net</code>， 2013 ILSVRC比赛冠军 　　</li>
+<li><code>GoogLeNet</code>， 2014 ILSVRC比赛冠军 　　</li>
+<li><code>VGGNet</code>， 2014 ILSVRC比赛中的模型，图像识别略差于GoogLeNet，但是在很多图像转化学习问题(比如object detection)上效果奇好 </li>
+</ul>
+<h3 id="卷积神经网络的常用框架"><a href="#卷积神经网络的常用框架" class="headerlink" title="卷积神经网络的常用框架"></a><strong>卷积神经网络的常用框架</strong></h3><h4 id="Caffe"><a href="#Caffe" class="headerlink" title="Caffe"></a><strong>Caffe</strong></h4><ul>
+<li><h4 id="源于Berkeley的主流CV工具包，支持C-python-matlab"><a href="#源于Berkeley的主流CV工具包，支持C-python-matlab" class="headerlink" title="源于Berkeley的主流CV工具包，支持C++,python,matlab"></a>源于Berkeley的主流CV工具包，支持C++,python,matlab</h4></li>
+<li><h4 id="Model-Zoo中有大量预训练好的模型供使用"><a href="#Model-Zoo中有大量预训练好的模型供使用" class="headerlink" title="Model Zoo中有大量预训练好的模型供使用"></a>Model Zoo中有大量预训练好的模型供使用</h4></li>
+</ul>
+<h4 id="Torch"><a href="#Torch" class="headerlink" title="Torch"></a><strong>Torch</strong></h4><ul>
+<li><h4 id="Facebook用的卷积神经网络工具包"><a href="#Facebook用的卷积神经网络工具包" class="headerlink" title="Facebook用的卷积神经网络工具包"></a>Facebook用的卷积神经网络工具包</h4></li>
+<li><h4 id="通过时域卷积的本地接口，使用非常直观"><a href="#通过时域卷积的本地接口，使用非常直观" class="headerlink" title="通过时域卷积的本地接口，使用非常直观"></a>通过时域卷积的本地接口，使用非常直观</h4></li>
+<li><h4 id="定义新网络层简单"><a href="#定义新网络层简单" class="headerlink" title="定义新网络层简单"></a>定义新网络层简单</h4></li>
+</ul>
+<h4 id="TensorFlow"><a href="#TensorFlow" class="headerlink" title="TensorFlow"></a><strong>TensorFlow</strong></h4><ul>
+<li><h4 id="Google的深度学习框架"><a href="#Google的深度学习框架" class="headerlink" title="Google的深度学习框架"></a>Google的深度学习框架</h4></li>
+<li><h4 id="TensorBoard可视化很方便"><a href="#TensorBoard可视化很方便" class="headerlink" title="TensorBoard可视化很方便"></a>TensorBoard可视化很方便</h4></li>
+<li><h4 id="数据和模型并行化好，速度快"><a href="#数据和模型并行化好，速度快" class="headerlink" title="数据和模型并行化好，速度快"></a>数据和模型并行化好，速度快</h4></li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/CNN-back-propagation/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神经网络之卷积神经网络反向传播算法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/DL-DNN-python/">
+                        <span class="hidden-mobile">TensorFlow实现简单的深度神经网络-DNN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络之卷积神经网络&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

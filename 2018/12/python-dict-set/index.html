@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>python第四话之散列类型、运算优先级和逻辑运算 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-12-11 10:00">
+      2018年12月11日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      48
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <p>[TOC]</p>
+<h3 id="散列类型、运算优先级和逻辑运算"><a href="#散列类型、运算优先级和逻辑运算" class="headerlink" title="散列类型、运算优先级和逻辑运算"></a>散列类型、运算优先级和逻辑运算</h3><p><code>散列类型</code>也就是我们所熟知的<code>字典</code>和<code>集合</code>，我们今天来看看散列类型的相关逻辑运算。</p>
+<h3 id="集合（set）"><a href="#集合（set）" class="headerlink" title="集合（set）"></a>集合（set）</h3><h4 id="集合的特点："><a href="#集合的特点：" class="headerlink" title="集合的特点："></a>集合的特点：</h4><p>无序、元素是唯一的。</p>
+<h4 id="集合的创建："><a href="#集合的创建：" class="headerlink" title="集合的创建："></a>集合的创建：</h4><p>用大括号“{}”，各元素之间用逗号隔开；也可以通过类型转换的方式使用set()内置函数将列表或元祖转换为集合类型。在创建的过程中会自动过滤掉重复的元素，保证元素的唯一性。</p>
+<h4 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h4><pre><code class="hljs python">In [<span class="hljs-number">1</span>]: s = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]                                              
+
+In [<span class="hljs-number">2</span>]: s                                                              
+Out[<span class="hljs-number">2</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+
+In [<span class="hljs-number">3</span>]: se = set(s)                                                    
+
+In [<span class="hljs-number">4</span>]: se                                                             
+Out[<span class="hljs-number">4</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>&#125;
+
+In [<span class="hljs-number">5</span>]: type(se)                                                       
+Out[<span class="hljs-number">5</span>]: set
+    
+In [<span class="hljs-number">6</span>]: &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125;                                                  
+Out[<span class="hljs-number">6</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;</code></pre>
+
+<blockquote>
+<p>注意：列表是允许元素重复的，但是当我们把列表转成集合后，里面重复的元素就去掉了。</p>
+</blockquote>
+<h4 id="集合的运算"><a href="#集合的运算" class="headerlink" title="集合的运算"></a>集合的运算</h4><p>交集：&amp;</p>
+<p>并集：| </p>
+<p>差集：-</p>
+<p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-11/79094336.jpg" srcset="/img/loading.gif" alt=""></p>
+<h5 id="交集"><a href="#交集" class="headerlink" title="交集"></a><code>交集</code></h5><p>两个集合(s 和t)的差补或相对补集是指一个集合C，该集合中的元素，只属于集合s，而不属于集合t。</p>
+<pre><code class="hljs python">In [<span class="hljs-number">7</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                    
+
+In [<span class="hljs-number">8</span>]: s2 = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>&#125;                                           
+
+In [<span class="hljs-number">9</span>]: s1 &amp; s2                                                        
+Out[<span class="hljs-number">9</span>]: &#123;<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-string">'b'</span>&#125;</code></pre>
+
+<blockquote>
+<p>两个集合取交集，最后输出的元素是属于两个集合所共有的元素。</p>
+</blockquote>
+<h5 id="并集"><a href="#并集" class="headerlink" title="并集"></a><code>并集</code></h5><p>联合(union)操作和集合的OR(又称可兼析取(inclusive disjunction))其实是等价的，两个集合的联合是一个新集合，该集合中的每个元素都至少是其中一个集合的成员，即：属于两个集合其中之一的成员。</p>
+<pre><code class="hljs python">In [<span class="hljs-number">10</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">11</span>]: s2 = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>&#125;                                          
+
+In [<span class="hljs-number">12</span>]: s1 | s2                                                       
+Out[<span class="hljs-number">12</span>]: &#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>&#125;</code></pre>
+
+<blockquote>
+<p>并集指的是两个集合的元素进行一个整合，最后生成的元素都是属于原来两个集合之中的某一个。</p>
+</blockquote>
+<h5 id="差集"><a href="#差集" class="headerlink" title="差集"></a><code>差集</code></h5><p>和其他的布尔集合操作相似，对称差分是集合的XOR(又称”异 或” (exclusive disjunction)).两个集合(s 和t)的对称差分是指另外一个集合C,该集合中的元素，只能是属于集合s 或者集合t的成员，不能同时属于两个集合。</p>
+<pre><code class="hljs python">In [<span class="hljs-number">13</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">14</span>]: s2 = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>&#125;                                          
+
+In [<span class="hljs-number">15</span>]: s1 - s2                                                       
+Out[<span class="hljs-number">15</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>&#125;</code></pre>
+
+<blockquote>
+<p>差集也叫被减集合的补集。</p>
+</blockquote>
+<h5 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a><code>扩展</code></h5><p><strong>add</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">16</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">17</span>]: s1.add(<span class="hljs-number">8</span>)                                                     
+
+In [<span class="hljs-number">18</span>]: s1                                                            
+Out[<span class="hljs-number">18</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;
+
+In [<span class="hljs-number">19</span>]: s1.add(<span class="hljs-string">'w'</span>)                                                   
+
+In [<span class="hljs-number">20</span>]: s1                                                            
+Out[<span class="hljs-number">20</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'w'</span>&#125;</code></pre>
+
+<blockquote>
+<p>往集合里添加元素。</p>
+</blockquote>
+<p><strong>pop</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">23</span>]: s1                                                            
+Out[<span class="hljs-number">23</span>]: &#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'w'</span>&#125;
+
+In [<span class="hljs-number">24</span>]: s1.pop()                                                      
+Out[<span class="hljs-number">24</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">25</span>]: s1.pop()                                                      
+Out[<span class="hljs-number">25</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">26</span>]: s1.pop()                                                      
+Out[<span class="hljs-number">26</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">27</span>]: s1.pop()                                                      
+Out[<span class="hljs-number">27</span>]: <span class="hljs-number">3</span>
+
+In [<span class="hljs-number">28</span>]: s1.pop()                                                      
+Out[<span class="hljs-number">28</span>]: <span class="hljs-number">4</span></code></pre>
+
+<blockquote>
+<p>pop方法是没有参数的，因为集合是无序的，所以在移除的时候是随机移除的。</p>
+</blockquote>
+<p><strong>remove</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">30</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">31</span>]: s1.remove(<span class="hljs-number">1</span>)                                                  
+
+In [<span class="hljs-number">32</span>]: s1                                                            
+Out[<span class="hljs-number">32</span>]: &#123;<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;
+
+In [<span class="hljs-number">33</span>]: s1.remove(<span class="hljs-string">'a'</span>)                                                
+
+In [<span class="hljs-number">34</span>]: s1                                                            
+Out[<span class="hljs-number">34</span>]: &#123;<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'b'</span>&#125;</code></pre>
+
+<blockquote>
+<p>remove方法是指定元素进行删除。</p>
+</blockquote>
+<p><strong>update</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">35</span>]: s1                                                            
+Out[<span class="hljs-number">35</span>]: &#123;<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'b'</span>&#125;
+
+In [<span class="hljs-number">36</span>]: s1.update(&#123;<span class="hljs-string">'w'</span>, <span class="hljs-string">'c'</span>&#125;)                                         
+
+In [<span class="hljs-number">37</span>]: s1                                                            
+Out[<span class="hljs-number">37</span>]: &#123;<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'b'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'w'</span>&#125;</code></pre>
+
+<blockquote>
+<p>update方法是往集合里面添加集合。</p>
+</blockquote>
+<p><strong>isdisjoint</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">38</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">39</span>]: s2 = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>&#125;                                          
+
+In [<span class="hljs-number">40</span>]: s1.isdisjoint(s2)                                             
+Out[<span class="hljs-number">40</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">41</span>]: s1.isdisjoint(&#123;<span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>&#125;)                                      
+Out[<span class="hljs-number">41</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>isdisjoint方法是判断两个集合有没有交集，有返回False，没有则返回True</p>
+</blockquote>
+<p><strong>issubset</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">42</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">43</span>]: s2 = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>,<span class="hljs-string">'c'</span>&#125;                                          
+
+In [<span class="hljs-number">44</span>]: s1.issubset(s2)                                               
+Out[<span class="hljs-number">44</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">45</span>]: s2.issubset(s1)                                               
+Out[<span class="hljs-number">45</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">46</span>]: s1.issubset(s1)                                               
+Out[<span class="hljs-number">46</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">47</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125;.issubset(s1)                                           
+Out[<span class="hljs-number">47</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">48</span>]: s1                                                            
+Out[<span class="hljs-number">48</span>]: &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;</code></pre>
+
+<blockquote>
+<p>判断前面的集合是不是后面的集合的子集。</p>
+</blockquote>
+<p><strong>issuperset</strong></p>
+<pre><code class="hljs python">In [<span class="hljs-number">51</span>]: s1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>&#125;                                   
+
+In [<span class="hljs-number">52</span>]: s2 = &#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-string">'b'</span>&#125;                                                
+
+In [<span class="hljs-number">53</span>]: s2.issubset(s1)                                               
+Out[<span class="hljs-number">53</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">54</span>]: s1.issuperset(s2)                                             
+Out[<span class="hljs-number">54</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>判断后面的集合是前面集合的子集。</p>
+</blockquote>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<ul>
+<li>集合唯一性：集合中的元素具有唯一性，不存在两个相同的元素。</li>
+<li>集合可变性：集合中的元素是可变的，集合是可变对象。</li>
+<li>集合无序性：集合中的元素是无序的，所以没有存在索引。</li>
+</ul>
+</blockquote>
+<h3 id="字典（dict）"><a href="#字典（dict）" class="headerlink" title="字典（dict）"></a>字典（dict）</h3><p>字典是除了列表外的另一种<code>可变类型</code>，字典的元素是以键值对的形式存在，字典的键必须是唯一，可以是数字、字符串或者是元组，键可以为任何不可变类型，列表和集合不能作为字典的键。</p>
+<h4 id="字典的创建"><a href="#字典的创建" class="headerlink" title="字典的创建"></a>字典的创建</h4><p>第一种 { key :value } ，字典里的键和值用“：”隔开，一对键和值组成一个项，项和项之间用“，”隔开。</p>
+<p>第二种使用内置函数dict(key=value)，要注意的是这里使用的是“=”赋值的方式，键是以名字的形式所以这种方法的键就必须符合名字的要求，且不能使用关键字作为键。</p>
+<p>如果你要使用关键字作为键名那么就只能用第一种方法，关键字以字符串的形式来创建。</p>
+<p>通过字典的键可以访问这个键所对应的值，字典是可变类型，所以可以直接对字典的项进行修改，使用dictname[key] = value，如果这个键存在于字典中，则是修改这个键所对应的值，如果这个键不存在则是往字典中添加这个项。</p>
+<h4 id="演示-1"><a href="#演示-1" class="headerlink" title="演示"></a><strong>演示</strong></h4><pre><code class="hljs python">In [<span class="hljs-number">56</span>]: &#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>:<span class="hljs-number">2</span>&#125;                                                
+Out[<span class="hljs-number">56</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">57</span>]: s = &#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>:<span class="hljs-number">2</span>&#125;                                            
+
+In [<span class="hljs-number">58</span>]: s,type(s)                                                     
+Out[<span class="hljs-number">58</span>]: (&#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;, dict)
+
+In [<span class="hljs-number">56</span>]: &#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>:<span class="hljs-number">2</span>&#125;                                                
+Out[<span class="hljs-number">56</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">57</span>]: s = &#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>:<span class="hljs-number">2</span>&#125;                                            
+
+In [<span class="hljs-number">58</span>]: s,type(s)                                                     
+Out[<span class="hljs-number">58</span>]: (&#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;, dict)</code></pre>
+
+<blockquote>
+<p>字典形式：{key:value}</p>
+</blockquote>
+<h4 id="字典的运用"><a href="#字典的运用" class="headerlink" title="字典的运用"></a>字典的运用</h4><h5 id="查看"><a href="#查看" class="headerlink" title="查看"></a><code>查看</code></h5><pre><code class="hljs python">In [<span class="hljs-number">67</span>]: a = dict(a=<span class="hljs-number">1</span>, b=<span class="hljs-number">2</span>)                                            
+
+In [<span class="hljs-number">68</span>]: a                                                             
+Out[<span class="hljs-number">68</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">69</span>]: a[<span class="hljs-string">'a'</span>]                                                        
+Out[<span class="hljs-number">69</span>]: <span class="hljs-number">1</span></code></pre>
+
+<blockquote>
+<p>由于字典也是无序的，所以我们在取值的时候，是根据key来取出对应的value的。</p>
+</blockquote>
+<h5 id="增加"><a href="#增加" class="headerlink" title="增加"></a><code>增加</code></h5><pre><code class="hljs python">In [<span class="hljs-number">70</span>]: a                                                             
+Out[<span class="hljs-number">70</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">71</span>]: a[<span class="hljs-string">'c'</span>] = <span class="hljs-number">3</span>                                                    
+
+In [<span class="hljs-number">72</span>]: a                                                             
+Out[<span class="hljs-number">72</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">3</span>&#125;</code></pre>
+
+<blockquote>
+<p>往字典里添加元素时，是key和value对应增加的。</p>
+</blockquote>
+<h5 id="修改"><a href="#修改" class="headerlink" title="修改"></a><code>修改</code></h5><pre><code class="hljs python">In [<span class="hljs-number">73</span>]: a                                                             
+Out[<span class="hljs-number">73</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">3</span>&#125;
+
+In [<span class="hljs-number">74</span>]: a[<span class="hljs-string">'a'</span>] = <span class="hljs-string">'w'</span>                                                  
+
+In [<span class="hljs-number">75</span>]: a                                                             
+Out[<span class="hljs-number">75</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">3</span>&#125;</code></pre>
+
+<blockquote>
+<p>修改字典是通过key取出value，然后对应的去重新赋值。</p>
+</blockquote>
+<h4 id="字典的增删改查"><a href="#字典的增删改查" class="headerlink" title="字典的增删改查"></a>字典的增删改查</h4><h5 id="增加-1"><a href="#增加-1" class="headerlink" title="增加"></a>增加</h5><p><code>copy</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">76</span>]: a                                                             
+Out[<span class="hljs-number">76</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">3</span>&#125;
+
+In [<span class="hljs-number">77</span>]: b = a.copy()                                                  
+
+In [<span class="hljs-number">78</span>]: b                                                             
+Out[<span class="hljs-number">78</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">3</span>&#125;</code></pre>
+
+<blockquote>
+<p>复制成一个新字典。</p>
+</blockquote>
+<p><code>fromkeys</code></p>
+<p>查看fromkeys的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">79</span>]: help(a.fromkeys)</code></pre>
+
+<blockquote>
+<p>fromkeys(iterable, value=None, /) method of builtins.type instance  Returns a new dict with keys from iterable and values equal to value.</p>
+<p>注意： 返回一个新的dict，其中包含来自iterable的键，值等于value。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">93</span>]: a                                                             
+Out[<span class="hljs-number">93</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">94</span>]: s = a.fromkeys([<span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>])                                    
+
+In [<span class="hljs-number">95</span>]: s                                                             
+Out[<span class="hljs-number">95</span>]: &#123;<span class="hljs-string">'c'</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">'d'</span>: <span class="hljs-literal">None</span>&#125;
+
+In [<span class="hljs-number">96</span>]: s = a.fromkeys([<span class="hljs-string">'c'</span>, <span class="hljs-string">'d'</span>], <span class="hljs-number">7</span>)                                 
+
+In [<span class="hljs-number">97</span>]: s                                                             
+Out[<span class="hljs-number">97</span>]: &#123;<span class="hljs-string">'c'</span>: <span class="hljs-number">7</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">7</span>&#125;</code></pre>
+
+<blockquote>
+<p>使用fromkey方法的时候，原字典是不变的，会返回一个新的字典。</p>
+</blockquote>
+<p><code>setfefault</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">103</span>]: a                                                            
+Out[<span class="hljs-number">103</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">104</span>]: a.setdefault(<span class="hljs-string">'a'</span>)                                            
+Out[<span class="hljs-number">104</span>]: <span class="hljs-string">'w'</span>
+
+In [<span class="hljs-number">105</span>]: a.setdefault(<span class="hljs-string">'b'</span>)                                            
+Out[<span class="hljs-number">105</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">106</span>]: a.setdefault(<span class="hljs-string">'c'</span>)                                            
+
+In [<span class="hljs-number">107</span>]: a                                                            
+Out[<span class="hljs-number">107</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-literal">None</span>&#125;
+
+In [<span class="hljs-number">108</span>]: a.setdefault(<span class="hljs-string">'d'</span>, <span class="hljs-number">4</span>)                                         
+Out[<span class="hljs-number">108</span>]: <span class="hljs-number">4</span>
+
+In [<span class="hljs-number">109</span>]: a                                                            
+Out[<span class="hljs-number">109</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;</code></pre>
+
+<blockquote>
+<p>查询并返回key所对应的值，如果没有这个key,则会新建。有则查，无则增。</p>
+</blockquote>
+<h5 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h5><p><code>clear</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">110</span>]: a                                                            
+Out[<span class="hljs-number">110</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-string">'w'</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;
+
+In [<span class="hljs-number">111</span>]: a.clear()                                                    
+
+In [<span class="hljs-number">112</span>]: a                                                            
+Out[<span class="hljs-number">112</span>]: &#123;&#125;</code></pre>
+
+<blockquote>
+<p>删除所有键值对</p>
+</blockquote>
+<p><code>pop</code></p>
+<p>查看pop 的方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">121</span>]: help(a.pop)</code></pre>
+
+<blockquote>
+<p>pop(…) method of builtins.dict instance<br>​    D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.<br>​    If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">116</span>]: a                                                            
+Out[<span class="hljs-number">116</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;
+
+In [<span class="hljs-number">117</span>]: a.pop(<span class="hljs-string">'a'</span>)                                                   
+Out[<span class="hljs-number">117</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">118</span>]: a                                                            
+Out[<span class="hljs-number">118</span>]: &#123;<span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;
+
+In [<span class="hljs-number">119</span>]: a.pop(<span class="hljs-string">'d'</span>)                                                   
+Out[<span class="hljs-number">119</span>]: <span class="hljs-number">4</span>
+
+In [<span class="hljs-number">120</span>]: a.pop()                                                      
+-----------------------------------------------------------------------
+TypeError                             Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-120</span><span class="hljs-number">-9</span>c070c907602&gt; <span class="hljs-keyword">in</span> &lt;module&gt;
+----&gt; 1 a.pop()
+
+TypeError: pop expected at least <span class="hljs-number">1</span> arguments, got <span class="hljs-number">0</span></code></pre>
+
+<blockquote>
+<p>pop方法是删除指定的键并返回相应的值。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">134</span>]: a                                                            
+Out[<span class="hljs-number">134</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;
+
+In [<span class="hljs-number">135</span>]: a.pop(<span class="hljs-string">'c'</span>, <span class="hljs-string">'b'</span>)                                              
+Out[<span class="hljs-number">135</span>]: <span class="hljs-string">'b'</span>
+
+In [<span class="hljs-number">136</span>]: a.pop(<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>)                                              
+Out[<span class="hljs-number">136</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">137</span>]: a                                                            
+Out[<span class="hljs-number">137</span>]: &#123;<span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>&#125;</code></pre>
+
+<blockquote>
+<p>如果传入两个值，第一个是key，第二个是一个值，如果找到key, 就删除对应键值对，并返回该值，如果没有找到key,就返回你所传入的第二个值。</p>
+</blockquote>
+<p><code>popitem</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">140</span>]: a                                                            
+Out[<span class="hljs-number">140</span>]: &#123;<span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'d'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">6</span>&#125;
+
+In [<span class="hljs-number">141</span>]: a.popitem()                                                  
+Out[<span class="hljs-number">141</span>]: (<span class="hljs-string">'s'</span>, <span class="hljs-number">6</span>)
+
+In [<span class="hljs-number">142</span>]: a.popitem()                                                  
+Out[<span class="hljs-number">142</span>]: (<span class="hljs-string">'d'</span>, <span class="hljs-number">4</span>)
+
+In [<span class="hljs-number">143</span>]: a                                                            
+Out[<span class="hljs-number">143</span>]: &#123;<span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;</code></pre>
+
+<blockquote>
+<p>由于字典也是无序的，多以popitem是随机删除一个键值对。</p>
+</blockquote>
+<h5 id="修改-1"><a href="#修改-1" class="headerlink" title="修改"></a>修改</h5><p><code>update</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">145</span>]: a                                                            
+Out[<span class="hljs-number">145</span>]: &#123;<span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>&#125;
+
+In [<span class="hljs-number">146</span>]: a.update(&#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">1</span>, <span class="hljs-string">'c'</span>:<span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;)                             
+
+In [<span class="hljs-number">147</span>]: a                                                            
+Out[<span class="hljs-number">147</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;
+
+In [<span class="hljs-number">148</span>]: a.update(&#123;<span class="hljs-string">'a'</span>:<span class="hljs-number">0</span>&#125;)                                            
+
+In [<span class="hljs-number">149</span>]: a                                                            
+Out[<span class="hljs-number">149</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;</code></pre>
+
+<blockquote>
+<p>update方法，对于键值对的处理是，有则改，无则增。</p>
+</blockquote>
+<h5 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h5><p><code>get</code></p>
+<p>查看get的使用方法</p>
+<pre><code class="hljs python">In [<span class="hljs-number">155</span>]: help(a.get)</code></pre>
+
+<blockquote>
+<p>get(…) method of builtins.dict instance<br>​    D.get(k[,d]) -&gt; D[k] if k in D, else d.  d defaults to None.</p>
+<p>注意：默认返回None</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">151</span>]: a                                                            
+Out[<span class="hljs-number">151</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;
+
+In [<span class="hljs-number">152</span>]: a.get(<span class="hljs-string">'a'</span>)                                                   
+Out[<span class="hljs-number">152</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">153</span>]: a.get(<span class="hljs-string">'f'</span>)                                                   
+
+In [<span class="hljs-number">154</span>]: a.get(<span class="hljs-string">'f'</span>, <span class="hljs-string">"没有"</span>)                                           
+Out[<span class="hljs-number">154</span>]: <span class="hljs-string">'没有'</span></code></pre>
+
+<blockquote>
+<p>get方法是如果查询到key就返回对应的value，如果没有，就返回你给定的提示值。</p>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">156</span>]: c,d = a.get(<span class="hljs-string">'f'</span>, (<span class="hljs-number">2</span>,<span class="hljs-number">3</span>))                                      
+
+In [<span class="hljs-number">157</span>]: c                                                            
+Out[<span class="hljs-number">157</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">158</span>]: d                                                            
+Out[<span class="hljs-number">158</span>]: <span class="hljs-number">3</span></code></pre>
+
+<blockquote>
+<p>也可以通过这个功能，做些操作。</p>
+</blockquote>
+<p><code>keys</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">159</span>]: a                                                            
+Out[<span class="hljs-number">159</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;
+
+In [<span class="hljs-number">160</span>]: a.keys()                                                     
+Out[<span class="hljs-number">160</span>]: dict_keys([<span class="hljs-string">'s'</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'b'</span>])
+
+In [<span class="hljs-number">161</span>]: list(a.keys())                                               
+Out[<span class="hljs-number">161</span>]: [<span class="hljs-string">'s'</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'c'</span>, <span class="hljs-string">'b'</span>]</code></pre>
+
+<blockquote>
+<p>获取字典里所有的key。</p>
+</blockquote>
+<p><code>value</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">162</span>]: a                                                            
+Out[<span class="hljs-number">162</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;
+
+In [<span class="hljs-number">163</span>]: a.values()                                                   
+Out[<span class="hljs-number">163</span>]: dict_values([<span class="hljs-number">9</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>])
+
+In [<span class="hljs-number">164</span>]: list(a.values())                                             
+Out[<span class="hljs-number">164</span>]: [<span class="hljs-number">9</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>]</code></pre>
+
+<blockquote>
+<p>获取所有的value。</p>
+</blockquote>
+<p><code>items</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">165</span>]: a                                                            
+Out[<span class="hljs-number">165</span>]: &#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">0</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">2</span>, <span class="hljs-string">'c'</span>: <span class="hljs-number">4</span>, <span class="hljs-string">'s'</span>: <span class="hljs-number">9</span>&#125;
+
+In [<span class="hljs-number">166</span>]: a.items()                                                    
+Out[<span class="hljs-number">166</span>]: dict_items([(<span class="hljs-string">'s'</span>, <span class="hljs-number">9</span>), (<span class="hljs-string">'a'</span>, <span class="hljs-number">0</span>), (<span class="hljs-string">'c'</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">'b'</span>, <span class="hljs-number">2</span>)])
+
+In [<span class="hljs-number">167</span>]: list(a.items())                                              
+Out[<span class="hljs-number">167</span>]: [(<span class="hljs-string">'s'</span>, <span class="hljs-number">9</span>), (<span class="hljs-string">'a'</span>, <span class="hljs-number">0</span>), (<span class="hljs-string">'c'</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">'b'</span>, <span class="hljs-number">2</span>)]</code></pre>
+
+<blockquote>
+<p>获取所有的键值对。</p>
+</blockquote>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<ul>
+<li>键（key）唯一性： 字典中的键（key）具有唯一性，不存在两个相同的键（key）</li>
+<li>可变性： 字典是可变对象，但是自动减的键（key）必须是不可变对象</li>
+<li>无序性：字典中的键也是无序的，所以不能通过索引取值。</li>
+</ul>
+</blockquote>
+<h3 id="运算符及优先级"><a href="#运算符及优先级" class="headerlink" title="运算符及优先级"></a>运算符及优先级</h3><h4 id="Python中的运算符"><a href="#Python中的运算符" class="headerlink" title="Python中的运算符"></a>Python中的运算符</h4><p><img src="http://eveseven.oss-cn-shanghai.aliyuncs.com/18-12-11/41589190.jpg" srcset="/img/loading.gif" alt="1"></p>
+<h4 id="演示："><a href="#演示：" class="headerlink" title="演示："></a>演示：</h4><pre><code class="hljs python">In [<span class="hljs-number">168</span>]: <span class="hljs-number">2</span> **<span class="hljs-number">3</span>                                                        
+Out[<span class="hljs-number">168</span>]: <span class="hljs-number">8</span>
+
+In [<span class="hljs-number">169</span>]: <span class="hljs-number">2</span>+<span class="hljs-number">2</span>                                                          
+Out[<span class="hljs-number">169</span>]: <span class="hljs-number">4</span>
+
+In [<span class="hljs-number">170</span>]: <span class="hljs-number">2</span><span class="hljs-number">-1</span>                                                          
+Out[<span class="hljs-number">170</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">171</span>]: <span class="hljs-number">2</span>&lt;<span class="hljs-number">2</span>                                                          
+Out[<span class="hljs-number">171</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">172</span>]: <span class="hljs-number">2</span>&gt;<span class="hljs-number">20</span>                                                         
+Out[<span class="hljs-number">172</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">173</span>]: <span class="hljs-number">3</span>&lt;=(<span class="hljs-number">1</span>+<span class="hljs-number">2</span>)                                                     
+Out[<span class="hljs-number">173</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">174</span>]: <span class="hljs-number">5</span>&gt;=<span class="hljs-number">1</span>                                                         
+Out[<span class="hljs-number">174</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">175</span>]: <span class="hljs-number">2</span>==<span class="hljs-number">2</span>                                                         
+Out[<span class="hljs-number">175</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">176</span>]: <span class="hljs-number">2</span>!=<span class="hljs-number">2</span>                                                         
+Out[<span class="hljs-number">176</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">177</span>]: a =<span class="hljs-number">1</span> 
+In [<span class="hljs-number">181</span>]: <span class="hljs-number">8</span> %<span class="hljs-number">2</span>                                                         
+Out[<span class="hljs-number">181</span>]: <span class="hljs-number">0</span>
+
+In [<span class="hljs-number">182</span>]: a                                                            
+Out[<span class="hljs-number">182</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">183</span>]: a += <span class="hljs-number">1</span>                                                       
+
+In [<span class="hljs-number">184</span>]: a                                                            
+Out[<span class="hljs-number">184</span>]: <span class="hljs-number">2</span>
+
+In [<span class="hljs-number">185</span>]: a /= <span class="hljs-number">1.2</span>                                                     
+
+In [<span class="hljs-number">186</span>]: a                                                            
+Out[<span class="hljs-number">186</span>]: <span class="hljs-number">1.6666666666666667</span>
+
+In [<span class="hljs-number">187</span>]: a %= <span class="hljs-number">1</span>                                                       
+
+In [<span class="hljs-number">188</span>]: a                                                            
+Out[<span class="hljs-number">188</span>]: <span class="hljs-number">0.6666666666666667</span>
+    
+In [<span class="hljs-number">189</span>]: a = <span class="hljs-number">1</span>                                                        
+
+In [<span class="hljs-number">190</span>]: b = a                                                        
+
+In [<span class="hljs-number">191</span>]: a <span class="hljs-keyword">is</span> b  <span class="hljs-comment"># 判断是否是id一致                                                      </span>
+Out[<span class="hljs-number">191</span>]: <span class="hljs-literal">True</span>
+    
+In [<span class="hljs-number">192</span>]: <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]                                                  
+Out[<span class="hljs-number">192</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">193</span>]: <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]                                              
+Out[<span class="hljs-number">193</span>]: <span class="hljs-literal">False</span></code></pre>
+
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><h5 id="查看对象类型"><a href="#查看对象类型" class="headerlink" title="查看对象类型"></a>查看对象类型</h5><p><code>type</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">204</span>]: a = <span class="hljs-number">1</span>                                                        
+
+In [<span class="hljs-number">205</span>]: b = <span class="hljs-string">'s'</span>                                                      
+
+In [<span class="hljs-number">206</span>]: c = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]                                                   
+
+In [<span class="hljs-number">207</span>]: type(a), type(b), type(c)                                    
+Out[<span class="hljs-number">207</span>]: (int, str, list)</code></pre>
+
+<blockquote>
+<p>直接返回对象的类型</p>
+</blockquote>
+<p><code>isinstance</code></p>
+<pre><code class="hljs python">In [<span class="hljs-number">208</span>]: a                                                            
+Out[<span class="hljs-number">208</span>]: <span class="hljs-number">1</span>
+
+In [<span class="hljs-number">209</span>]: b                                                            
+Out[<span class="hljs-number">209</span>]: <span class="hljs-string">'s'</span>
+
+In [<span class="hljs-number">210</span>]: c                                                            
+Out[<span class="hljs-number">210</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+
+In [<span class="hljs-number">211</span>]: isinstance(a, int)                                           
+Out[<span class="hljs-number">211</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">212</span>]: isinstance(a, str)                                           
+Out[<span class="hljs-number">212</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">213</span>]: isinstance(b, str)                                           
+Out[<span class="hljs-number">213</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<blockquote>
+<p>判断对象的类型</p>
+</blockquote>
+<h5 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h5><pre><code class="hljs python">In [<span class="hljs-number">216</span>]: a = <span class="hljs-number">1</span>                                                        
+
+In [<span class="hljs-number">217</span>]: b = <span class="hljs-number">2</span>                                                        
+
+In [<span class="hljs-number">218</span>]: c = <span class="hljs-number">1</span>                                                        
+
+In [<span class="hljs-number">219</span>]: a == b                                                       
+Out[<span class="hljs-number">219</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">220</span>]: a == c                                                       
+Out[<span class="hljs-number">220</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">221</span>]: b != c                                                       
+Out[<span class="hljs-number">221</span>]: <span class="hljs-literal">True</span></code></pre>
+
+<h5 id="如果有多个条件"><a href="#如果有多个条件" class="headerlink" title="如果有多个条件"></a>如果有多个条件</h5><blockquote>
+<ul>
+<li>判断语句1    and    判断语句2</li>
+<li>判断语句1    or       判断语句2</li>
+<li>not    判断语句1</li>
+</ul>
+</blockquote>
+<pre><code class="hljs python">In [<span class="hljs-number">227</span>]: a==b <span class="hljs-keyword">and</span> b!=c                                                
+Out[<span class="hljs-number">227</span>]: <span class="hljs-literal">False</span>
+
+In [<span class="hljs-number">228</span>]: a==b <span class="hljs-keyword">or</span> b!=c                                                 
+Out[<span class="hljs-number">228</span>]: <span class="hljs-literal">True</span>
+
+In [<span class="hljs-number">229</span>]: <span class="hljs-keyword">not</span> a==b                                                     
+Out[<span class="hljs-number">229</span>]: <span class="hljs-literal">True</span></code></pre>
+
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%A3%E5%88%97%E7%B1%BB%E5%9E%8B/">散列类型</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%BF%90%E7%AE%97%E4%BC%98%E5%85%88%E7%BA%A7/">运算优先级</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97/">逻辑运算</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/12/python-if-while/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python第五话之控制流程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/12/python-output/">
+                        <span class="hidden-mobile">python第三话之格式化输出和深浅复制</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python第四话之散列类型、运算优先级和逻辑运算&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

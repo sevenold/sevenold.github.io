@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>机器学习-支持向量机 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-07-25 10:00">
+      2018年7月25日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      47
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="支持向量机SVM的概念及起源"><a href="#支持向量机SVM的概念及起源" class="headerlink" title="支持向量机SVM的概念及起源"></a>支持向量机SVM的概念及起源</h2><h3 id="什么是支持向量机SVM"><a href="#什么是支持向量机SVM" class="headerlink" title="什么是支持向量机SVM"></a>什么是支持向量机SVM</h3><p>支持向量机，因其英文名为support vector machine，故一般简称SVM，通俗来讲，它是一种二类分类模型，其基本模型定义为特征空间上的间隔最大的线性分类器，其学习策略便是间隔最大化，最终可转化为一个凸二次规划问题的求解。</p>
+<h3 id="分类标准的起源：Logistic回归"><a href="#分类标准的起源：Logistic回归" class="headerlink" title="分类标准的起源：Logistic回归"></a>分类标准的起源：Logistic回归</h3><h4 id="我们先看看什么是线性分类器"><a href="#我们先看看什么是线性分类器" class="headerlink" title="我们先看看什么是线性分类器"></a>我们先看看什么是线性分类器</h4><p>给定一些数据点，它们分别属于两个不同的类，现在要找到一个线性分类器把这些数据分成两类。如果用$x$表示数据点，用$y$表示类别（$y=1$或者$y=-1$，分别代表两个不同的类），一个线性分类器的学习目标便是要在$n$维的数据空间中找到一个超平面（hyper plane），这个超平面的方程可以表示为（$w^T$中的T代表转置）：</p>
+<h2 id="w-Tx-b-0"><a href="#w-Tx-b-0" class="headerlink" title="$w^Tx+b=0$"></a>$w^Tx+b=0$</h2><p><strong>Logistic回归</strong>目的是从特征学习出一个0/1分类模型，而这个模型是将特性的线性组合作为自变量，由于自变量的取值范围是负无穷到正无穷。因此，使用logistic函数（或称作sigmoid函数）将自变量映射到(0,1)上，映射后的值被认为是属于$y=1$的概率。</p>
+<p>根据我们前面<a href="https://0520.tech/2018/07/23/2018-07-23-ml-logisticRegression/">Logistic回归的推导</a>  ，假设函数：</p>
+<h2 id="h-theta-x-g-theta-Tx-frac1-1-e-theta-Tx"><a href="#h-theta-x-g-theta-Tx-frac1-1-e-theta-Tx" class="headerlink" title="$h_\theta(x)=g(\theta^Tx)=\frac1{1+e^{-\theta^Tx}}$"></a>$h_\theta(x)=g(\theta^Tx)=\frac1{1+e^{-\theta^Tx}}$</h2><p>其中x是n维特征向量，函数g就是Logistic函数。</p>
+<h4 id="同样-g-z-frac-1-1-e-z-的图像："><a href="#同样-g-z-frac-1-1-e-z-的图像：" class="headerlink" title="同样$g(z)=\frac{1}{1+e^{-z}}$的图像："></a>同样$g(z)=\frac{1}{1+e^{-z}}$的图像：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230137.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从图像中，我们就可以看出将无穷映射到了（0,1）。</p>
+<p>而假设函数就是特征属于y=1的概率。 </p>
+<h2 id="P-y-1-x-theta-h-theta-x-P-y-0-x-theta-1-h-theta-x"><a href="#P-y-1-x-theta-h-theta-x-P-y-0-x-theta-1-h-theta-x" class="headerlink" title="$P(y=1|x;\theta)=h_\theta(x) \\ P(y=0|x;\theta)=1-h_\theta(x)$"></a>$P(y=1|x;\theta)=h_\theta(x) \\ P(y=0|x;\theta)=1-h_\theta(x)$</h2><p>所以，我们在判别一个新的特征属于哪个类别的时候，就只需要求$h_\theta(x)$就可以了，由上面的图中可以看出如果$h_\theta(x)$ 大于0.5就是y=1的类，否则就是属于y=1的类。</p>
+<h4 id="然后我们尝试给Logistic回归做一个变形。首先，将使用的结果标签y-0和y-1替换为-y-1-y-1-然后把-theta-0-替换成b，把-w-替换-theta-i-所以就变换为："><a href="#然后我们尝试给Logistic回归做一个变形。首先，将使用的结果标签y-0和y-1替换为-y-1-y-1-然后把-theta-0-替换成b，把-w-替换-theta-i-所以就变换为：" class="headerlink" title="然后我们尝试给Logistic回归做一个变形。首先，将使用的结果标签y=0和y=1替换为$y=-1,y=1 $,然后把$\theta_0$替换成b，把$w$替换$\theta_i$,所以就变换为："></a>然后我们尝试给Logistic回归做一个变形。首先，将使用的结果标签y=0和y=1替换为$y=-1,y=1 $,然后把$\theta_0$替换成b，把$w$替换$\theta_i$,所以就变换为：</h4><h2 id="h-theta-x-g-w-Tx-b"><a href="#h-theta-x-g-w-Tx-b" class="headerlink" title="$h_\theta(x)=g(w^Tx+b)$"></a>$h_\theta(x)=g(w^Tx+b)$</h2><h4 id="所以我们就可以假设函数：-h-w-b-x-g-w-Tx-b-中的g-z-做一个简化，将其简单映射到y-1和y-1上。映射关系如下："><a href="#所以我们就可以假设函数：-h-w-b-x-g-w-Tx-b-中的g-z-做一个简化，将其简单映射到y-1和y-1上。映射关系如下：" class="headerlink" title="所以我们就可以假设函数：$h_{w,b}(x)=g(w^Tx+b)$,中的g(z)做一个简化，将其简单映射到y=-1和y=1上。映射关系如下："></a>所以我们就可以假设函数：$h_{w,b}(x)=g(w^Tx+b)$,中的g(z)做一个简化，将其简单映射到y=-1和y=1上。映射关系如下：</h4><h2 id="g-z-left-lbrace-begin-aligned-1-amp-amp-z-ge0-1-amp-amp-z-lt-0-end-aligned-right"><a href="#g-z-left-lbrace-begin-aligned-1-amp-amp-z-ge0-1-amp-amp-z-lt-0-end-aligned-right" class="headerlink" title="$ g(z)=\left\lbrace  \begin{aligned} 1 &amp;&amp; z \ge0 \\ -1 &amp;&amp; z&lt;0 \end{aligned} \right. $"></a>$ g(z)=\left\lbrace  \begin{aligned} 1 &amp;&amp; z \ge0 \\ -1 &amp;&amp; z&lt;0 \end{aligned} \right. $</h2><h4 id="然后我们举个线性分类的例子来看看"><a href="#然后我们举个线性分类的例子来看看" class="headerlink" title="然后我们举个线性分类的例子来看看"></a>然后我们举个线性分类的例子来看看</h4><p>如下图所示，现在有一个二维平面，平面上有两种不同的数据，分别用圈和叉表示。由于这些数据是线性可分的，所以可以用一条直线将这两类数据分开，这条直线就相当于一个超平面，超平面一边的数据点所对应的y全是-1，另一边所对应的y全是1。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230138.png" srcset="/img/loading.gif" alt="images"></p>
+<p>这个超平面可以用分类函数$f(x)=w^Tx+b$来表示，当f(x)等于0时候，x便是位于超平面上的点，而f(x)大于0的点对应y=1的数据点，f(x)小于0的点对应y=-1的点，如下图所示： </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230139.png" srcset="/img/loading.gif" alt="images"></p>
+<p>接下来的问题是，如何确定这个超平面呢？从直观上而言，这个超平面应该是最适合分开两类数据的直线。而判定“最适合”的标准就是这条直线离直线两边的数据的间隔最大。所以，得寻找有着最大间隔的超平面。 </p>
+<h3 id="间隔与支持向量"><a href="#间隔与支持向量" class="headerlink" title="间隔与支持向量"></a>间隔与支持向量</h3><p>SVM支持向量机（英文全称：support vector machine）是一个分类算法， 通过找到一个分类平面， 将数据分隔在平面两侧， 从而达到分类的目的。如下图所示， 直线表示的是训练出的一个分类平面， 将数据有效的分隔开。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230140.png" srcset="/img/loading.gif" alt="images"></p>
+<p>根据上面的逻辑，我们在做数据分隔的时候，有很多个分类平面，这时我们就需要找出“最优”的那一个平面模型，根据【超平面】【数据点】【分开】这几个词，我们可以想到最优的模型必然是最大程度地将数据点划分开的模型，不能靠近负样本也不能靠近正样本，要不偏不倚，并且与所有Support Vector的距离尽量大才可以。 </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230141.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="上图中-x-0-是-x-在超平面上的投影，-ω-是超平面的法向量"><a href="#上图中-x-0-是-x-在超平面上的投影，-ω-是超平面的法向量" class="headerlink" title="上图中 $x_0$ 是 $x $在超平面上的投影，$ω$是超平面的法向量."></a>上图中 $x_0$ 是 $x $在超平面上的投影，$ω$是超平面的法向量.</h4><h4 id="超平面用线性方程来描述："><a href="#超平面用线性方程来描述：" class="headerlink" title="超平面用线性方程来描述："></a>超平面用线性方程来描述：</h4><h2 id="w-T-b-0"><a href="#w-T-b-0" class="headerlink" title="$w^T+b=0$"></a>$w^T+b=0$</h2><h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>在超平面$w ^T x + b = 0$确定的情况下，$|w^Tx+b|$表示点距离超平面的距离，而超平面作为二分类器，如果$w^Tx+b&gt;0$， 判断类别y为1, 否则判定为-1。从而引出函数间隔的定义：</p>
+<h2 id="r-y-w-Tx-b-yf-x"><a href="#r-y-w-Tx-b-yf-x" class="headerlink" title="$r=y(w^Tx+b)=yf(x)$"></a>$r=y(w^Tx+b)=yf(x)$</h2><p>其中y是训练数据的类标记值， 如果$y(w^T x + b) &gt;0$说明，预测的值和标记的值相同， 分类正确，而且值越大，说明点离平面越远，分类的可靠程度更高。这是对单个样本的函数定义， 对整个样本集来说，要找到所有样本中间隔值最小的作为整个集合的函数间隔：</p>
+<h2 id="r-min-r-i-i-1-2-cdot-cdot-cdot-n"><a href="#r-min-r-i-i-1-2-cdot-cdot-cdot-n" class="headerlink" title="$r=min \   r_i  , i=1,2 \cdot \cdot \cdot n$"></a>$r=min \   r_i  , i=1,2 \cdot \cdot \cdot n$</h2><p>即w和b同时缩小或放大M倍后，超平面并没有变化，但是函数间隔跟着w和b变化。所以，需要加入约束条件使得函数间隔固定, 也就是几何间隔。</p>
+<h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><h4 id="样本空间-x-到超平面-x-0-的距离："><a href="#样本空间-x-到超平面-x-0-的距离：" class="headerlink" title="样本空间$x$到超平面$x_0$的距离："></a>样本空间$x$到超平面$x_0$的距离：</h4><h2 id="r-frac-w-Tx-b-w"><a href="#r-frac-w-Tx-b-w" class="headerlink" title="$r=\frac{|w^Tx+b|}{||w||}$"></a>$r=\frac{|w^Tx+b|}{||w||}$</h2><h4 id="如果超平面将样本成功分类，若-y-i-1-则有-w-Tx-b-gt-0-若-y-i-1-则有-w-Tx-b-lt-0-则下式成立"><a href="#如果超平面将样本成功分类，若-y-i-1-则有-w-Tx-b-gt-0-若-y-i-1-则有-w-Tx-b-lt-0-则下式成立" class="headerlink" title="如果超平面将样本成功分类，若$y_i=+1$,则有$w^Tx+b&gt;0$;若$y_i=-1$,则有$w^Tx+b&lt;0$;则下式成立"></a>如果超平面将样本成功分类，若$y_i=+1$,则有$w^Tx+b&gt;0$;若$y_i=-1$,则有$w^Tx+b&lt;0$;则下式成立</h4><h2 id="left-lbrace-begin-aligned-w-Tx-b-ge-1-amp-amp-y-i-1-w-Tx-b-le-1-amp-amp-y-i-1-end-aligned-right"><a href="#left-lbrace-begin-aligned-w-Tx-b-ge-1-amp-amp-y-i-1-w-Tx-b-le-1-amp-amp-y-i-1-end-aligned-right" class="headerlink" title="$ \left \lbrace \begin{aligned} w^Tx+b \ge+1&amp;&amp; y_i=+1 \\ w^Tx+b\le-1 &amp;&amp; y_i=-1 \end{aligned} \right.$"></a>$ \left \lbrace \begin{aligned} w^Tx+b \ge+1&amp;&amp; y_i=+1 \\ w^Tx+b\le-1 &amp;&amp; y_i=-1 \end{aligned} \right.$</h2><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230142.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="从上图中可以看出，距离超平面最近的这几个训练样本点使上述公式的等号成立，这几个训练样本就称为“支持向量”（support-vector）"><a href="#从上图中可以看出，距离超平面最近的这几个训练样本点使上述公式的等号成立，这几个训练样本就称为“支持向量”（support-vector）" class="headerlink" title="从上图中可以看出，距离超平面最近的这几个训练样本点使上述公式的等号成立，这几个训练样本就称为“支持向量”（support vector）"></a>从上图中可以看出，距离超平面最近的这几个训练样本点使上述公式的等号成立，这几个训练样本就称为<strong>“支持向量”</strong>（support vector）</h4><h4 id="两个异类支持向量到超平面的距离之和（被称为间隔）："><a href="#两个异类支持向量到超平面的距离之和（被称为间隔）：" class="headerlink" title="两个异类支持向量到超平面的距离之和（被称为间隔）："></a>两个异类支持向量到超平面的距离之和（被称为间隔）：</h4><h2 id="r-frac-2-w"><a href="#r-frac-2-w" class="headerlink" title="$r=\frac{2}{||w||}$"></a>$r=\frac{2}{||w||}$</h2><h3 id="”最大间隔“的超平面"><a href="#”最大间隔“的超平面" class="headerlink" title="”最大间隔“的超平面"></a>”最大间隔“的超平面</h3><h4 id="我们要找的”最大间隔“的超平面，即："><a href="#我们要找的”最大间隔“的超平面，即：" class="headerlink" title="我们要找的”最大间隔“的超平面，即："></a>我们要找的”最大间隔“的超平面，即：</h4><h2 id="max-w-b-frac-2-w"><a href="#max-w-b-frac-2-w" class="headerlink" title="$max_{w,b}\frac{2}{||w||}$"></a>$max_{w,b}\frac{2}{||w||}$</h2><h2 id="s-t-y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m"><a href="#s-t-y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m" class="headerlink" title="$s.t.y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$"></a>$s.t.y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$</h2><h3 id="SVM的二次凸函数和约束条件"><a href="#SVM的二次凸函数和约束条件" class="headerlink" title="SVM的二次凸函数和约束条件"></a>SVM的二次凸函数和约束条件</h3><p>最大间隔分类器的求解， 可以转换为上面的一个最优化问题， 即在满足约束条件：  </p>
+<h2 id="y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m"><a href="#y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m" class="headerlink" title="$y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$"></a>$y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$</h2><h4 id="求出就最大的-frac1-w-。"><a href="#求出就最大的-frac1-w-。" class="headerlink" title="求出就最大的$\frac1{||w||}$。"></a>求出就最大的$\frac1{||w||}$。</h4><h4 id="为更好的利用现有的理论和计算方法，-可以将求解-frac1-w-最大值，-转换为一个二次凸函数优化问题：求解-min-w-b-frac-1-2-w-2-，-两者问题是等价的。原来的问题转换为二次凸函数优化问题。在一定的约束条件下，目标最优，损失最小。"><a href="#为更好的利用现有的理论和计算方法，-可以将求解-frac1-w-最大值，-转换为一个二次凸函数优化问题：求解-min-w-b-frac-1-2-w-2-，-两者问题是等价的。原来的问题转换为二次凸函数优化问题。在一定的约束条件下，目标最优，损失最小。" class="headerlink" title="为更好的利用现有的理论和计算方法， 可以将求解$\frac1{||w||}$最大值， 转换为一个二次凸函数优化问题：求解 $min_{w,b}\frac{1}{2}{||w||}^2$， 两者问题是等价的。原来的问题转换为二次凸函数优化问题。在一定的约束条件下，目标最优，损失最小。"></a>为更好的利用现有的理论和计算方法， 可以将求解$\frac1{||w||}$最大值， 转换为一个二次凸函数优化问题：求解 $min_{w,b}\frac{1}{2}{||w||}^2$， 两者问题是等价的。原来的问题转换为二次凸函数优化问题。在一定的约束条件下，目标最优，损失最小。</h4><h3 id="SVM的基本型"><a href="#SVM的基本型" class="headerlink" title="SVM的基本型"></a>SVM的基本型</h3><h4 id="我们前面已经知道，最大化-w-1-等价于最小化-w-2-所以："><a href="#我们前面已经知道，最大化-w-1-等价于最小化-w-2-所以：" class="headerlink" title="我们前面已经知道，最大化$||w||^{-1}$等价于最小化$||w||^2$,所以："></a>我们前面已经知道，最大化$||w||^{-1}$等价于最小化$||w||^2$,所以：</h4><h2 id="min-w-b-frac-1-2-w-2"><a href="#min-w-b-frac-1-2-w-2" class="headerlink" title="$min_{w,b}\frac{1}{2}{||w||}^2$"></a>$min_{w,b}\frac{1}{2}{||w||}^2$</h2><h2 id="s-t-y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m-1"><a href="#s-t-y-i-w-Tx-b-ge1-i-1-2-cdot-cdot-cdot-m-1" class="headerlink" title="$s.t.y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$"></a>$s.t.y_i(w^Tx+b)\ge1, i=1,2,\cdot \cdot \cdot m$</h2><h3 id="拉格朗日构建方程"><a href="#拉格朗日构建方程" class="headerlink" title="拉格朗日构建方程"></a>拉格朗日构建方程</h3><p>由于这个问题的特殊结构，还可以通过拉格朗日对偶性（Lagrange Duality）变换到对偶变量(dual variable)的优化问题，即通过求解与原问题等价的对偶问题（dual problem）得到原始问题的最优解，这就是线性可分条件下支持向量机的对偶算法.</p>
+<h4 id="这样做的优点在于：一者对偶问题往往更容易求解；二者可以自然的引入核函数，"><a href="#这样做的优点在于：一者对偶问题往往更容易求解；二者可以自然的引入核函数，" class="headerlink" title="这样做的优点在于：一者对偶问题往往更容易求解；二者可以自然的引入核函数，"></a>这样做的优点在于：一者对偶问题往往更容易求解；二者可以自然的引入核函数，</h4><p>进而推广到非线性分类问题。 具体来说就是对svm基本型的每条约束添加拉格朗日乘子$a_i\ge0$,则该问题的拉格朗日函数可写为：</p>
+<h4 id="L-w-b-a-frac12-w-2-sum-i-1-na-i-1-y-i-w-Tx-b-a-i-a-1-a-2-cdot-cdot-cdot-a-m"><a href="#L-w-b-a-frac12-w-2-sum-i-1-na-i-1-y-i-w-Tx-b-a-i-a-1-a-2-cdot-cdot-cdot-a-m" class="headerlink" title="$L(w,b,a)= \frac12 ||w||^2+\sum_{i=1}^na_i(1-y_i(w^Tx+b))$                   $a_i=(a_1;a_2; \cdot \cdot \cdot a_m)$."></a>$L(w,b,a)= \frac12 ||w||^2+\sum_{i=1}^na_i(1-y_i(w^Tx+b))$                   $a_i=(a_1;a_2; \cdot \cdot \cdot a_m)$.</h4><p>我们的目标是让拉格朗如函数$ L(ω,b,α)$ 针对 $α$ 达到最大值。为什么能够这么写呢，我们可以这样想，哪怕有一个 $y_i(ω^Tx_i+b)⩾1$不满足，只要让对应的 $α_i$ 是正无穷就好了。所以，如果$L(ω,b,α)$有有限的最大值，那么那些不等式条件是自然满足的。 之后，我们再让 $L(ω,b,α)$ 针对 $ω,b$ 达到最小值，就可以了。 从而，我们的目标函数变成： </p>
+<h4 id="原问题是极小极大的问题"><a href="#原问题是极小极大的问题" class="headerlink" title="原问题是极小极大的问题"></a>原问题是极小极大的问题</h4><h2 id="min-w-b-max-aL-w-b-a-p"><a href="#min-w-b-max-aL-w-b-a-p" class="headerlink" title="$min_{w,b}max_aL(w,b,a)=p^*$"></a>$min_{w,b}max_aL(w,b,a)=p^*$</h2><h4 id="原始问题的对偶问题，是极大极小问题"><a href="#原始问题的对偶问题，是极大极小问题" class="headerlink" title="原始问题的对偶问题，是极大极小问题"></a>原始问题的对偶问题，是极大极小问题</h4><h2 id="max-amin-w-b-L-w-b-a-b"><a href="#max-amin-w-b-L-w-b-a-b" class="headerlink" title="$max_amin_{w,b}L(w,b,a)=b^*$"></a>$max_amin_{w,b}L(w,b,a)=b^*$</h2><p>交换以后的新问题是原始问题的对偶问题，这个新问题的最优值用$d^*$来表示。而且有$d^∗⩽p^∗$，在满足某些条件的情况下，这两者相等，这个时候就可以通过求解对偶问题来间接地求解原始问题。</p>
+<p>这所谓的“满足某些条件”就是要满足KKT条件。 </p>
+<h2 id="left-lbrace-begin-aligned-a-i-ge0-y-i-w-Tx-i-b-1-ge-0-a-i-y-i-w-Tx-i-b-1-0-end-aligned-right"><a href="#left-lbrace-begin-aligned-a-i-ge0-y-i-w-Tx-i-b-1-ge-0-a-i-y-i-w-Tx-i-b-1-0-end-aligned-right" class="headerlink" title="$ \left\lbrace\ \begin{aligned} a_i \ge0 \\ y_i(w^Tx_i+b) -1\ge 0 \\ a_i(y_i(w^Tx_i+b)-1)=0 \end{aligned} \right. $"></a>$ \left\lbrace\ \begin{aligned} a_i \ge0 \\ y_i(w^Tx_i+b) -1\ge 0 \\ a_i(y_i(w^Tx_i+b)-1)=0 \end{aligned} \right. $</h2><h3 id="KKT条件的意义"><a href="#KKT条件的意义" class="headerlink" title="KKT条件的意义"></a>KKT条件的意义</h3><h5 id="一般地，一个最优化数学模型能够表示成下列标准形式："><a href="#一般地，一个最优化数学模型能够表示成下列标准形式：" class="headerlink" title="一般地，一个最优化数学模型能够表示成下列标准形式："></a>一般地，一个最优化数学模型能够表示成下列标准形式：</h5><h2 id="min-f-x"><a href="#min-f-x" class="headerlink" title="$min.f(x)$"></a>$min.f(x)$</h2><h2 id="s-t-h-j-x-0-j-1-cdot-cdot-cdot-n"><a href="#s-t-h-j-x-0-j-1-cdot-cdot-cdot-n" class="headerlink" title="$s.t.  h_j(x)=0,j=1,\cdot \cdot \cdot n$"></a>$s.t.  h_j(x)=0,j=1,\cdot \cdot \cdot n$</h2><h2 id="g-k-x-le0-k-1-cdot-cdot-cdot-m"><a href="#g-k-x-le0-k-1-cdot-cdot-cdot-m" class="headerlink" title="$g_k(x)\le0,k=1,\cdot \cdot \cdot m$"></a>$g_k(x)\le0,k=1,\cdot \cdot \cdot m$</h2><h2 id="x-in-X-subset-R-n"><a href="#x-in-X-subset-R-n" class="headerlink" title="$x\in X \subset R^n$"></a>$x\in X \subset R^n$</h2><h5 id="其中，f-x-是需要最小化的函数，h-x-是等式约束，g-x-是不等式约束，p和q分别为等式约束和不等式约束的数量。"><a href="#其中，f-x-是需要最小化的函数，h-x-是等式约束，g-x-是不等式约束，p和q分别为等式约束和不等式约束的数量。" class="headerlink" title="其中，f(x)是需要最小化的函数，h(x)是等式约束，g(x)是不等式约束，p和q分别为等式约束和不等式约束的数量。"></a>其中，f(x)是需要最小化的函数，h(x)是等式约束，g(x)是不等式约束，p和q分别为等式约束和不等式约束的数量。</h5><ul>
+<li><h4 id="凸优化的概念：-x-subset-R-n-为一凸集，-f-x-to-R-为一凸函数，凸优化就是要找出一点-x-in-X-使得每一-x-in-X-满足-f-x-le-f-x"><a href="#凸优化的概念：-x-subset-R-n-为一凸集，-f-x-to-R-为一凸函数，凸优化就是要找出一点-x-in-X-使得每一-x-in-X-满足-f-x-le-f-x" class="headerlink" title="凸优化的概念：$x\subset R^n$为一凸集，$f:x\to R$为一凸函数，凸优化就是要找出一点$x^\in X$,使得每一$x\in X$满足$f(x^)\le f(x)$"></a>凸优化的概念：$x\subset R^n$为一凸集，$f:x\to R$为一凸函数，凸优化就是要找出一点$x^<em>\in X$,使得每一$x\in X$满足$f(x^</em>)\le f(x)$</h4></li>
+<li><h4 id="KKT条件的意义：它是一个非线性规划（Nonlinear-Programming）问题能有最优化解法的必要和充分条件。"><a href="#KKT条件的意义：它是一个非线性规划（Nonlinear-Programming）问题能有最优化解法的必要和充分条件。" class="headerlink" title="KKT条件的意义：它是一个非线性规划（Nonlinear Programming）问题能有最优化解法的必要和充分条件。"></a>KKT条件的意义：它是一个非线性规划（Nonlinear Programming）问题能有最优化解法的必要和充分条件。</h4></li>
+</ul>
+<p>而KKT条件就是指上面最优化数学模型的标准形式中的最小点$ x*$ 必须满足下面的条件： </p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230143.png" srcset="/img/loading.gif" alt="images"></p>
+<p>经过论证，我们这里的问题是满足KKT条件的（首先已经满足Slater condition，再者$f(x)$和$g(x)$也都是可微的，即$L$对$w$和$b$都可导），因此现在我们便转化为求解第二个问题。</p>
+<p>也就是说，原始问题通过满足KKT条件，已经转化成了对偶问题。而求解这个对偶学习问题，分为3个步骤：首先要让$L(w，b，a)$关于$w$和$b$最小化，然后求对$a$的极大，最后利用SMO算法求解对偶问题中的拉格朗日乘子。</p>
+<h3 id="对偶问题求解"><a href="#对偶问题求解" class="headerlink" title="对偶问题求解"></a>对偶问题求解</h3><h4 id="首先固定-a-先求出-min-w-b-L-w-b-a-所以分别对-w-b-进行求偏导并令其等于0。"><a href="#首先固定-a-先求出-min-w-b-L-w-b-a-所以分别对-w-b-进行求偏导并令其等于0。" class="headerlink" title="首先固定$a$,先求出$min_{w,b}L(w,b,a)$,所以分别对$w,b$进行求偏导并令其等于0。"></a>首先固定$a$,先求出$min_{w,b}L(w,b,a)$,所以分别对$w,b$进行求偏导并令其等于0。</h4><h2 id="frac-partial-L-w-b-a-partial-w-frac-partial-frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx-partial-w-0"><a href="#frac-partial-L-w-b-a-partial-w-frac-partial-frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx-partial-w-0" class="headerlink" title="$\frac{\partial L(w,b,a)}{\partial w}=\frac{\partial(\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx)}{\partial w}  =0$"></a>$\frac{\partial L(w,b,a)}{\partial w}=\frac{\partial(\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx)}{\partial w}  =0$</h2><h2 id="frac-partial-L-w-b-a-partial-b-frac-partial-frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx-partial-b-0"><a href="#frac-partial-L-w-b-a-partial-b-frac-partial-frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx-partial-b-0" class="headerlink" title="$\frac{\partial L(w,b,a)}{\partial b}=\frac{\partial(\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx)}{\partial b}  =0$"></a>$\frac{\partial L(w,b,a)}{\partial b}=\frac{\partial(\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx)}{\partial b}  =0$</h2><h2 id="w-sum-i-1-na-ix-iy-i"><a href="#w-sum-i-1-na-ix-iy-i" class="headerlink" title="$w=\sum_{i=1}^na_ix_iy_i$"></a>$w=\sum_{i=1}^na_ix_iy_i$</h2><h2 id="sum-i-1-na-iy-i-0"><a href="#sum-i-1-na-iy-i-0" class="headerlink" title="$\sum_{i=1}^na_iy_i=0$"></a>$\sum_{i=1}^na_iy_i=0$</h2><p>然后我们将以上结果带入原式<strong>$L(w,b,a)$</strong>:</p>
+<h2 id="L-w-b-a-frac12-w-2-sum-i-1-na-i-1-y-i-w-Tx-b"><a href="#L-w-b-a-frac12-w-2-sum-i-1-na-i-1-y-i-w-Tx-b" class="headerlink" title="$L(w,b,a)= \frac12 ||w||^2+\sum_{i=1}^na_i(1-y_i(w^Tx+b))$"></a>$L(w,b,a)= \frac12 ||w||^2+\sum_{i=1}^na_i(1-y_i(w^Tx+b))$</h2><h2 id="frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx"><a href="#frac12w-Tw-sum-i-1-na-i-sum-i-1-n-a-iby-i-sum-i-1-n-a-iy-iw-Tx" class="headerlink" title="$=\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx$"></a>$=\frac12w^Tw+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-\sum_{i=1}^n a_iy_iw^Tx$</h2><h4 id="导入-w-sum-i-1-na-ix-iy-i"><a href="#导入-w-sum-i-1-na-ix-iy-i" class="headerlink" title="导入$w=\sum_{i=1}^na_ix_iy_i$:"></a><strong>导入$w=\sum_{i=1}^na_ix_iy_i$:</strong></h4><h2 id="frac12w-T-sum-i-1-na-ix-iy-i-sum-i-1-na-i-sum-i-1-n-a-iby-i-w-T-sum-i-1-n-a-iy-ix"><a href="#frac12w-T-sum-i-1-na-ix-iy-i-sum-i-1-na-i-sum-i-1-n-a-iby-i-w-T-sum-i-1-n-a-iy-ix" class="headerlink" title="$=\frac12w^T(\sum_{i=1}^na_ix_iy_i)+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-w^T(\sum_{i=1}^n a_iy_ix)$"></a>$=\frac12w^T(\sum_{i=1}^na_ix_iy_i)+\sum_{i=1}^na_i-\sum_{i=1}^n a_iby_i-w^T(\sum_{i=1}^n a_iy_ix)$</h2><h4 id="导入-sum-i-1-na-iy-i-0"><a href="#导入-sum-i-1-na-iy-i-0" class="headerlink" title="导入$\sum_{i=1}^na_iy_i=0$:"></a><strong>导入$\sum_{i=1}^na_iy_i=0$:</strong></h4><h2 id="sum-i-1-na-i-frac12w-T-sum-i-1-na-ix-iy-i"><a href="#sum-i-1-na-i-frac12w-T-sum-i-1-na-ix-iy-i" class="headerlink" title="$=\sum_{i=1}^na_i-\frac12w^T(\sum_{i=1}^na_ix_iy_i)$"></a>$=\sum_{i=1}^na_i-\frac12w^T(\sum_{i=1}^na_ix_iy_i)$</h2><h2 id="sum-i-1-na-i-frac12-sum-i-1-na-ix-iy-i-T-sum-i-1-na-ix-iy-i"><a href="#sum-i-1-na-i-frac12-sum-i-1-na-ix-iy-i-T-sum-i-1-na-ix-iy-i" class="headerlink" title="$=\sum_{i=1}^na_i-\frac12{(\sum_{i=1}^na_ix_iy_i)}^T(\sum_{i=1}^na_ix_iy_i)$"></a>$=\sum_{i=1}^na_i-\frac12{(\sum_{i=1}^na_ix_iy_i)}^T(\sum_{i=1}^na_ix_iy_i)$</h2><h2 id="sum-i-1-na-i-frac12-sum-i-1-na-i-x-i-Ty-i-sum-i-1-na-ix-iy-i"><a href="#sum-i-1-na-i-frac12-sum-i-1-na-i-x-i-Ty-i-sum-i-1-na-ix-iy-i" class="headerlink" title="$=\sum_{i=1}^na_i-\frac12(\sum_{i=1}^na_i{x_i}^Ty_i)(\sum_{i=1}^na_ix_iy_i)$"></a>$=\sum_{i=1}^na_i-\frac12(\sum_{i=1}^na_i{x_i}^Ty_i)(\sum_{i=1}^na_ix_iy_i)$</h2><h2 id="sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j"><a href="#sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j" class="headerlink" title="$=\sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$"></a>$=\sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$</h2><p>从上面的最后一个式子，我们可以看出，此时的拉格朗日函数只包含了一个变量，那就是$a_i$(求出了$a_i$便能求出$w,b$,然后我们的分类函数$f(x)=w^Tx+b$就非常容易的求出来了)。</p>
+<h4 id="然后求对-a-的极大值："><a href="#然后求对-a-的极大值：" class="headerlink" title="然后求对$a$的极大值："></a>然后求对$a$的极大值：</h4><p>即是关于对偶问题的最优化问题。经过上面第一个步骤的求w和b，得到的拉格朗日函数式子已经没有了变量w，b，只有从上面的式子得到： </p>
+<h2 id="max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j"><a href="#max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j" class="headerlink" title="$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$"></a>$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$</h2><h2 id="s-t-a-i-ge0-i-1-cdot-cdot-cdot-n"><a href="#s-t-a-i-ge0-i-1-cdot-cdot-cdot-n" class="headerlink" title="$s.t. ,a_i\ge0, i=1,\cdot \cdot \cdot n$"></a>$s.t. ,a_i\ge0, i=1,\cdot \cdot \cdot n$</h2><h2 id="sum-i-1-na-iy-i-0-1"><a href="#sum-i-1-na-iy-i-0-1" class="headerlink" title="$\sum_{i=1}^na_iy_i=0$"></a>$\sum_{i=1}^na_iy_i=0$</h2><p>我们一般用SMO算法来求解$a$</p>
+<h3 id="SMO优化算法"><a href="#SMO优化算法" class="headerlink" title="SMO优化算法"></a>SMO优化算法</h3><p>SMO算法由Microsoft Research的John C. Platt在1998年提出，并成为最快的二次规划优化算法，特别针对线性SVM和数据稀疏时性能更优。 </p>
+<p>SMO的基本思路是先固定$a_i$之外的所有参数，然后求$a_i$上的极值。由于存在约束$\sum_{i=1}^na_iy_i=0$，若固定$a_i$之外的其他变量，则$a_i$可由其他变量导出。于是，SMO每次选择两个变量$a_i和a_j$,并固定其他参数。这样，在参数初始化后，SMO不断执行如下两个步骤直至收敛：</p>
+<ul>
+<li><h4 id="选取一对需更新的变量-a-i和-a-j"><a href="#选取一对需更新的变量-a-i和-a-j" class="headerlink" title="选取一对需更新的变量$a_i和 a_j$."></a>选取一对需更新的变量$a_i和 a_j$.</h4></li>
+<li><h4 id="固定-a-i和-a-j-以外的参数，求解-max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j-获得更新后的-a-i和-a-j"><a href="#固定-a-i和-a-j-以外的参数，求解-max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j-获得更新后的-a-i和-a-j" class="headerlink" title="固定$a_i和 a_j$以外的参数，求解$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$,获得更新后的$a_i和 a_j$"></a>固定$a_i和 a_j$以外的参数，求解$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$,获得更新后的$a_i和 a_j$</h4></li>
+</ul>
+<h4 id="那如何做才能做到不断收敛呢？"><a href="#那如何做才能做到不断收敛呢？" class="headerlink" title="那如何做才能做到不断收敛呢？"></a>那如何做才能做到不断收敛呢？</h4><p>注意只需选取的$a_i和 a_j$ 中有一个不满足KKT的条件，目标函数就会在不断迭代后减小。直观来说<strong>KKT条件的违背的程度越大，则变量更新后可能导致的目标函数值减幅越大</strong>，</p>
+<h4 id="那如何选取变量呢？"><a href="#那如何选取变量呢？" class="headerlink" title="那如何选取变量呢？"></a>那如何选取变量呢？</h4><p>第一个变量SMO 先选取违背KKT条件程度最大的变量。</p>
+<p>第二个变量应该选择一个使目标函数值减小最快的变量。</p>
+<p><strong>但是</strong>由于比较各变量所对应的目标函数值减幅的复杂度过高，因此SMO就采用了一个启发式：<strong>使选取的变量所对应的样本之间的间隔最大</strong>。</p>
+<p> <strong>总结</strong>：这样选取的两个变量有很大的差别，与对两个相似的变量进行更新相比，对它们进行更新会带给目标函数值更大的变化。SMO之所以高效，就是在于固定其他参数后，只优化两个参数的过程能做到非常高效。</p>
+<h4 id="所以：只考虑-a-i和-a-j-时，约束条件就改变为："><a href="#所以：只考虑-a-i和-a-j-时，约束条件就改变为：" class="headerlink" title="所以：只考虑$a_i和 a_j$时，约束条件就改变为："></a>所以：只考虑$a_i和 a_j$时，约束条件就改变为：</h4><h4 id="max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j-1"><a href="#max-a-sum-i-1-na-i-frac12-sum-i-1-j-1-na-ia-j-x-i-Tx-jy-iy-j-1" class="headerlink" title="$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$"></a>$max_a \sum_{i=1}^na_i-\frac12\sum_{i=1,j=1}^na_ia_j{x_i}^Tx_jy_iy_j$</h4><h4 id="s-t-a-iy-i-a-jy-j-c-a-i-ge-0-a-j-ge-0"><a href="#s-t-a-iy-i-a-jy-j-c-a-i-ge-0-a-j-ge-0" class="headerlink" title="$s.t. ,a_iy_i+a_jy_j=c, a_i \ge 0, a_j \ge 0$"></a>$s.t. ,a_iy_i+a_jy_j=c, a_i \ge 0, a_j \ge 0$</h4><h4 id="sum-i-1-na-iy-i-0-2"><a href="#sum-i-1-na-iy-i-0-2" class="headerlink" title="$\sum_{i=1}^na_iy_i=0$"></a>$\sum_{i=1}^na_iy_i=0$</h4><h4 id="其中：-c-sum-k-ne-i-j-a-ky-k-是使-sum-i-1-na-iy-i-0-成立的常数。"><a href="#其中：-c-sum-k-ne-i-j-a-ky-k-是使-sum-i-1-na-iy-i-0-成立的常数。" class="headerlink" title="其中：$c= -\sum_{k \ne i,j}a_ky_k$是使$\sum_{i=1}^na_iy_i=0$ 成立的常数。"></a>其中：$c= -\sum_{k \ne i,j}a_ky_k$是使$\sum_{i=1}^na_iy_i=0$ 成立的常数。</h4><h4 id="然后用-a-iy-i-a-jy-j-c-消去变量-a-j-，就可以得到一个关于-a-j-的单变量的二次规划问题，通过约束条件-a-i-ge0-就可以解出这个二次规划问题的闭式解，于是不必调用数值优化算法就可以很快的算出更新后的-a-i-和-a-j-。"><a href="#然后用-a-iy-i-a-jy-j-c-消去变量-a-j-，就可以得到一个关于-a-j-的单变量的二次规划问题，通过约束条件-a-i-ge0-就可以解出这个二次规划问题的闭式解，于是不必调用数值优化算法就可以很快的算出更新后的-a-i-和-a-j-。" class="headerlink" title="然后用$a_iy_i+a_jy_j=c$ 消去变量$a_j$ ，就可以得到一个关于$a_j$ 的单变量的二次规划问题，通过约束条件$a_i \ge0$,就可以解出这个二次规划问题的闭式解，于是不必调用数值优化算法就可以很快的算出更新后的$a_i 和 a_j$。"></a>然后用$a_iy_i+a_jy_j=c$ 消去变量$a_j$ ，就可以得到一个关于$a_j$ 的单变量的二次规划问题，通过约束条件$a_i \ge0$,就可以解出这个二次规划问题的闭式解，于是不必调用数值优化算法就可以很快的算出更新后的$a_i 和 a_j$。</h4><h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><h4 id="用SMO-解出-a-后，我们前面以前算出-w-的值，所以我们还需要在前面的基础上算出b的值"><a href="#用SMO-解出-a-后，我们前面以前算出-w-的值，所以我们还需要在前面的基础上算出b的值" class="headerlink" title="用SMO 解出$a$后，我们前面以前算出$w$的值，所以我们还需要在前面的基础上算出b的值"></a>用SMO 解出$a$后，我们前面以前算出$w$的值，所以我们还需要在前面的基础上算出b的值</h4><h2 id="w-sum-i-1-na-ix-iy-i-1"><a href="#w-sum-i-1-na-ix-iy-i-1" class="headerlink" title="$w=\sum_{i=1}^na_ix_iy_i$"></a>$w=\sum_{i=1}^na_ix_iy_i$</h2><h2 id="b-y-j-sum-i-1-n-a-iy-i-x-i-Tx-j"><a href="#b-y-j-sum-i-1-n-a-iy-i-x-i-Tx-j" class="headerlink" title="$b=y_j-\sum_{i=1}^n a_iy_i{x_i}^Tx_j$"></a>$b=y_j-\sum_{i=1}^n a_iy_i{x_i}^Tx_j$</h2><h4 id="所以就可以得到模型"><a href="#所以就可以得到模型" class="headerlink" title="所以就可以得到模型"></a>所以就可以得到模型</h4><h2 id="f-x-w-Tx-b-sum-i-1-n-a-iy-i-x-i-Tx-b"><a href="#f-x-w-Tx-b-sum-i-1-n-a-iy-i-x-i-Tx-b" class="headerlink" title="$f(x)=w^Tx+b=\sum_{i=1}^n a_iy_i{x_i}^Tx+b$"></a>$f(x)=w^Tx+b=\sum_{i=1}^n a_iy_i{x_i}^Tx+b$</h2><h3 id="实战一下"><a href="#实战一下" class="headerlink" title="实战一下"></a>实战一下</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230144.png" srcset="/img/loading.gif" alt="image"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230145.png" srcset="/img/loading.gif" alt="image"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230146.png" srcset="/img/loading.gif" alt="image"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230147.png" srcset="/img/loading.gif" alt="image"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230148.png" srcset="/img/loading.gif" alt="image"></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200530230149.png" srcset="/img/loading.gif" alt="image"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">支持向量机</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/07/ml-svm-kernel/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习-支持向量机核函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/07/arithmetic-gradientDescent/">
+                        <span class="hidden-mobile">机器学习-梯度下降</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "机器学习-支持向量机&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

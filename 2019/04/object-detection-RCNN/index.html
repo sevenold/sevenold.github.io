@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>【RCNN系列】R-CNN - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-04-07 10:00">
+      2019年4月7日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="论文原文"><a href="#论文原文" class="headerlink" title="论文原文"></a>论文原文</h3><p>链接：<a href="https://arxiv.org/abs/1311.2524" target="_blank" rel="noopener">Rich feature hierarchies for accurate object detection and semantic segmentation</a></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190413161846.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>​    RCNN作为第一篇目标检测领域的深度学习文章，大幅提升了目标检测的识别精度，在PASCAL VOC2012数据集上将MAP从35.1%提升至53.7%。使得CNN在目标检测领域成为常态，也使得大家开始探索CNN在其他计算机视觉领域的巨大潜力。这篇文章的创新点有以下几点：将CNN用作目标检测的特征提取器、有监督预训练的方式初始化CNN、在CNN特征上做BoundingBox 回归。</p>
+</blockquote>
+<h3 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h3><p>​    从ILSVRC 2012、2013表现结果来看，CNN在计算机视觉的特征表示能力要远高于传统的HOG、SIFT特征等，而且这种层次的、多阶段、逐步细化的特征计算方式也更加符合人类的认知习惯。但是，如何将在目标检测领域重现这种奇迹呢？目标检测区别于目标识别很重要的一点是其需要目标的具体位置，也就是BoundingBox。而产生BoundingBox最简单的方法就是滑窗，可以在卷积特征上滑窗。</p>
+<p>​    但是我们知道CNN是一个层次的结构，随着网络层数的加深，卷积特征的步伐及感受野也越来越大。例如AlexNet的Pool5层感受野为195*195，步伐为32*32，显然这种感受野是不足以进行目标定位的。使用浅层的神经网络能够保留这种空间结构，但是特征提取的性能就会大打折扣。</p>
+<p>​    RCNN另辟蹊径，既然我们无法使用卷积特征滑窗，那我们通过区域建议方法产生一系列的区域，然后直接使用CNN去分类这些区域是目标还是背景不就可以吗？当然这样做也会面临很多的问题，不过这个思路正是RCNN的核心。因此RCNN全称为Regions with CNN features。</p>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412134446.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="结构流程"><a href="#结构流程" class="headerlink" title="结构流程"></a>结构流程</h3><h4 id="【基本流程】"><a href="#【基本流程】" class="headerlink" title="【基本流程】"></a>【<code>基本流程</code>】</h4><blockquote>
+<p>RCNN算法分为4个步骤 </p>
+<ol>
+<li>候选区域生成： 一张图像生成2K个候选区域 （采用Selective Search 方法）</li>
+<li>统一候选区域尺寸：将每个区域固定成227*227的尺寸送入CNN进行特征提取</li>
+<li>特征提取： 对每个候选区域，使用深度卷积网络提取特征 （CNN） </li>
+<li>类别判断： 特征送入每一类的SVM 分类器，判别是否属于该类 </li>
+<li>位置修正：回归器校正非极大值抑制后剩下的region proposal </li>
+</ol>
+</blockquote>
+<h3 id="【region-proposals】"><a href="#【region-proposals】" class="headerlink" title="【region proposals】"></a>【<strong><code>region proposals</code></strong>】</h3><ul>
+<li><p>输入一张多目标图像，采用<code>selective search</code>算法提取约<code>2000个region proposals</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412150021.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p><code>selective search</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412135458.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>算法流程</p>
+<blockquote>
+<ul>
+<li><p>使用<a href="http://cs.brown.edu/people/pfelzens/segment/" target="_blank" rel="noopener">Efficient GraphBased Image Segmentation算法</a>分割图像得到多个region.</p>
+</li>
+<li><p>计算每两个region的相似度.</p>
+</li>
+<li><p>合并相似度最大的两个region.</p>
+</li>
+<li><p>计算新合并region与其他region的相似度,合并相似度最大的两个region.</p>
+</li>
+<li><p>重复上述过程直到整张图片都聚合成一个大的region.</p>
+</li>
+<li><p>使用一种随机的计分方式给每个region打分，按照分数进行ranking，取出top k的子集，就是selective search的结果(k=2000)</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412192802.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="【crop】"><a href="#【crop】" class="headerlink" title="【crop】"></a>【<strong><code>crop</code></strong>】</h3><ul>
+<li><p>在每个region proposal周围加上16个像素值为region proposal像素平均值的边框，再直接变形为227×227的size</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412135738.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412135755.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>作者提出了两种形变方式</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412145017.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<ul>
+<li><p>各向异性缩放</p>
+<p>各向异性缩放就是,不管图像是否扭曲,直接将图像缩放到固定大小,如图D所示.</p>
+</li>
+<li><p>各向同性缩放</p>
+<ul>
+<li>将图像在原图中沿着bounding box进行扩展,如果已经延伸到了原始图片的外边界，那么就用bounding box中的颜色均值填充,如图B所示.</li>
+<li>将图像用固定的背景填充,如图C所示.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="【Compute-CNN-Feature】"><a href="#【Compute-CNN-Feature】" class="headerlink" title="【Compute CNN Feature】"></a>【<strong><code>Compute CNN Feature</code></strong>】</h3><h4 id="【预处理操作】"><a href="#【预处理操作】" class="headerlink" title="【预处理操作】"></a>【预处理操作】</h4><ul>
+<li>将所有region proposal像素减去该region proposal像素平均值，</li>
+</ul>
+<h4 id="【AlexNet-CNN】"><a href="#【AlexNet-CNN】" class="headerlink" title="【AlexNet CNN】"></a>【AlexNet CNN】</h4><ul>
+<li>再依次将每个227×227的region proposal输入<code>AlexNet CNN</code>网络获取4096维的特征【比以前的人工经验特征低两个数量级】，2000个建议框的CNN特征组合成<code>2000×4096</code>维矩阵；</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412141355.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="【linear-classifiers】"><a href="#【linear-classifiers】" class="headerlink" title="【linear classifiers】"></a>【<code>linear classifiers</code>】</h3><ul>
+<li>将2000×4096维特征与20个SVM组成的权值矩阵4096×20相乘【20种分类，SVM是二分类器，则有20个SVM】，获得2000×20维矩阵表示每个region proposal是某个物体类别的得分</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412141540.png" srcset="/img/loading.gif" alt=""></p>
+<h4 id="【NMS】"><a href="#【NMS】" class="headerlink" title="【NMS】"></a>【<code>NMS</code>】</h4><ul>
+<li><p>分别对上述2000×20维矩阵中每一列即每一类进行非极大值抑制剔除重叠region proposal，得到该列即该类中得分最高的一些region proposal</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412142408.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li><p>算法流程</p>
+<blockquote>
+<p>假设有有一个候选的boxes的集合, IOU阈值Nt：</p>
+<ol>
+<li>假设有6个候选框，根据分类器类别分类概率做排序，从小到大的概率分别为A、B、C、D、E、F。</li>
+<li>从最大概率矩形框F开始，分别判断A~E与F的重叠度IOU是否大于Nt</li>
+<li>假设B、D与F的重叠度超过阈值，那么就扔掉B、D；并标记第一个矩形框F，是我们保留下来的。</li>
+<li>从剩下的矩形框A、C、E中，选择概率最大的E，然后判断E与A、C的重叠度，重叠度大于一定的阈值，那么就扔掉；并标记E是我们保留下来的第二个矩形框。</li>
+<li>重复1-4，直到找到所有需要被保留下来的矩形框。</li>
+</ol>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412143506.png" srcset="/img/loading.gif" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="【Bbox-Regression】"><a href="#【Bbox-Regression】" class="headerlink" title="【Bbox Regression】"></a>【<code>Bbox Regression</code>】</h3><ul>
+<li>分别用20个回归器对上述20个类别中剩余的region proposal进行回归操作，最终得到每个类别的修正后的得分最高的bounding box。</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20190412141921.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h3><ul>
+<li><p>对CNN的有监督预训练：在ILSVRC样本集（只有分类标签）上对CNN网络进行有监督预训练，此时网络最后的输出是4096维特征-&gt;2000类分类的映射。</p>
+</li>
+<li><p>特定样本下CNN的微调：即domain specific fine-tuning， 在本文中是在PASCAL VOC 2007上进行，学习率是第1步预训练学习率的1/10，将第1步中的1000类分类输出改为21类（20类+背景）,注意此处仍然是softmax，而不是SVM。 </p>
+<ul>
+<li>正样本：Ground Truth+与Ground Truth相交IoU&gt;0.5的Region proposal</li>
+<li>负样本：与Ground Truth相交IoU≤0.5的建议框</li>
+</ul>
+</li>
+<li><p>每一类的SVM的训练：输入正负样本在CNN网络计算下的4096维特征（fc7层） </p>
+<ul>
+<li><p>正样本：Ground Truth</p>
+</li>
+<li><p>负样本：与Ground Truth相交IoU＜0.3的建议框，由于负样本太多，采用hard negative mining的方法在负样本中选取有代表性的负样本</p>
+</li>
+</ul>
+</li>
+<li><p>每一类的Bounding-box regression训练： </p>
+<ul>
+<li>正样本：与Ground Truth的IoU最大，且IoU&gt;0.6的Region Proposal</li>
+</ul>
+</li>
+</ul>
+<h3 id="算法特点"><a href="#算法特点" class="headerlink" title="算法特点"></a>算法特点</h3><blockquote>
+<ol>
+<li>使用Selective Search提取Proposes，然后利用CNN等识别技术进行分类。</li>
+<li>使用识别库进行预训练，而后用检测库调优参数。</li>
+<li>使用SVM代替了CNN网络中最后的Softmax，同时用CNN输出的4096维向量进行Bounding Box回归。</li>
+<li>流程前两个步骤（候选区域提取+特征提取）与待检测类别无关，可以在不同类之间共用；同时检测多类时，需要倍增的只有后两步骤（判别+精修），都是简单的线性运算，速度很快。</li>
+</ol>
+</blockquote>
+<h3 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h3><blockquote>
+<ol>
+<li>训练分为多个阶段，步骤繁琐: 微调网络+训练SVM+训练边框回归器。</li>
+<li>训练耗时，占用磁盘空间大：5000张图像产生几百G的特征文件。</li>
+<li>速度慢: 使用GPU, VGG16模型处理一张图像需要47s。</li>
+<li>CNN网络后面接的FC层需要固定的输入大小，限制网络的输入大小</li>
+<li>候选区域会塞给CNN网络用于提取特征向量的，这会有大量的重复计算，造成的计算冗余</li>
+</ol>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/R-CNN/">R-CNN</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/object-detection-SPPNet/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【RCNN系列】SPPNet</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/04/pytorch-style/">
+                        <span class="hidden-mobile">pytorch实现风格变换</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【RCNN系列】R-CNN&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

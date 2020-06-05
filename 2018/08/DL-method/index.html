@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>神经网络入门-感知器、激活函数 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2018-08-14 10:00">
+      2018年8月14日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h3 id="感知器–神经网络的起源"><a href="#感知器–神经网络的起源" class="headerlink" title="感知器–神经网络的起源"></a>感知器–神经网络的起源</h3><h4 id="神经网络是由人工神经元组成的。我们先来看看人的神经元是什么构造："><a href="#神经网络是由人工神经元组成的。我们先来看看人的神经元是什么构造：" class="headerlink" title="神经网络是由人工神经元组成的。我们先来看看人的神经元是什么构造："></a>神经网络是由人工神经元组成的。我们先来看看人的神经元是什么构造：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182118.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="感知器是激活函数为阶跃函数的神经元。感知器的模型如下："><a href="#感知器是激活函数为阶跃函数的神经元。感知器的模型如下：" class="headerlink" title="感知器是激活函数为阶跃函数的神经元。感知器的模型如下："></a>感知器是激活函数为阶跃函数的神经元。感知器的模型如下：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182119.png" srcset="/img/loading.gif" alt="images"></p>
+<p>是不是感觉很一样啊 ，神经元也叫做<strong>感知器</strong>。感知器算法在上个世纪50-70年代很流行，也成功解决了很多问题。并且，感知器算法也是非常简单的。 </p>
+<h3 id="感知器的定义"><a href="#感知器的定义" class="headerlink" title="感知器的定义"></a>感知器的定义</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182119.png" srcset="/img/loading.gif" alt="images"></p>
+<p>我们再来分析下上图这个感知器，可以看到，一个感知器有如下几个组成部分：</p>
+<ul>
+<li><strong>输入(inputs)</strong>：一个感知器可以接收多个输入$(x_1,x_2,…,x_n \vert  x_i \in R)$</li>
+<li><strong>权值(weights)</strong>：每一个输入上都有一个<code>权值</code>$w_i \in R$，此外还有一个<strong>偏置项</strong>$b \in R$，也就是上图的$w_0$。</li>
+<li><strong>加权和(weighted sum)</strong>：就是<code>输入权值 x</code>    x    <code>权值 w</code>    +   <code>偏置项 b</code>的总和。</li>
+<li><strong>激活函数(step function)</strong>：感知器的激活函数：$f(x)=\begin{cases} 0&amp;  x&gt;0 \ 1&amp; x  \le 0 \end{cases}$</li>
+<li><strong>输出(output)</strong>：感知器的输出由<code>加权值</code>用<code>激活函数</code>做<code>非线性变换</code>。也就是这个公式：$y=f(w\cdot x +b )$</li>
+</ul>
+<h4 id="举个栗子："><a href="#举个栗子：" class="headerlink" title="举个栗子："></a>举个栗子：</h4><p>我们使用<code>unit激活函数</code>结合上图就有：</p>
+<ul>
+<li><h4 id="y-f-w-cdot-x-b-f-w-1x-1-w-2x-2-w-3x-3-bias"><a href="#y-f-w-cdot-x-b-f-w-1x-1-w-2x-2-w-3x-3-bias" class="headerlink" title="$y=f(w\cdot x +b )=f(w_1x_1+w_2x_2+w_3x_3+bias)$"></a>$y=f(w\cdot x +b )=f(w_1x_1+w_2x_2+w_3x_3+bias)$</h4></li>
+<li><h5 id="其中-f-x-就是激活函数-f-x-begin-cases-1-amp-x-gt-0-0-amp-x-le-0-end-cases-，图像如下图所示。"><a href="#其中-f-x-就是激活函数-f-x-begin-cases-1-amp-x-gt-0-0-amp-x-le-0-end-cases-，图像如下图所示。" class="headerlink" title="其中$f(x)$就是激活函数 $f(x)=  \begin{cases} 1&amp;  x&gt;0 \ 0&amp; x  \le 0 \end{cases}$ ，图像如下图所示。"></a>其中$f(x)$就是激活函数 $f(x)=  \begin{cases} 1&amp;  x&gt;0 \ 0&amp; x  \le 0 \end{cases}$ ，图像如下图所示。</h5></li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182120.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="感知器的前馈计算"><a href="#感知器的前馈计算" class="headerlink" title="感知器的前馈计算"></a>感知器的前馈计算</h3><p>再举个栗子：我们来计算下这个感知器：</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182121.png" srcset="/img/loading.gif" alt="images"></p>
+<p>其中<code>激活函数f</code>:$f(x)=  \begin{cases} 1&amp;  x&gt;0 \ 0&amp; x  \le 0 \end{cases}$</p>
+<ul>
+<li><p><code>加权和</code>：logits  =  1.0 * (-0.2) + 0.5 * (-0.4) + (-1.4) * 1.3 + 2.0 * 3.0  =  1.98</p>
+</li>
+<li><p><code>输出值</code>：output = f(logits) = f(1.98) = 1</p>
+</li>
+</ul>
+<p>如果数据很多呢，我们就要把数据向量化：</p>
+<p>例如：</p>
+<h4 id="x-1-1-0-3-0-2-0-x-2-2-0-1-0-5-0-x-3-2-0-0-0-3-0-x-4-4-0-1-0-6-0-w-4-0-3-0-5-0-b-2-0"><a href="#x-1-1-0-3-0-2-0-x-2-2-0-1-0-5-0-x-3-2-0-0-0-3-0-x-4-4-0-1-0-6-0-w-4-0-3-0-5-0-b-2-0" class="headerlink" title="$x_1=[-1.0, 3.0, 2.0] \\ x_2=[2.0, -1.0, 5.0] \\ x_3=[-2.0, 0.0, 3.0 ] \\ x_4=[4.0, 1.0, 6.0] \\ w=[4.0, -3.0, 5.0 ] \\ b=2.0$"></a>$x_1=[-1.0, 3.0, 2.0] \\ x_2=[2.0, -1.0, 5.0] \\ x_3=[-2.0, 0.0, 3.0 ] \\ x_4=[4.0, 1.0, 6.0] \\ w=[4.0, -3.0, 5.0 ] \\ b=2.0$</h4><h4 id="则：-X-begin-bmatrix-1-0-amp-3-0-amp-2-0-2-0-amp-1-0-amp-5-0-2-0-amp-0-0-amp-3-0-4-0-amp-1-0-amp-6-0-end-bmatrix"><a href="#则：-X-begin-bmatrix-1-0-amp-3-0-amp-2-0-2-0-amp-1-0-amp-5-0-2-0-amp-0-0-amp-3-0-4-0-amp-1-0-amp-6-0-end-bmatrix" class="headerlink" title="则：$X=\begin{bmatrix}  -1.0 &amp; 3.0 &amp; 2.0 \\ 2.0 &amp; -1.0&amp; 5.0 \\ -2.0&amp; 0.0&amp; 3.0 \\ 4.0&amp; 1.0 &amp; 6.0  \end{bmatrix}$"></a>则：$X=\begin{bmatrix}  -1.0 &amp; 3.0 &amp; 2.0 \\ 2.0 &amp; -1.0&amp; 5.0 \\ -2.0&amp; 0.0&amp; 3.0 \\ 4.0&amp; 1.0 &amp; 6.0  \end{bmatrix}$</h4><h4 id="w-T-begin-bmatrix-4-0-3-0-5-0-end-bmatrix"><a href="#w-T-begin-bmatrix-4-0-3-0-5-0-end-bmatrix" class="headerlink" title="$w^T =\begin{bmatrix} 4.0 \\ -3.0 \\ 5.0 \end{bmatrix}$"></a>$w^T =\begin{bmatrix} 4.0 \\ -3.0 \\ 5.0 \end{bmatrix}$</h4><h4 id="所以：-logits-X-cdot-w-T-b-begin-bmatrix-1-0-amp-3-0-amp-2-0-2-0-amp-1-0-amp-5-0-2-0-amp-0-0-amp-3-0-4-0-amp-1-0-amp-6-0-end-bmatrix-cdot-begin-bmatrix-4-0-3-0-5-0-end-bmatrix-2-0-1-0-38-0-7-0-43-0"><a href="#所以：-logits-X-cdot-w-T-b-begin-bmatrix-1-0-amp-3-0-amp-2-0-2-0-amp-1-0-amp-5-0-2-0-amp-0-0-amp-3-0-4-0-amp-1-0-amp-6-0-end-bmatrix-cdot-begin-bmatrix-4-0-3-0-5-0-end-bmatrix-2-0-1-0-38-0-7-0-43-0" class="headerlink" title="所以：$logits =  X\cdot w^T + b= \begin{bmatrix}  -1.0 &amp; 3.0 &amp; 2.0 \\ 2.0 &amp; -1.0&amp; 5.0 \\ -2.0&amp; 0.0&amp; 3.0 \\ 4.0&amp; 1.0 &amp; 6.0  \end{bmatrix} \cdot \begin{bmatrix} 4.0 \\ -3.0 \\ 5.0 \end{bmatrix} + 2.0 \\ =[-1.0 \ \ \  38.0 \ \ \ 7.0 \ \ \ 43.0 ]$"></a>所以：$logits =  X\cdot w^T + b= \begin{bmatrix}  -1.0 &amp; 3.0 &amp; 2.0 \\ 2.0 &amp; -1.0&amp; 5.0 \\ -2.0&amp; 0.0&amp; 3.0 \\ 4.0&amp; 1.0 &amp; 6.0  \end{bmatrix} \cdot \begin{bmatrix} 4.0 \\ -3.0 \\ 5.0 \end{bmatrix} + 2.0 \\ =[-1.0 \ \ \  38.0 \ \ \ 7.0 \ \ \ 43.0 ]$</h4><h4 id="最后带入激活函数："><a href="#最后带入激活函数：" class="headerlink" title="最后带入激活函数："></a>最后带入激活函数：</h4><h4 id="则：-output-f-x-0-1-1-1"><a href="#则：-output-f-x-0-1-1-1" class="headerlink" title="则：$output = f(x)=[0\ \ \ 1 \ \ \ 1 \ \ \ 1 ]$"></a>则：$output = f(x)=[0\ \ \ 1 \ \ \ 1 \ \ \ 1 ]$</h4><h3 id="感知器的运用"><a href="#感知器的运用" class="headerlink" title="感知器的运用"></a>感知器的运用</h3><p>使用感知器可以完成一些基础的逻辑操作</p>
+<p>例如<code>逻辑与</code></p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182122.png" srcset="/img/loading.gif" alt="images"></p>
+<p>注意：激活函数是<code>unit激活函数</code>，再看看其他逻辑运算</p>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182123.png" srcset="/img/loading.gif" alt="images"></p>
+<h3 id="感知器的局限性"><a href="#感知器的局限性" class="headerlink" title="感知器的局限性"></a>感知器的局限性</h3><ul>
+<li>仅能做0-1输出</li>
+<li>仅能处理线性分类的问题（无法处理XOR问题）</li>
+</ul>
+<h3 id="多层感知机–现代神经网络的原型"><a href="#多层感知机–现代神经网络的原型" class="headerlink" title="多层感知机–现代神经网络的原型"></a>多层感知机–现代神经网络的原型</h3><p>对比于感知器，引入了隐层，改变了激活函数，加入反向传播算法，优化算法，也就是后面要讲的神经网络。</p>
+<h3 id="隐层的定义"><a href="#隐层的定义" class="headerlink" title="隐层的定义"></a>隐层的定义</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182124.png" srcset="/img/loading.gif" alt="images"></p>
+<p>从上图中可以看出：</p>
+<ul>
+<li>所有同一层的神经元都与上一层的每个输出相连</li>
+<li>同一层的神经元之间不相互连接</li>
+<li>各神经元的输出为数值</li>
+</ul>
+<h3 id="隐层的结构"><a href="#隐层的结构" class="headerlink" title="隐层的结构"></a>隐层的结构</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182125.png" srcset="/img/loading.gif" alt="images"></p>
+<h4 id="举个栗子：-1"><a href="#举个栗子：-1" class="headerlink" title="举个栗子："></a>举个栗子：</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182126.png" srcset="/img/loading.gif" alt="images"></p>
+<p>由上图可知：</p>
+<h4 id="h-1-f-2x-1-2x-2-1-h-2-f-2x-1-2x-2-3-o-1-f-2h-1-2h-2-3"><a href="#h-1-f-2x-1-2x-2-1-h-2-f-2x-1-2x-2-3-o-1-f-2h-1-2h-2-3" class="headerlink" title="$h_1 = f(2x_1+2x_2-1) \\ h_2=f(-2x_1+-2x_2+3) \\ o_1 = f(2h_1+2h_2-3)$"></a>$h_1 = f(2x_1+2x_2-1) \\ h_2=f(-2x_1+-2x_2+3) \\ o_1 = f(2h_1+2h_2-3)$</h4><p>其中$f(x)$是激活函数</p>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>新的激活函数：</p>
+<ul>
+<li><h4 id="unit激活函数：-f-x-unit-x-begin-cases-0-amp-x-gt-0-1-amp-x-le-0-end-cases"><a href="#unit激活函数：-f-x-unit-x-begin-cases-0-amp-x-gt-0-1-amp-x-le-0-end-cases" class="headerlink" title="unit激活函数：$f(x)=unit(x)=  \begin{cases} 0&amp;  x&gt;0 \ 1&amp; x  \le 0 \end{cases} $"></a><strong><code>unit激活函数</code></strong>：$f(x)=unit(x)=  \begin{cases} 0&amp;  x&gt;0 \ 1&amp; x  \le 0 \end{cases} $</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182120.png" srcset="/img/loading.gif" alt="images"></p>
+</li>
+<li><h4 id="sigmod激活函数：-f-x-sigmod-x-frac-1-1-e-x"><a href="#sigmod激活函数：-f-x-sigmod-x-frac-1-1-e-x" class="headerlink" title="sigmod激活函数：$f(x)=sigmod(x)=\frac{1}{1+e^{-x}}$"></a><strong><code>sigmod激活函数</code></strong>：$f(x)=sigmod(x)=\frac{1}{1+e^{-x}}$</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182127.png" srcset="/img/loading.gif" alt="images"></p>
+</li>
+<li><h5 id="tanh激活函数：-f-x-tanh-x-frac-e-x-e-x-e-x-e-x"><a href="#tanh激活函数：-f-x-tanh-x-frac-e-x-e-x-e-x-e-x" class="headerlink" title="tanh激活函数：$f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$"></a><strong><code>tanh激活函数</code></strong>：$f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}$</h5><p>​                                <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182128.png" srcset="/img/loading.gif" alt="images">`</p>
+</li>
+<li><h5 id="ReLU激活函数：-f-x-ReLU-x-begin-cases-x-amp-x-gt-0-0-amp-x-le-0-end-cases"><a href="#ReLU激活函数：-f-x-ReLU-x-begin-cases-x-amp-x-gt-0-0-amp-x-le-0-end-cases" class="headerlink" title="ReLU激活函数：$f(x)=ReLU(x)=\begin{cases} x&amp; x&gt;0\ 0&amp; x \le 0 \end{cases} $"></a><code>ReLU激活函数</code>：$f(x)=ReLU(x)=\begin{cases} x&amp; x&gt;0\ 0&amp; x \le 0 \end{cases} $</h5><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182129.png" srcset="/img/loading.gif" alt="images"></p>
+</li>
+</ul>
+<h3 id="激活函数的作用"><a href="#激活函数的作用" class="headerlink" title="激活函数的作用"></a>激活函数的作用</h3><ul>
+<li><p><strong>引入非线性因素。</strong> </p>
+<p>在我们面对线性可分的数据集的时候，简单的用线性分类器即可解决分类问题。但是现实生活中的数据往往不是线性可分的，面对这样的数据，一般有两个方法：引入非线性函数、线性变换。 </p>
+</li>
+<li><h4 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h4><p>就是把当前特征空间通过一定的线性映射转换到另一个空间，让数据能够更好的被分类。 </p>
+</li>
+</ul>
+<h3 id="激活函数的特点"><a href="#激活函数的特点" class="headerlink" title="激活函数的特点"></a>激活函数的特点</h3><ul>
+<li><p><code>unit</code>：线性分界</p>
+<p>– 几乎已经不用了</p>
+</li>
+<li><p><code>sigmoid</code>：非线性分界</p>
+<p>– 两端软饱和，输出为 (0,1)区间</p>
+<p>– 两端有梯度消失问题</p>
+<p>– 因为输出恒正，可能有 zig现象</p>
+</li>
+<li><p><code>tanh</code>：非线性分界 ：非线性分界</p>
+<p>– 两端软饱和，输出为 (-1, 1) 区间</p>
+<p>– 仍然存在梯度消失问题</p>
+<p>– 没有 zig，收敛更快 (LeCun 1989)</p>
+</li>
+<li><p><code>ReLU</code>：非线性分界<br>– 左侧硬饱和，右无输出为 [0,+∞)区间</p>
+<p>– 左侧会出现梯度一直为 0的情况，导致神经元 不再更新（死亡）</p>
+<p>– 改善了梯度弥散</p>
+<p>– 同样存在 zig</p>
+</li>
+</ul>
+<h3 id="一些新的激活函数"><a href="#一些新的激活函数" class="headerlink" title="一些新的激活函数"></a>一些新的激活函数</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182130.png" srcset="/img/loading.gif" alt="images"></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/08/DL-back-propagation/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神经网络入门-反向传播</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/08/TensorFlow-course/">
+                        <span class="hidden-mobile">TensorFlow-从入门到实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    function loadUtterances() {
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.defer = false
+      s.setAttribute('repo', 'sevenold/blog_comments');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', 'github-light');
+      s.setAttribute('crossorigin', 'anonymous');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(s, e);
+    }
+    createObserver(loadUtterances, 'comments')
+  </script>
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "神经网络入门-感知器、激活函数&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>
