@@ -466,28 +466,27 @@ def ImageHist(image,type):
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/10/openCV-install/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113626.png" srcset="/img/loading.gif" alt="计算机视觉-openCV安装及入门">
+        <a href="/2018/10/openCV-geometry/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113626.png" srcset="/img/loading.gif" alt="计算机视觉-openCV图片几何变换">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/10/openCV-install/">计算机视觉-openCV安装及入门</a>
+      <a class="index-header" href="/2018/10/openCV-geometry/">计算机视觉-openCV图片几何变换</a>
 
-      <a href="/2018/10/openCV-install/" class="index-excerpt">
+      <a href="/2018/10/openCV-geometry/" class="index-excerpt">
         
         
           
         
-        <div>openCV-python的安装windows安装：下载地址：opencv.pip install  opencv_python-3.4.3-cp36-cp36m-win_amd64.whl
-
-ubuntu安装pip3 install opencv-python
-
-
-
-openCV图片读取与展示import cv2  # 导入cv库
-
-img = cv2.imread('image0.jpg',1</div>
+        <div>openCV图片缩放一import cv2  # 导入cv库
+img = cv2.imread('image0.jpg',1)  # 读取图片文件， 1：彩色， 0：灰色
+imgInfo = img.shape # 获取图片的维度
+print(imgInfo)
+height = imgInfo[0] 
+width = imgInfo[1]
+mode = imgInfo[2]
+# 1 放大 缩小 2</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -522,27 +521,28 @@ img = cv2.imread('image0.jpg',1</div>
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/10/openCV-geometry/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113626.png" srcset="/img/loading.gif" alt="计算机视觉-openCV图片几何变换">
+        <a href="/2018/10/openCV-install/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603113626.png" srcset="/img/loading.gif" alt="计算机视觉-openCV安装及入门">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/10/openCV-geometry/">计算机视觉-openCV图片几何变换</a>
+      <a class="index-header" href="/2018/10/openCV-install/">计算机视觉-openCV安装及入门</a>
 
-      <a href="/2018/10/openCV-geometry/" class="index-excerpt">
+      <a href="/2018/10/openCV-install/" class="index-excerpt">
         
         
           
         
-        <div>openCV图片缩放一import cv2  # 导入cv库
-img = cv2.imread('image0.jpg',1)  # 读取图片文件， 1：彩色， 0：灰色
-imgInfo = img.shape # 获取图片的维度
-print(imgInfo)
-height = imgInfo[0] 
-width = imgInfo[1]
-mode = imgInfo[2]
-# 1 放大 缩小 2</div>
+        <div>openCV-python的安装windows安装：下载地址：opencv.pip install  opencv_python-3.4.3-cp36-cp36m-win_amd64.whl
+
+ubuntu安装pip3 install opencv-python
+
+
+
+openCV图片读取与展示import cv2  # 导入cv库
+
+img = cv2.imread('image0.jpg',1</div>
       </a>
 
       <div class="index-btm post-metas">
