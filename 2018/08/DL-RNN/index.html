@@ -256,7 +256,7 @@
 <p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200601182341.png" srcset="/img/loading.gif" alt="images"></p>
 <h3 id="语言模型"><a href="#语言模型" class="headerlink" title="语言模型"></a>语言模型</h3><p>RNN是在<strong>自然语言处理</strong>领域中最先被用起来的，比如，RNN可以为<strong>语言模型</strong>来建模。</p>
 <p>我们小时候都做过语文的填空题吧</p>
-<pre><code class="hljs plain">饿死了，我要吃__。</code></pre>
+<pre><code class="hljs maxima">饿死了，我要吃<span class="hljs-symbol">__</span>。</code></pre>
 
 <p>如果是我，肯定是填<code>肉</code>。哈哈</p>
 <p>但是我不是今天的主角，如果这个问题我们让计算机来回答呢？</p>
@@ -264,7 +264,7 @@
 <p><strong>语言模型</strong>就是这样的东西：给定一个一句话前面的部分，预测接下来最有可能的一个词是什么。</p>
 <p><strong>语言模型</strong>是对一种语言的特征进行建模，它有很多很多用处。比如在语音转文本(STT)的应用中，声学模型输出的结果，往往是若干个可能的候选词，这时候就需要<strong>语言模型</strong>来从这些候选词中选择一个最可能的。当然，它同样也可以用在图像到文本的识别中(OCR)。</p>
 <p>使用RNN之前，语言模型主要是采用N-Gram。N可以是一个自然数，比如2或者3。它的含义是，假设一个词出现的概率只与前面N个词相关。我们以2-Gram为例。首先，对前面的一句话进行切词：</p>
-<pre><code class="hljs plain">饿死了，我要____。</code></pre>
+<pre><code class="hljs sqf">饿死了，我要<span class="hljs-variable">____</span>。</code></pre>
 
 <p>如果用2-Gram进行建模，那么电脑在预测的时候，只会看到前面的『要』，然后，电脑会在语料库中，搜索『要』后面最可能的一个词。不管最后电脑选的是不是『饭』，我们都知道这个模型是不靠谱的，因为『要』前面说了那么一大堆实际上是没有用到的。如果是3-Gram模型呢，会搜索『我要吃』后面最可能的词，感觉上比2-Gram靠谱了不少，但还是远远不够的。因为这句话最关键的信息『饿』，远在5个词之前！</p>
 <p>现在读者可能会想，可以提升继续提升N的值呀，比如4-Gram、5-Gram…….。实际上，这个想法是没有实用性的。因为我们想处理任意长度的句子，N设为多少都不合适；另外，模型的大小和N的关系是指数级的，4-Gram模型就会占用海量的存储空间。</p>
@@ -304,7 +304,7 @@
 <p><code>总结</code>：从上面可以看出，<strong>递归神经网络</strong>的输出值$o_t$，是受前面几次输入值$X_t、X_{t-1}、X_{t-2}、X_{t-3}$…影响的，这也就是为什么<strong>递归神经网络</strong>可以往前看任意多个<strong>输入值</strong>的原因。</p>
 <h3 id="双向递归神经网络"><a href="#双向递归神经网络" class="headerlink" title="双向递归神经网络"></a>双向递归神经网络</h3><p><code>介绍</code>：它们只是两个堆叠在一起的RNN。然后基于两个RNN的隐藏状态计算输出。</p>
 <p>对于<strong>语言模型</strong>来说，很多时候光看前面的词是不够的，比如下面这句话：</p>
-<pre><code class="hljs plain">肚子好饿啊。我打算___一份外卖。</code></pre>
+<pre><code class="hljs sqf">肚子好饿啊。我打算<span class="hljs-variable">___</span>一份外卖。</code></pre>
 
 <p>可以想象，如果我们只是看横线前面的词，肚子好饿啊，我打算做饭，去吃饭还是什么什么的。这些都是无法确定的。但是如果我也先看横线后面的词【一份外卖】，那么横线上填【点】的概率就大多了。</p>
 <p>但是我们前面所讲的<strong>基本递归神经网络</strong>是无法解决这个问题的，这时我们就需要<strong>双向递归神经网络</strong>，如下图所示：</p>

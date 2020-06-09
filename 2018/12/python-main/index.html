@@ -299,18 +299,18 @@ s
 <p>以我们上节所讲的知识点，如果要打印三个列表的话，就是上述这种方法，那还有没有更简单的呢？</p>
 </blockquote>
 <p><strong>演示</strong>：</p>
-<pre><code class="hljs plain">l1 &#x3D; [1, 0, 5, 7, 9]
-l2 &#x3D; [1, &#39;A&#39;, 5, 7, 9]
-l3 &#x3D; [1, 0, &#39;S&#39;, 7, 9]
+<pre><code class="hljs angelscript">l1 = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+l2 = [<span class="hljs-number">1</span>, <span class="hljs-string">'A'</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+l3 = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-string">'S'</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
 
 def demo(li):
-	for i in li:
+	<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> li:
 		print(i)
 
 demo(l1)
-print(&#39;---------&#39;)
+print(<span class="hljs-string">'---------'</span>)
 demo(l2)
-print(&#39;---------&#39;)
+print(<span class="hljs-string">'---------'</span>)
 demo(l3)</code></pre>
 
 <p><strong>输出结果</strong></p>

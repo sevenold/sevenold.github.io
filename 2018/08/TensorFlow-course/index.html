@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.3k 字
+      2.2k 字
     </span>
   
 
@@ -264,7 +264,7 @@ hello_constant = tf.constant(<span class="hljs-string">'Hello World!'</span>)
     
     print(output)</code></pre>
 
-<pre><code class="hljs plain">b&#39;Hello World!&#39;</code></pre>
+<pre><code class="hljs 1c">b'Hello World!'</code></pre>
 
 <h3 id="Tensor"><a href="#Tensor" class="headerlink" title="Tensor"></a>Tensor</h3><h4 id="在-TensorFlow-中，数据不是以整数，浮点数或者字符串形式存在的。"><a href="#在-TensorFlow-中，数据不是以整数，浮点数或者字符串形式存在的。" class="headerlink" title="在 TensorFlow 中，数据不是以整数，浮点数或者字符串形式存在的。"></a>在 TensorFlow 中，数据不是以整数，浮点数或者字符串形式存在的。</h4><h4 id="这些值被封装在一个叫做-tensor-的对象中。"><a href="#这些值被封装在一个叫做-tensor-的对象中。" class="headerlink" title="这些值被封装在一个叫做 tensor 的对象中。"></a>这些值被封装在一个叫做 tensor 的对象中。</h4><p>在 hello_constant = tf.constant(‘Hello World!’) 代码中，<br>hello_constant是一个 0 维度的字符串 tensor。</p>
 <h4 id="tensors-还有很多不同大小："><a href="#tensors-还有很多不同大小：" class="headerlink" title="tensors 还有很多不同大小："></a>tensors 还有很多不同大小：</h4><pre><code class="hljs python"><span class="hljs-comment"># A 是一个0维的 int32 tensor</span>
@@ -310,7 +310,7 @@ init = tf.global_variables_initializer()
     sess.run(init)
     print(y.eval())</code></pre>
 
-<pre><code class="hljs plain">[[11.9]]</code></pre>
+<pre><code class="hljs lua"><span class="hljs-string">[[11.9]]</span></code></pre>
 
 
 
@@ -374,7 +374,7 @@ x = tf.add(a, b)
 	print(sess.run(x))
 writer.close()</code></pre>
 
-<pre><code class="hljs plain">5</code></pre>
+<pre><code class="hljs angelscript"><span class="hljs-number">5</span></code></pre>
 
 
 
@@ -386,8 +386,8 @@ x = tf.multiply(a, b, name=<span class="hljs-string">'dot_product'</span>)
 	print(sess.run(x))
 writer.close()</code></pre>
 
-<pre><code class="hljs plain">[[0 2]
- [4 6]]</code></pre>
+<pre><code class="hljs json">[[<span class="hljs-number">0</span> <span class="hljs-number">2</span>]
+ [<span class="hljs-number">4</span> <span class="hljs-number">6</span>]]</code></pre>
 
 
 
@@ -401,25 +401,25 @@ y = tf.matmul(a, b, name=<span class="hljs-string">'mat_mul'</span>)
 	print(sess.run(y))
 writer.close()</code></pre>
 
-<pre><code class="hljs plain">[[ 0  2]
- [ 2 12]]
-[[ 4  8]
- [ 8 13]]</code></pre>
+<pre><code class="hljs json">[[ <span class="hljs-number">0</span>  <span class="hljs-number">2</span>]
+ [ <span class="hljs-number">2</span> <span class="hljs-number">12</span>]]
+[[ <span class="hljs-number">4</span>  <span class="hljs-number">8</span>]
+ [ <span class="hljs-number">8</span> <span class="hljs-number">13</span>]]</code></pre>
 
 <h3 id="各式各样的常量"><a href="#各式各样的常量" class="headerlink" title="各式各样的常量"></a>各式各样的常量</h3><pre><code class="hljs python">x = tf.zeros([<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], tf.int32)
 y = tf.zeros_like(x, optimize=<span class="hljs-literal">True</span>)</code></pre>
 
 <pre><code class="hljs python">print(y)</code></pre>
 
-<pre><code class="hljs plain">Tensor(&quot;zeros_like:0&quot;, shape&#x3D;(2, 3), dtype&#x3D;int32)</code></pre>
+<pre><code class="hljs reasonml"><span class="hljs-constructor">Tensor(<span class="hljs-string">"zeros_like:0"</span>, <span class="hljs-params">shape</span>=(2, 3)</span>, dtype=<span class="hljs-built_in">int32</span>)</code></pre>
 
 
 
 <pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
     print(sess.run(y))</code></pre>
 
-<pre><code class="hljs plain">[[0 0 0]
- [0 0 0]]</code></pre>
+<pre><code class="hljs angelscript">[[<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]]</code></pre>
 
 
 
@@ -431,8 +431,8 @@ y = tf.ones_like(t_0) <span class="hljs-comment"># ==&gt; 1</span>
     print(sess.run([x]))
     print(sess.run([y]))</code></pre>
 
-<pre><code class="hljs plain">[0]
-[1]</code></pre>
+<pre><code class="hljs json">[<span class="hljs-number">0</span>]
+[<span class="hljs-number">1</span>]</code></pre>
 
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><pre><code class="hljs python"><span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">'meh'</span>) <span class="hljs-keyword">as</span> scope:
     a = tf.get_variable(<span class="hljs-string">'a'</span>, [<span class="hljs-number">10</span>])
@@ -450,7 +450,7 @@ grad_z = tf.gradients(z, y)
     sess.run(x.initializer)
     print(sess.run(grad_z))</code></pre>
 
-<pre><code class="hljs plain">[32.0]</code></pre>
+<pre><code class="hljs json">[<span class="hljs-number">32.0</span>]</code></pre>
 
 <h4 id="一次性初始化所有变量"><a href="#一次性初始化所有变量" class="headerlink" title="一次性初始化所有变量"></a>一次性初始化所有变量</h4><pre><code class="hljs python">my_var = tf.Variable(<span class="hljs-number">2</span>, name=<span class="hljs-string">"my_var"</span>) 
 
@@ -462,9 +462,9 @@ my_var_times_two = my_var.assign(<span class="hljs-number">2</span> * my_var)
     print(sess.run(my_var_times_two))
     print(sess.run(my_var_times_two))</code></pre>
 
-<pre><code class="hljs plain">4
-8
-16</code></pre>
+<pre><code class="hljs angelscript"><span class="hljs-number">4</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">16</span></code></pre>
 
 <hr>
 <p>在前面我们都是采用，先赋值再计算的方法，但是在我们的工作过程中，我会遇到先定义变量，后赋值的情况。<br>如果你想用一个非常量 non-constant 该怎么办？这就是 tf.placeholder() 和 feed_dict 派上用场的时候了。我们来看看如何向 TensorFlow 传输数据的基本知识。</p>
@@ -476,7 +476,7 @@ my_var_times_two = my_var.assign(<span class="hljs-number">2</span> * my_var)
     out = sess.run(x, feed_dict=&#123;x: <span class="hljs-string">'Hello World'</span>&#125;)
     print(out)</code></pre>
 
-<pre><code class="hljs plain">Hello World</code></pre>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">Hello World</span></code></pre>
 
 <p>用 tf.session.run() 里 feed_dict 参数设置占位 tensor。上面的例子显示 tensor x 被设置成字符串 “Hello, world”。当然你也可以用 feed_dict 设置多个 tensor。</p>
 <p>placeholder是一个占位符，它通常代表着从外界输入的值。 其中None代表着尚不确定的维度。</p>
@@ -486,7 +486,7 @@ output = tf.multiply(input1, input2)
 <span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
     print(sess.run([output], feed_dict=&#123;input1:[<span class="hljs-number">7.</span>], input2:[<span class="hljs-number">2.</span>]&#125;))</code></pre>
 
-<pre><code class="hljs plain">[array([14.], dtype&#x3D;float32)]</code></pre>
+<pre><code class="hljs json">[array([<span class="hljs-number">14.</span>], dtype=float32)]</code></pre>
 
 <h3 id="把numpy转换成Tensor"><a href="#把numpy转换成Tensor" class="headerlink" title="把numpy转换成Tensor"></a>把numpy转换成Tensor</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 a = np.zeros((<span class="hljs-number">3</span>,<span class="hljs-number">3</span>))
@@ -496,18 +496,18 @@ ta = tf.convert_to_tensor(a)
 <span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
      print(sess.run(ta))</code></pre>
 
-<pre><code class="hljs plain">[[0. 0. 0.]
- [0. 0. 0.]
- [0. 0. 0.]]
+<pre><code class="hljs angelscript">[[<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]]
 ----------------
-[[0. 0. 0.]
- [0. 0. 0.]
- [0. 0. 0.]]</code></pre>
+[[<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]]</code></pre>
 
 <h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>为了让特定运算能运行，有时会对类型进行转换。例如，你尝试下列代码，会报错：</p>
 <pre><code class="hljs python">tf.subtract(tf.constant(<span class="hljs-number">2.0</span>),tf.constant(<span class="hljs-number">1</span>))</code></pre>
 
-<pre><code class="hljs plain">TypeError: Input &#39;y&#39; of &#39;Sub&#39; Op has type int32 that does not match type float32 of argument &#39;x&#39;.</code></pre>
+<pre><code class="hljs routeros">TypeError: Input <span class="hljs-string">'y'</span> of <span class="hljs-string">'Sub'</span> Op has<span class="hljs-built_in"> type </span>int32 that does <span class="hljs-keyword">not</span> match<span class="hljs-built_in"> type </span>float32 of argument <span class="hljs-string">'x'</span>.</code></pre>
 
 <p>只是因为常量 1 是整数，但是常量 2.0 是浮点数 subtract 需要他们能相符。</p>
 <p>在这种情况下，你可以让数据都是同一类型，或者强制转换一个值到另一个类型。这里，我们可以把 2.0 转换成整数再相减，这样就能得出正确的结果：</p>
@@ -515,7 +515,7 @@ ta = tf.convert_to_tensor(a)
 <span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:
     print(sess.run(number))</code></pre>
 
-<pre><code class="hljs plain">1</code></pre>
+<pre><code class="hljs angelscript"><span class="hljs-number">1</span></code></pre>
 
 <h3 id="tensorboard-了解图结构-可视化利器"><a href="#tensorboard-了解图结构-可视化利器" class="headerlink" title="tensorboard 了解图结构/可视化利器"></a>tensorboard 了解图结构/可视化利器</h3><pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
 a = tf.constant(<span class="hljs-number">2</span>, name=<span class="hljs-string">'A'</span>)
@@ -528,7 +528,7 @@ x = tf.add(a,b, name=<span class="hljs-string">'addAB'</span>)
     <span class="hljs-comment">#关闭writer</span>
     writer.close()</code></pre>
 
-<pre><code class="hljs plain">5</code></pre>
+<pre><code class="hljs angelscript"><span class="hljs-number">5</span></code></pre>
 
 <h3 id="启动-TensorBoard"><a href="#启动-TensorBoard" class="headerlink" title="启动 TensorBoard"></a>启动 TensorBoard</h3><p>在命令端运行：tensorboard –logdir=”./graphs” –port 7007</p>
 <p>然后打开Google浏览器访问：<a href="http://localhost:7007/" target="_blank" rel="noopener">http://localhost:7007/</a></p>
@@ -586,24 +586,24 @@ init = tf.global_variables_initializer()
     <span class="hljs-comment"># 取出w和b的值</span>
     W, b = sess.run([W, b])</code></pre>
 
-<pre><code class="hljs plain">Epoch 0: [0.7908481]
-Epoch 5: [0.07929672]
-Epoch 10: [0.07929661]
-Epoch 15: [0.07929661]
-Epoch 20: [0.07929661]
-Epoch 25: [0.07929661]
-Epoch 30: [0.07929661]
-Epoch 35: [0.07929661]
-Epoch 40: [0.07929661]
-Epoch 45: [0.07929661]</code></pre>
+<pre><code class="hljs angelscript">Epoch <span class="hljs-number">0</span>: [<span class="hljs-number">0.7908481</span>]
+Epoch <span class="hljs-number">5</span>: [<span class="hljs-number">0.07929672</span>]
+Epoch <span class="hljs-number">10</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">15</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">20</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">25</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">30</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">35</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">40</span>: [<span class="hljs-number">0.07929661</span>]
+Epoch <span class="hljs-number">45</span>: [<span class="hljs-number">0.07929661</span>]</code></pre>
 
 <h3 id="打印最后更新的w、b的值"><a href="#打印最后更新的w、b的值" class="headerlink" title="打印最后更新的w、b的值"></a>打印最后更新的w、b的值</h3><pre><code class="hljs python">print(W, b)
 print(<span class="hljs-string">"W:"</span>+str(W[<span class="hljs-number">0</span>]))
 print(<span class="hljs-string">"b:"</span>+str(b[<span class="hljs-number">0</span>]))</code></pre>
 
-<pre><code class="hljs plain">[0.82705235] [0.16835527]
-W:0.82705235
-b:0.16835527</code></pre>
+<pre><code class="hljs angelscript">[<span class="hljs-number">0.82705235</span>] [<span class="hljs-number">0.16835527</span>]
+W:<span class="hljs-number">0.82705235</span>
+b:<span class="hljs-number">0.16835527</span></code></pre>
 
 <h3 id="画出线性回归线"><a href="#画出线性回归线" class="headerlink" title="画出线性回归线"></a>画出线性回归线</h3><pre><code class="hljs python">plt.plot(xs, ys, <span class="hljs-string">'bo'</span>, label=<span class="hljs-string">'Real data'</span>)
 plt.plot(xs, xs * W + b, <span class="hljs-string">'r'</span>, label=<span class="hljs-string">'Predicted data'</span>)

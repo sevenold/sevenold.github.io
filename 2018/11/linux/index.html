@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      50
+      49
        分钟
     </span>
   
@@ -315,7 +315,7 @@ init 6 # 重启</code></pre>
 <li><p><strong>/opt</strong>：<br>这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。</p>
 </li>
 <li><p><strong>/proc</strong>：<br>这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。<br>这个目录的内容不在硬盘上而是在内存里，我们也可以直接修改里面的某些文件，比如可以通过下面的命令来屏蔽主机的ping命令，使别人无法ping你的机器：</p>
-<pre><code class="hljs plain">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;icmp_echo_ignore_all</code></pre>
+<pre><code class="hljs awk">echo <span class="hljs-number">1</span> &gt; <span class="hljs-regexp">/proc/</span>sys<span class="hljs-regexp">/net/i</span>pv4<span class="hljs-regexp">/icmp_echo_ignore_all</span></code></pre>
 </li>
 <li><p><strong>/root</strong>：<br>该目录为系统管理员，也称作超级权限者的用户主目录。</p>
 </li>
@@ -440,11 +440,11 @@ cd .. # 返回上级目录</code></pre>
 
 
 <h3 id="cp"><a href="#cp" class="headerlink" title="cp:"></a><code>cp</code>:</h3><p><strong>复制文件或目录</strong></p>
-<pre><code class="hljs plain">cp file1 file2
+<pre><code class="hljs avrasm"><span class="hljs-keyword">cp</span> file1 file2
 
-cp file1 dir&#x2F;
+<span class="hljs-keyword">cp</span> file1 dir/
 
-cp file1 ..&#x2F;</code></pre>
+<span class="hljs-keyword">cp</span> file1 ../</code></pre>
 
 <p><strong>拷贝目录</strong>:</p>
 <pre><code class="hljs shell">cp dir1 dir2 -r

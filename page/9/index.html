@@ -250,28 +250,28 @@ def main():
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/09/Pytorch-AlexNet/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现AlexNet">
+        <a href="/2018/09/Pytorch-Cifar10-train/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现CIFAR10之训练模型">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/09/Pytorch-AlexNet/">Pytorch实现AlexNet</a>
+      <a class="index-header" href="/2018/09/Pytorch-Cifar10-train/">Pytorch实现CIFAR10之训练模型</a>
 
-      <a href="/2018/09/Pytorch-AlexNet/" class="index-excerpt">
+      <a href="/2018/09/Pytorch-Cifar10-train/" class="index-excerpt">
         
         
           
         
-        <div>示例代码：import torch.nn as nn
-
-
-class AlexNet(nn.Module):
-    def __init__(self):
-        super(AlexNet, self).__init__()
-        self.conv1 = nn.Sequential(
-            nn.Conv2d(in_channels=3,
-        </div>
+        <div>示例代码：
+lr = 0.001
+best_acc = 0  # best test accuracy
+epochs = 20
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=5e-4)
+# Training
+def train():
+    for epo</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -364,28 +364,28 @@ from PIL imp</div>
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/09/Pytorch-Cifar10-train/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现CIFAR10之训练模型">
+        <a href="/2018/09/Pytorch-AlexNet/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现AlexNet">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/09/Pytorch-Cifar10-train/">Pytorch实现CIFAR10之训练模型</a>
+      <a class="index-header" href="/2018/09/Pytorch-AlexNet/">Pytorch实现AlexNet</a>
 
-      <a href="/2018/09/Pytorch-Cifar10-train/" class="index-excerpt">
+      <a href="/2018/09/Pytorch-AlexNet/" class="index-excerpt">
         
         
           
         
-        <div>示例代码：
-lr = 0.001
-best_acc = 0  # best test accuracy
-epochs = 20
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=5e-4)
-# Training
-def train():
-    for epo</div>
+        <div>示例代码：import torch.nn as nn
+
+
+class AlexNet(nn.Module):
+    def __init__(self):
+        super(AlexNet, self).__init__()
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(in_channels=3,
+        </div>
       </a>
 
       <div class="index-btm post-metas">
@@ -481,65 +481,6 @@ cla</div>
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/09/Pytorch-LeNet/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现LeNet">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/09/Pytorch-LeNet/">Pytorch实现LeNet</a>
-
-      <a href="/2018/09/Pytorch-LeNet/" class="index-excerpt">
-        
-        
-          
-        
-        <div>示例代码：#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/9/13 20:26
-# @Author  : Seven
-# @Site    : 
-# @File    : LeNet.py
-# @Software: PyCharm
-import torch.nn as nn
-
-class LeNet(nn.Module</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2018-09-15
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Pytorch/">Pytorch</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/LeNet/">LeNet</a>
-            
-              <a href="/tags/Pytorch/">Pytorch</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2018/09/Pytorch-DenseNet/" target="_self">
           <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现DenseNet">
         </a>
@@ -599,28 +540,29 @@ import torch.nn </div>
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/09/Pytorch-ResNet/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现ResNet">
+        <a href="/2018/09/Pytorch-LeNet/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现LeNet">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/09/Pytorch-ResNet/">Pytorch实现ResNet</a>
+      <a class="index-header" href="/2018/09/Pytorch-LeNet/">Pytorch实现LeNet</a>
 
-      <a href="/2018/09/Pytorch-ResNet/" class="index-excerpt">
+      <a href="/2018/09/Pytorch-LeNet/" class="index-excerpt">
         
         
           
         
         <div>示例代码：#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2018/9/14 21:57
+# @Time    : 2018/9/13 20:26
 # @Author  : Seven
 # @Site    : 
-# @File    : ResNet.py
+# @File    : LeNet.py
 # @Software: PyCharm
 import torch.nn as nn
-import torch.nn.funct</div>
+
+class LeNet(nn.Module</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -643,70 +585,9 @@ import torch.nn.funct</div>
             
               <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
             
-              <a href="/tags/Pytorch/">Pytorch</a>
-            
-              <a href="/tags/ResNet/">ResNet</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/09/Pytorch-VGGNet/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现VGGNet">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/09/Pytorch-VGGNet/">Pytorch实现VGGNet</a>
-
-      <a href="/2018/09/Pytorch-VGGNet/" class="index-excerpt">
-        
-        
-          
-        
-        <div>示例代码：#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2018/9/14 13:33
-# @Author  : Seven
-# @Site    : 
-# @File    : VGG.py
-# @Software: PyCharm
-
-import torch.nn as nn
-
-model = &#123;
-    'VG</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2018-09-15
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Pytorch/">Pytorch</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+              <a href="/tags/LeNet/">LeNet</a>
             
               <a href="/tags/Pytorch/">Pytorch</a>
-            
-              <a href="/tags/VGGNet/">VGGNet</a>
             
           </div>
         
@@ -766,6 +647,123 @@ i</div>
               <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
             
               <a href="/tags/Pytorch/">Pytorch</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/09/Pytorch-ResNextNet/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现ResNextNet">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/09/Pytorch-ResNextNet/">Pytorch实现ResNextNet</a>
+
+      <a href="/2018/09/Pytorch-ResNextNet/" class="index-excerpt">
+        
+        
+          
+        
+        <div>示例代码：#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2018/9/15 20:48
+# @Author  : Seven
+# @Site    : 
+# @File    : ResnextNet.py
+# @Software: PyCharm
+import torch
+import torch.nn as nn
+impo</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-09-15
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Pytorch/">Pytorch</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/Pytorch/">Pytorch</a>
+            
+              <a href="/tags/ResNextNet/">ResNextNet</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2018/09/Pytorch-ResNet/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603112756.jpeg" srcset="/img/loading.gif" alt="Pytorch实现ResNet">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2018/09/Pytorch-ResNet/">Pytorch实现ResNet</a>
+
+      <a href="/2018/09/Pytorch-ResNet/" class="index-excerpt">
+        
+        
+          
+        
+        <div>示例代码：#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2018/9/14 21:57
+# @Author  : Seven
+# @Site    : 
+# @File    : ResNet.py
+# @Software: PyCharm
+import torch.nn as nn
+import torch.nn.funct</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2018-09-15
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Pytorch/">Pytorch</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/Pytorch/">Pytorch</a>
+            
+              <a href="/tags/ResNet/">ResNet</a>
             
           </div>
         

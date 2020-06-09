@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      420 字
+      410 字
     </span>
   
 
@@ -261,31 +261,31 @@
 <ul>
 <li>激活 Virtualenv 环境 </li>
 </ul>
-<pre><code class="hljs plain">$  source ~&#x2F;tensorflow&#x2F;bin&#x2F;activate</code></pre>
+<pre><code class="hljs elixir"><span class="hljs-variable">$ </span> source ~<span class="hljs-regexp">/tensorflow/bin</span><span class="hljs-regexp">/activate</span></code></pre>
 
 <ul>
 <li>执行上述 <code>source</code> 命令后，您的提示符应该会变成如下内容： </li>
 </ul>
-<pre><code class="hljs plain">(tensorflow)$</code></pre>
+<pre><code class="hljs gams">(tensorflow)<span class="hljs-symbol">$</span></code></pre>
 
 <ul>
 <li>安装或更新<code>pip</code></li>
 </ul>
-<pre><code class="hljs plain">(tensorflow)$ easy_install -U pip</code></pre>
+<pre><code class="hljs elixir">(tensorflow)<span class="hljs-variable">$ </span>easy_install -U pip</code></pre>
 
 <ul>
 <li>安装 <code>TensorFlow</code></li>
 </ul>
-<pre><code class="hljs plain">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7
-(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n
-(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU
-(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</code></pre>
+<pre><code class="hljs cmake">(tensorflow)$ pip <span class="hljs-keyword">install</span> --upgrade tensorflow      <span class="hljs-comment"># for Python 2.7</span>
+(tensorflow)$ pip3 <span class="hljs-keyword">install</span> --upgrade tensorflow     <span class="hljs-comment"># for Python 3.n</span>
+(tensorflow)$ pip <span class="hljs-keyword">install</span> --upgrade tensorflow-gpu  <span class="hljs-comment"># for Python 2.7 and GPU</span>
+(tensorflow)$ pip3 <span class="hljs-keyword">install</span> --upgrade tensorflow-gpu <span class="hljs-comment"># for Python 3.n and GPU</span></code></pre>
 
 <ul>
 <li>备注：如果安装失败或者网速慢，可参考<a href="https://sevenold.github.io/2018/08/TensorFlow-ubuntu/" target="_blank" rel="noopener">TensorFlow-CPU/GPU安装ubuntu16.04版</a> ,离线安装<code>tensorflow</code>。</li>
 <li>退出 Virtualenv 环境 </li>
 </ul>
-<pre><code class="hljs plain">(tensorflow)$ deactivate</code></pre>
+<pre><code class="hljs elixir">(tensorflow)<span class="hljs-variable">$ </span>deactivate</code></pre>
 
 
 
@@ -294,37 +294,37 @@
 <h3 id="验证环境"><a href="#验证环境" class="headerlink" title="验证环境"></a>验证环境</h3><ul>
 <li>激活 Virtualenv 环境 </li>
 </ul>
-<pre><code class="hljs plain">$ source ~&#x2F;tensorflow&#x2F;bin&#x2F;activate</code></pre>
+<pre><code class="hljs elixir"><span class="hljs-variable">$ </span>source ~<span class="hljs-regexp">/tensorflow/bin</span><span class="hljs-regexp">/activate</span></code></pre>
 
 <p>  在 Virtualenv 环境激活后，您就可以从这个 shell 运行 TensorFlow 程序。您的提示符将变成如下所示，这表示您的 Tensorflow 环境已处于活动状态： </p>
-<pre><code class="hljs plain">(tensorflow)$</code></pre>
+<pre><code class="hljs gams">(tensorflow)<span class="hljs-symbol">$</span></code></pre>
 
 <p>  输入代码验证</p>
-<pre><code class="hljs plain">import tensorflow as tf
+<pre><code class="hljs vim">import tensorflow <span class="hljs-keyword">as</span> <span class="hljs-keyword">tf</span>
 
-hello &#x3D; tf.constant(&#39;Hello, TensorFlow!&#39;)
+hello = <span class="hljs-keyword">tf</span>.constant(<span class="hljs-string">'Hello, TensorFlow!'</span>)
 
-sess &#x3D; tf.Session()
+sess = <span class="hljs-keyword">tf</span>.Session()
 
-print(sess.run(hello))</code></pre>
+<span class="hljs-keyword">print</span>(sess.run(hello))</code></pre>
 
 <ul>
 <li>看到如下输出，表示安装正确</li>
 </ul>
-<pre><code class="hljs plain">Hello, TensorFlow!</code></pre>
+<pre><code class="hljs autohotkey"><span class="hljs-built_in">Hello,</span> TensorFlow!</code></pre>
 
 <p>  用完 TensorFlow 后，可以通过发出以下命令调用 <code>deactivate</code> 函数来停用环境： </p>
-<pre><code class="hljs plain">(tensorflow)$ deactivate</code></pre>
+<pre><code class="hljs elixir">(tensorflow)<span class="hljs-variable">$ </span>deactivate</code></pre>
 
 <ul>
 <li>提示符将恢复为您的默认提示符 ，就表示退出了。</li>
 </ul>
-<pre><code class="hljs plain">$</code></pre>
+<pre><code class="hljs gams"><span class="hljs-symbol">$</span></code></pre>
 
 
 
 <h3 id="卸载-Virtualenv-环境-targetDirectory"><a href="#卸载-Virtualenv-环境-targetDirectory" class="headerlink" title="卸载 Virtualenv 环境 targetDirectory"></a>卸载 Virtualenv 环境 <code>targetDirectory</code></h3><p>要卸载你刚刚新建的Virtualenv 环境 <code>TensorFlow</code>的话，只需要删除该文件夹就可以了。</p>
-<pre><code class="hljs plain">$ rm -r targetDirectory  # 在这里 targetDirectory改为你创建的环境名字</code></pre>
+<pre><code class="hljs elixir"><span class="hljs-variable">$ </span>rm -r targetDirectory  <span class="hljs-comment"># 在这里 targetDirectory改为你创建的环境名字</span></code></pre>
 
 
             </article>
