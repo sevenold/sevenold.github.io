@@ -391,23 +391,24 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/07/ml-linearRegressionL1L2/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115910.png" srcset="/img/loading.gif" alt="机器学习-线性回归推导总结">
+        <a href="/2018/07/ml-linearRegression-python/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115910.png" srcset="/img/loading.gif" alt="机器学习之线性回归python实现">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/07/ml-linearRegressionL1L2/">机器学习-线性回归推导总结</a>
+      <a class="index-header" href="/2018/07/ml-linearRegression-python/">机器学习之线性回归python实现</a>
 
-      <a href="/2018/07/ml-linearRegressionL1L2/" class="index-excerpt">
+      <a href="/2018/07/ml-linearRegression-python/" class="index-excerpt">
         
         
           
         
-        <div>线性回归中的最小二乘法和L1、L2推导上一节线性回归-算法推导 , 我们已经大致的知道了，线性回归的算法推导过程，但是往往我们在使用线性回归算法的过程中模型会出现过拟合的现象， 我们现从例子来看看什么是过拟合。
-还是以房价预测为例，来看几张张图片：
-1.欠拟合（Underfitting）
-上图中，我们用$h_\theta(x)=\theta_0+\theta_1x $来拟合训练集中的数据，但是我们</div>
+        <div>首先导入所需要的库文件import matplotlib.pyplot as plt  # 导入可视化库
+import numpy as np               # 导入数据处理库
+from sklearn import datasets     # 导入sklearn自带的数据集
+
+把我们的参数值求解公式$\theta=(X^TX)^{-1}X^TY$转换为代码def fit(self</div>
       </a>
 
       <div class="index-btm post-metas">
@@ -444,24 +445,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2018/07/ml-linearRegression-python/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115910.png" srcset="/img/loading.gif" alt="机器学习之线性回归python实现">
+        <a href="/2018/07/ml-linearRegressionL1L2/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115910.png" srcset="/img/loading.gif" alt="机器学习-线性回归推导总结">
         </a>
       </div>
     
     <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2018/07/ml-linearRegression-python/">机器学习之线性回归python实现</a>
+      <a class="index-header" href="/2018/07/ml-linearRegressionL1L2/">机器学习-线性回归推导总结</a>
 
-      <a href="/2018/07/ml-linearRegression-python/" class="index-excerpt">
+      <a href="/2018/07/ml-linearRegressionL1L2/" class="index-excerpt">
         
         
           
         
-        <div>首先导入所需要的库文件import matplotlib.pyplot as plt  # 导入可视化库
-import numpy as np               # 导入数据处理库
-from sklearn import datasets     # 导入sklearn自带的数据集
-
-把我们的参数值求解公式$\theta=(X^TX)^{-1}X^TY$转换为代码def fit(self</div>
+        <div>线性回归中的最小二乘法和L1、L2推导上一节线性回归-算法推导 , 我们已经大致的知道了，线性回归的算法推导过程，但是往往我们在使用线性回归算法的过程中模型会出现过拟合的现象， 我们现从例子来看看什么是过拟合。
+还是以房价预测为例，来看几张张图片：
+1.欠拟合（Underfitting）
+上图中，我们用$h_\theta(x)=\theta_0+\theta_1x $来拟合训练集中的数据，但是我们</div>
       </a>
 
       <div class="index-btm post-metas">
