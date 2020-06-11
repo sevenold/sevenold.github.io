@@ -194,6 +194,66 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_camera/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十五】坐标变换与摄像机模型">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_camera/">【十五】坐标变换与摄像机模型</a>
+
+      <a href="/2019/03/cv-image_camera/" class="index-excerpt">
+        
+        
+          
+        
+        <div>坐标变换与摄像机模型图像变换模型【平移变换】
+只改变图形位置，不改变图形的大小和形状.
+
+
+代码及演示
+import cv2
+import numpy as np
+
+# 加载图片
+source_image = cv2.imread('lena.jpg', 0)
+cv2.imshow('source', source_image)
+# 平移图片
+rows, cols = source_image.s</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-15
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2/">坐标变换</a>
+            
+              <a href="/tags/%E6%91%84%E5%83%8F%E6%9C%BA%E6%A8%A1%E5%9E%8B/">摄像机模型</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2019/03/cv-image_LK/" target="_self">
           <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十四】光流估计">
         </a>
@@ -693,59 +753,6 @@ im</div>
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E7%9B%B4%E6%96%B9%E5%9B%BE/">直方图</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2019/03/cv-image_edge/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【五】图像边缘检测">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2019/03/cv-image_edge/">【五】图像边缘检测</a>
-
-      <a href="/2019/03/cv-image_edge/" class="index-excerpt">
-        
-        
-          
-        
-        <div>基本思想
-边缘检测的基本思想是通过检测每个像素和其邻域的状态，以决定该像素是否位于一个物体的边界上。如果一个像素位于一个物体的边界上，则其邻域像素的灰度值的变化就比较大。假如可以应用某种算法检测出这种变化并进行量化表示，那么就可以确定物体的边界。
-
-边缘检测的实质是微分。
-实际中常用差分， X方向、Y方向。
-
-
-基本算子【Robert算子：一阶微分算子】对于图像来说，是一个二维的离散型数集，通过推</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2019-03-05
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%9B%BE%E5%83%8F%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/">图像边缘检测</a>
             
           </div>
         

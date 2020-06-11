@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>强化学习仿真环境搭建</title>
+    <link href="/2020/06/DRL-gym/"/>
+    <url>/2020/06/DRL-gym/</url>
+    
+    <content type="html"><![CDATA[<h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>我们使用的仿真环境为OpenAI 的gym(<a href="https://github.com/openai/gym)。" target="_blank" rel="noopener">https://github.com/openai/gym)。</a></p><p>选用gym平台的原因:</p><ul><li>首先gym是OpenAI开发的通用强化学习算法测试平台,背后有大神 Pieter Abbeel、Sergey Levine 等人率领的强大团队的支持。</li><li>其次,学会了gym的基本应用,可以自己学习使用OpenAI的其他开源强化学习软件,如universe、roboschool 和baselines等。</li><li>再次,gym本身集成了很多仿真环境,如经典控制中的⻋摆环境,小⻋爬山环境、雅达利游戏、棋盘环境等。</li></ul><p>利用这些写好的环境,可以学习强化学习算法的基本原理。另外gym是用Python语言写的,可以和深度学习的开源软件如TensorFlow等无缝衔接。</p><h2 id="环境配置脚本"><a href="#环境配置脚本" class="headerlink" title="环境配置脚本"></a>环境配置脚本</h2><p>详见 <a href="https://github.com/sevenold/sevenold.github.io/blob/master/docs/gym_installer.sh" target="_blank" rel="noopener">gym_installer.sh</a>，下载地址：<a href="http://0520.tech/docs/gym_installer.sh">gym_installer.sh</a></p><ul><li><p>记录一个依赖库<code>mujoco-py</code>正常安装失败，非正常安装方式</p><pre><code class="hljs bash">$ git <span class="hljs-built_in">clone</span> -b 1.50.1.0  https://github.com/openai/mujoco-py.git$ <span class="hljs-built_in">cd</span> mujoco-py$ pip install -e .</code></pre></li></ul><h2 id="环境测试"><a href="#环境测试" class="headerlink" title="环境测试"></a>环境测试</h2><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200611100315.png" srcset="/img/loading.gif" alt="image-20200611100313212"></p><p>如图，看到一个小车的倒立摆系统说明环境配置成功了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>深度强化学习</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>DRL</tag>
+      
+      <tag>强化学习</tag>
+      
+      <tag>gym，环境搭建</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>自然语言处理之命名实体识别</title>
     <link href="/2020/06/nlp-ner/"/>
     <url>/2020/06/nlp-ner/</url>
