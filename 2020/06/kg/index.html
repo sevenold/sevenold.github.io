@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="机器学习，深度学习，强化学习，算法，Linux">
+  <meta name="author" content="seven">
+  <meta name="keywords" content="">
+  <title>知识图谱综述 - SimpleAI</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/feed.xml" title="SimpleAI" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Simple AI</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文档
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="http://ai-club.gitee.io/tensorflow-book/" target="_blank" rel="noopener">
+                    
+                    TensorFlow 2系列教程
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-06-03 10:00">
+      2020年6月3日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      13
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="知识图谱"><a href="#知识图谱" class="headerlink" title="知识图谱"></a>知识图谱</h2><h3 id="图谱简述"><a href="#图谱简述" class="headerlink" title="图谱简述"></a>图谱简述</h3><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191227142126.png?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<p>业务参考公司：</p>
+<ul>
+<li><p><a href="http://www.trs.com.cn/" target="_blank" rel="noopener">http://www.trs.com.cn/</a></p>
+</li>
+<li><p><a href="https://www.plantdata.ai/portal/home" target="_blank" rel="noopener">https://www.plantdata.ai/portal/home</a></p>
+</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191229103755.png?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="知识抽取"><a href="#知识抽取" class="headerlink" title="知识抽取"></a>知识抽取</h3><ul>
+<li><h4 id="命名实体识别"><a href="#命名实体识别" class="headerlink" title="命名实体识别"></a>命名实体识别</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225103151.png?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+</li>
+<li><h4 id="实体消歧"><a href="#实体消歧" class="headerlink" title="实体消歧"></a>实体消歧</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225103237.jpg" srcset="/img/loading.gif" alt="img"></p>
+</li>
+<li><h4 id="关系抽取"><a href="#关系抽取" class="headerlink" title="关系抽取"></a>关系抽取</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225103301.png" srcset="/img/loading.gif" alt="img"></p>
+</li>
+<li><h4 id="实体统一"><a href="#实体统一" class="headerlink" title="实体统一"></a>实体统一</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225103344.png" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<p>实体统一不仅可以减少实体的种类，也可以降低图谱的稀疏性（Sparsity）。</p>
+</blockquote>
+</li>
+<li><h4 id="指代消解"><a href="#指代消解" class="headerlink" title="指代消解"></a>指代消解</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225103410.jpg" srcset="/img/loading.gif" alt="img"></p>
+</li>
+</ul>
+<h3 id="知识图谱设计"><a href="#知识图谱设计" class="headerlink" title="知识图谱设计"></a>知识图谱设计</h3><blockquote>
+<ul>
+<li>通过熟悉业务流程，决定节点和关系</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230105836.png" srcset="/img/loading.gif" alt="img"></p>
+<ul>
+<li><h4 id="业务原则"><a href="#业务原则" class="headerlink" title="业务原则"></a>业务原则</h4><blockquote>
+<p><strong>一切要从业务逻辑出发，并且通过观察知识图谱的设计也很容易推测其背后业务的逻辑，而且设计时也要想好未来业务可能的变化</strong>”</p>
+</blockquote>
+</li>
+<li><h4 id="分析原则"><a href="#分析原则" class="headerlink" title="分析原则"></a>分析原则</h4><blockquote>
+<p><strong>效率原则让知识图谱尽量轻量化、并决定哪些数据放在知识图谱，哪些数据不需要放在知识图谱</strong></p>
+</blockquote>
+</li>
+<li><h4 id="效率原则"><a href="#效率原则" class="headerlink" title="效率原则"></a>效率原则</h4><blockquote>
+<p><strong>效率原则的核心在于把知识图谱设计成小而轻的存储载体</strong></p>
+</blockquote>
+</li>
+<li><h4 id="冗余原则"><a href="#冗余原则" class="headerlink" title="冗余原则"></a>冗余原则</h4><blockquote>
+<p>有些重复性信息、高频信息可以放到传统数据库当中。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="看不出业务逻辑案例"><a href="#看不出业务逻辑案例" class="headerlink" title="看不出业务逻辑案例"></a>看不出业务逻辑案例</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230111721.jpg?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+<h4 id="业务逻辑清晰案例"><a href="#业务逻辑清晰案例" class="headerlink" title="业务逻辑清晰案例"></a>业务逻辑清晰案例</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230110349.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="知识图谱的存储"><a href="#知识图谱的存储" class="headerlink" title="知识图谱的存储"></a><strong>知识图谱的存储</strong></h3><h4 id="数据演示"><a href="#数据演示" class="headerlink" title="数据演示"></a>数据演示</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230110549.jpg" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<ul>
+<li><p><strong>基于<code>RDF</code>的存储</strong></p>
+</li>
+<li><p><strong>基于<code>图数据库</code>的存储</strong></p>
+</li>
+</ul>
+</blockquote>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191225104123.png" srcset="/img/loading.gif" alt="img"></p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>数据库</strong></th>
+<th align="center"><strong>存储格式</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong><a href="https://neo4j.com/" target="_blank" rel="noopener">Neo4j</a></strong></td>
+<td align="center"><strong>图数据</strong></td>
+</tr>
+<tr>
+<td align="center"><a href="https://janusgraph.org/" target="_blank" rel="noopener"><strong>JanusGraph</strong></a></td>
+<td align="center"><strong>图数据</strong></td>
+</tr>
+<tr>
+<td align="center"><a href="https://orientdb.com/" target="_blank" rel="noopener"><strong>OrientDB</strong></a></td>
+<td align="center"><strong>图，文档</strong></td>
+</tr>
+<tr>
+<td align="center"><a href="https://jena.apache.org/" target="_blank" rel="noopener"><strong>Jena</strong></a></td>
+<td align="center"><strong>RDF</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><p>10亿节点以下规模的图谱</p>
+</li>
+<li><ul>
+<li>使用Neo4j</li>
+</ul>
+</li>
+<li><p>超过10亿节点的庞大数据量</p>
+</li>
+<li><ul>
+<li>选择支持准分布式的系统（OrientDB, JanusGraph）</li>
+</ul>
+</li>
+<li><ul>
+<li>过效率、冗余原则把信息存放在传统数据库中，减少知识图谱信息量</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="知识图谱的应用"><a href="#知识图谱的应用" class="headerlink" title="知识图谱的应用"></a>知识图谱的应用</h3><h4 id="落地模式"><a href="#落地模式" class="headerlink" title="落地模式"></a>落地模式</h4><p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191227144722.webp" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<ul>
+<li><p>信息检索/搜索：搜索引擎中对实体信息的精准聚合和匹配、对关键词的理解以及对搜索意图的语义分析等；</p>
+</li>
+<li><p>自然语言理解：知识图谱中的知识作为理解自然语言中实体和关系的背景信息；</p>
+</li>
+<li><p>问答系统：匹配问答模式和知识图谱中知识子图之间的映射；</p>
+</li>
+<li><p>推荐系统：将知识图谱作为一种辅助信息集成到推荐系统中以提供更加精准的推荐选项，知识图谱+推荐系统；</p>
+</li>
+<li><p>电子商务：构建商品的知识图谱用于精准匹配用户的购买意愿和商品候选集，知识图谱+推荐系统；</p>
+</li>
+<li><p>金融风控：利用实体之间的关系分析金融活动的风险以提供在风险触发后的补救措施（如反欺诈等）；</p>
+</li>
+<li><p>公安刑侦：分析实体和实体之间的关系获取案件线索等；</p>
+</li>
+<li><p>司法辅助：法律条文的结构化表示和查询用于辅助案件的判决等；</p>
+</li>
+<li><p>教育医疗：提供可视化的知识表示，用于药物分析、疾病诊断等；</p>
+</li>
+<li><p>社交类业务：社交类业务具备高度连接的特点，比如 好友关系 等，&lt;用户1，关注，用户2&gt;。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="技术应用"><a href="#技术应用" class="headerlink" title="技术应用"></a>技术应用</h4><ul>
+<li><h4 id="基于规则的方法论"><a href="#基于规则的方法论" class="headerlink" title="基于规则的方法论"></a><strong>基于规则的方法论</strong></h4><h4 id="【不一致性验证】"><a href="#【不一致性验证】" class="headerlink" title="【不一致性验证】"></a>【<strong>不一致性验证</strong>】</h4><blockquote>
+<ul>
+<li><p><strong>通过规则找出潜在的矛盾点</strong></p>
+</li>
+<li><ul>
+<li>如：李明、李飞注明同样的公司电话，但两人公司数据不一致</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230112010.jpg?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+</blockquote>
+<h4 id="【基于规则提取特征】"><a href="#【基于规则提取特征】" class="headerlink" title="【基于规则提取特征】"></a>【<strong>基于规则提取特征</strong>】</h4><blockquote>
+<ul>
+<li><p><strong>特征一般基于深度的搜索</strong></p>
+</li>
+<li><ul>
+<li>如：申请人二度关系里有多少个实体触碰了黑名单？</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230112121.jpg?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+</blockquote>
+</li>
+<li><h4 id="基于模式的判断"><a href="#基于模式的判断" class="headerlink" title="基于模式的判断"></a><strong>基于模式的判断</strong></h4><blockquote>
+<ul>
+<li><p><strong>适用于找出团体欺诈</strong></p>
+</li>
+<li><p>核心在于通过一些模式找到有可能存在风险的团体或者子图（sub-graph），然后对这部分子图做进一步的分析</p>
+</li>
+<li><p>如：三个实体共享很多信息，可看做为团体并进一步分析<br><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230112226.jpg?x-oss-process=image%2Fresize%2Cw_1500" srcset="/img/loading.gif" alt="img"></p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><h4 id="基于概率的方法"><a href="#基于概率的方法" class="headerlink" title="基于概率的方法"></a><strong>基于概率的方法</strong></h4></li>
+<li><ul>
+<li><strong>中心性算法类</strong></li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>对节点的重要性进行计算.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>例如搜索引擎的结果，根据每个网页的引用数量进行重要性排序<br><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230155057.jpg" srcset="/img/loading.gif" alt="img"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>社区检测算法类</strong></li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>一种用于在图形中查找社区的快速算法。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>它仅使用网络结构作为指导来检测这些社区，不需要预先定义的目标功能或有关社区的先前信息。<br><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230155136.jpg" srcset="/img/loading.gif" alt="img"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>相似度算法类</strong></li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>节点相似性算法会根据它们所连接的节点来比较一组节点。如果两个节点共享许多相同的邻居，则认为它们是相似的.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>例如用于推荐, 计算两个用户的相似度,推荐一个用户购买的物品给另外一个相似用户没有购买的物品.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><strong>…</strong></li>
+</ul>
+</li>
+<li><h4 id="基于动态网络的分析"><a href="#基于动态网络的分析" class="headerlink" title="基于动态网络的分析"></a><strong>基于动态网络的分析</strong></h4><blockquote>
+<ul>
+<li><p><strong>聚焦时间变化与风险之间的关联</strong></p>
+</li>
+<li><p>如：从T到T+1时刻的图谱结构变化，暗示着潜在风险</p>
+</li>
+</ul>
+<p><img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20191230112435.jpg" srcset="/img/loading.gif" alt="img"></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><p><a href="https://github.com/npubird/KnowledgeGraphCourse" target="_blank" rel="noopener">东南大学《知识图谱》研究生课程</a></p>
+</li>
+<li><p><a href="https://www.jiqizhixin.com/articles/2018-06-19" target="_blank" rel="noopener">知识图谱的技术与应用</a></p>
+</li>
+<li><p><a href="http://openkg.cn/home" target="_blank" rel="noopener">开放的中文知识图谱</a></p>
+</li>
+<li><p><a href="https://github.com/husthuke/awesome-knowledge-graph" target="_blank" rel="noopener">知识图谱相关学习资料</a></p>
+</li>
+<li><p><a href="https://github.com/qq547276542/Agriculture_KnowledgeGraph" target="_blank" rel="noopener">农业知识图谱(AgriKG)</a></p>
+</li>
+<li><p><a href="https://github.com/liuhuanyong/QASystemOnMedicalKG" target="_blank" rel="noopener">A tutorial and implement of disease centered Medical knowledge graph and qa system based on it</a></p>
+</li>
+<li><p><a href="https://neo4j.com/docs/graph-algorithms/current/algorithms/page-rank/" target="_blank" rel="noopener">https://neo4j.com/docs/graph-algorithms/current/algorithms/page-rank/</a></p>
+</li>
+<li><p><a href="http://www.cesi.cn/images/editor/20190911/20190911095208624.pdf" target="_blank" rel="noopener">2019年知识图谱标准化白皮书</a></p>
+</li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/text_EDA/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">自然语言处理之文本数据增强</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/06/serving/">
+                        <span class="hidden-mobile">机器学习模型部署-simple-tensorflow-serving</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <div class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "npIvw4jbBhD0KtfOx9hHpPze-gzGzoHsz",
+          app_key: "yLh6Ux5MbbkV0xFWnQEMce1j",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+        });
+      });
+    }
+    createObserver(loadValine, 'vcomments');
+  </script>
+<!--   <noscript>Please enable JavaScript to view the <a href="https://valine.js.org" target="_blank" rel="nofollow noopener noopener">comments -->
+<!--       powered by Valine.</a></noscript> -->
+
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+     <div>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>Seven</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="http://0520.tech" target="_blank" rel="nofollow noopener"><span>2020</span></a>
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+      var now = new Date();
+      function createtime(){
+          var grt= new Date("02/14/2017 00:00:00");//此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime()+250);
+          days = (now - grt ) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if(String(hnum).length ==1 ){
+              hnum = "0" + hnum;
+          }
+          minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if(String(mnum).length ==1 ){
+                    mnum = "0" + mnum;
+          }
+          seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if(String(snum).length ==1 ){
+                    snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站安全运行&nbsp"+dnum+"&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+      }
+      setInterval("createtime()",250);
+      </script>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+  <!-- 备案信息 -->
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank"
+       rel="nofollow noopener">蜀ICP备20017697号</a>
+    
+  </div>
+
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "知识图谱综述&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?480cc781425698544787d293ee99ce7c";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

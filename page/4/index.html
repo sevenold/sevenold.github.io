@@ -194,6 +194,85 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/cv-image_position/" target="_self">
+          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十六】相对位姿测量算法">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 mx-auto index-info">
+      <a class="index-header" href="/2019/03/cv-image_position/">【十六】相对位姿测量算法</a>
+
+      <a href="/2019/03/cv-image_position/" class="index-excerpt">
+        
+        
+          
+        
+        <div>相对位姿测量算法【基于空间多点】
+相对位姿估计的基本问题
+
+
+已知：相机内参数；多个空间上的特征点(非共面)在目标坐标系(3D)和相平面坐标系(2D)坐标。
+输出：目标坐标系相对相机坐标系的位置和姿态。
+
+
+
+
+基本思想示意
+
+
+线性求解
+
+对每一个特征点，均有：
+
+
+对每一个特征点，均有：
+
+
+展开第一行
+
+
+类似展开第二、第三行：
+
+
+消去$Z_c$
+
+
+上二式右侧分母移到左边，得：
+
+
+整理</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2019-03-16
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%9B%B8%E5%AF%B9%E4%BD%8D%E5%A7%BF%E6%B5%8B%E9%87%8F/">相对位姿测量</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2019/03/cv-image_camera/" target="_self">
           <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【十五】坐标变换与摄像机模型">
         </a>
@@ -695,64 +774,6 @@ Hough变换是图像处理中从图像中识别几何形状的基本方法之一
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%9B%BE%E5%83%8F%E7%89%B9%E5%BE%81%E6%8F%8F%E8%BF%B0/">图像特征描述</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2019/03/cv-image_hist/" target="_self">
-          <img src="https://eveseven.oss-cn-shanghai.aliyuncs.com/20200603115940.png" srcset="/img/loading.gif" alt="【六】直方图">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2019/03/cv-image_hist/">【六】直方图</a>
-
-      <a href="/2019/03/cv-image_hist/" class="index-excerpt">
-        
-        
-          
-        
-        <div>图像直方图
-通过灰度直方图看到图像的照明效果
-
-
-代码实例#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2019/3/9 21:28
-# @Author  : Seven
-# @File    : HistDemo.py
-# @Software: PyCharm
-# function : 图像直方图
-import cv2
-im</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2019-03-06
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/">机器视觉</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%9B%B4%E6%96%B9%E5%9B%BE/">直方图</a>
             
           </div>
         

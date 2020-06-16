@@ -110,6 +110,37 @@
   </entry>
   
   <entry>
+    <title>知识图谱综述</title>
+    <link href="http://0520.tech/2020/06/kg/"/>
+    <id>http://0520.tech/2020/06/kg/</id>
+    <published>2020-06-03T02:00:00.000Z</published>
+    <updated>2020-06-16T13:16:30.170Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;知识图谱&quot;&gt;&lt;a href=&quot;#知识图谱&quot; class=&quot;headerlink&quot; title=&quot;知识图谱&quot;&gt;&lt;/a&gt;知识图谱&lt;/h2&gt;&lt;h3 id=&quot;图谱简述&quot;&gt;&lt;a href=&quot;#图谱简述&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="知识图谱" scheme="http://0520.tech/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/"/>
+    
+    
+      <category term="深度学习" scheme="http://0520.tech/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="自然语言处理" scheme="http://0520.tech/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/"/>
+    
+      <category term="知识图谱" scheme="http://0520.tech/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/"/>
+    
+  </entry>
+  
+  <entry>
     <title>机器学习模型部署-simple-tensorflow-serving</title>
     <link href="http://0520.tech/2019/06/serving/"/>
     <id>http://0520.tech/2019/06/serving/</id>
@@ -573,34 +604,6 @@
       <category term="深度学习" scheme="http://0520.tech/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="Pytorch" scheme="http://0520.tech/tags/Pytorch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>图片拼接</title>
-    <link href="http://0520.tech/2019/03/cv-IMAGE_JOIN/"/>
-    <id>http://0520.tech/2019/03/cv-IMAGE_JOIN/</id>
-    <published>2019-03-26T02:00:00.000Z</published>
-    <updated>2020-06-03T04:05:54.047Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;pre&gt;&lt;code class=&quot;hljs python&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;# -*- coding: utf-8
-        
-      
-    
-    </summary>
-    
-    
-      <category term="机器视觉" scheme="http://0520.tech/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
-    
-    
-      <category term="图片拼接" scheme="http://0520.tech/tags/%E5%9B%BE%E7%89%87%E6%8B%BC%E6%8E%A5/"/>
     
   </entry>
   
